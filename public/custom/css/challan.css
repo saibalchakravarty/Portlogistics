@@ -1,0 +1,23 @@
+/* 
+    Created on : 19 Oct, 2020, 9:35:17 AM
+    Author     : madhusmitad
+*/
+#challanTbl thead th:first-child:before, #challanTbl thead th:first-child:after{display:none;}
+.allign-center{text-align: center;}
+.challan-info-box p{font-size:14px;}
+.challan-filter-section .btn{width:100%}
+.challan-info-box h3{color:#fff;}
+.challan-info-box p{color:#fff;}
+#challanTbl_wrapper{
+    margin-top: -50px;
+}
+#challanTbl_filter input{
+    height: 2.3rem;
+}
+
+#challanTbl_filter{
+    margin-right: 180px;
+}
+.select2-container, .select2-search__field {
+    width: 100% !important;
+}

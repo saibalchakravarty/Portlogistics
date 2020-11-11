@@ -1,0 +1,17 @@
+/* 
+    Created on : 19 Oct, 2020, 9:12:41 AM
+    Author     : madhusmitad
+*/
+#btopPlanningTbl thead th:nth-child(7):before, #btopPlanningTbl thead th:nth-child(7):after{display:none;}
+#btopPlanningTbl thead th:nth-child(8):before, #btopPlanningTbl thead th:nth-child(8):after{display:none;}
+#btopPlanningTbl thead th:nth-child(1):before, #btopPlanningTbl thead th:nth-child(1):after{display:none;}
+#btopPlanningTbl tr td:nth-child(8), #btopPlanningTbl tr td:nth-child(9){text-align: center;}
+#btopPlanningTbl tr td:nth-child(9) .btn{padding: 5px;}
+#planDetailTbl td{border-top: none;}
+#addPlanForm label.error{color: red; font-weight: normal !important; font-size: 14px;}
+.filter-area{margin: 10px; border: 1px solid #ddd; padding: 20px;}
+.filter-area .select2-container{width:100% !important;}
+#vessel_lists{float:left;list-style:none;margin-top:-3px;padding:0;width:190px;position: absolute;overflow-y: auto;height: 100px;}
+#vessel_lists li{padding: 10px; background: #f0f0f0; border-bottom: #bbb9b9 1px solid;}
+#vessel_lists li:hover{background:#ece3d2;cursor: pointer;}
+

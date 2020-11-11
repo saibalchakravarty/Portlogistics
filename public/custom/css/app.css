@@ -1,0 +1,88 @@
+.select2-container--default .select2-selection--single .select2-selection__arrow{top: 6px;}
+.select2-container--default .select2-selection--single{height: calc(2.25rem + 2px); border: 1px solid #ced4da;}
+/*Start of Loader*/
+
+/*End of Loader*/
+
+.profile-pic{width:11rem; height:11rem; border-radius: 50%;}
+.clear-both{clear:both;}
+.mb20{margin-bottom: 20px;}
+.profile-btn-width{width:150px;}
+.profile-name-edit{cursor:pointer;}
+.profile-name-save{cursor:pointer;}
+.edit-view{display:none;}
+.hide{display:none}
+.icon-button {
+    background-color: white;
+    border: none;
+    color: black;
+    font-size: 22px;
+    cursor: pointer;
+}
+
+/*To change the input text field to uppercase*/
+.uppercase{
+    text-transform:uppercase;
+}
+
+/*THEME CUSTOM COLORS CHANGE*/
+
+td.details-control {
+    background: url('../images/details_open.png') no-repeat center center;
+    cursor: pointer;
+}
+tr.shown td.details-control {
+    background: url('../images/details_close.png') no-repeat center center;
+}
+
+.align-right{text-align: right;}
+.mr20{margin-right:20px;}
+.ml20{margin-left:20px;}
+
+
+.main-sidebar{
+    background-color: #1b577e;
+    color:#ffffff !important;
+}
+.main-header,#logoBox{
+    background-color: #233b5f;
+}
+.nav-item,.nav-link
+{
+    color: #ffffff !important;
+}
+.layout-navbar-fixed .wrapper  .brand-link:not([class*=navbar])
+{
+    background-color: #233b5f !important;
+}
+.brand-link .brand-image {
+    float: left;
+    line-height: .8;
+    margin-left: 3.8rem;
+    margin-right: .5rem;
+    margin-top: -3px;
+    max-height: 33px;
+    width: auto;
+}
+.nav-pills .nav-link.active, .nav-pills .show>.nav-link {
+    color: #fff;
+    font-weight: bold;
+    font-size: 20px;
+    background-color: transparent !important;
+    box-shadow: none !important;
+}
+.nav-treeview>.nav-item  .menu-open >.nav-link .active
+{
+     font-weight: bold !important;
+    font-size: 15px !important;
+}
+.nav-sidebar>.nav-item .nav-icon >.nav-link:active{    
+    font-size: 22px !important;
+}
+.modal-header{
+     background-color: #233b5f;
+     color :#ffffff;
+}
+.bootstrap-datetimepicker-widget.dropdown-menu{z-index: 9999;}
+.form-control:disabled, .form-control[readonly] {background-color: #fff}
+
