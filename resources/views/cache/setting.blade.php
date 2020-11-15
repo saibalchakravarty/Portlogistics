@@ -1,10 +1,8 @@
 
 @extends('layouts.layout')
-
 @section('content')
 <?php 
      $privilegeArr = isset( $result['privileges']['display_name'])? $result['privileges']['display_name']:array();
-   //  dd($privilegeArr);
 ?>
 <!-- Content Wrapper. Contains page content -->
 <div class="content-wrapper">
@@ -25,8 +23,6 @@
         </div><!-- /.container-fluid -->
     </div>
     <!-- /.content-header -->
-     
-     
     <!-- Main content -->
     <section class="content">
         <div class="container">
@@ -39,11 +35,8 @@
             <!-- /.container-fluid -->
         </div>
     </section>
-    
     <!-- /.content -->
 </div>
-
-
 @endsection
 @push('script')
 <script src="{{ js('setting_js') }}"></script>

@@ -21,7 +21,6 @@ class BaseController extends Controller
      */
     public function getAuth($param = array())
     {
-        $ajax = !empty($param['is_ajax'])?true:false;
         $is_api_request = true;
         
         $browser = !empty($param['is_browser_request'])?$param['is_browser_request']:false;
@@ -50,7 +49,6 @@ class BaseController extends Controller
         $all['connection'] = $this->getConnection();
         $all['cache_array'] = !empty($param['cache_array'])?$param['cache_array']:'';
         $all['is_api_request'] = $is_api_request;
-       // print_r($all);die;
         return $all;
     }
 
@@ -78,15 +76,12 @@ class BaseController extends Controller
           'message' => $message, 
           'status_code' => 200
         ];
-
         $key = !empty($param['cache_array']['cache_key'])?$param['cache_array']['cache_key']:'';
         $cache_urls = config('constants.cache_url');
         if(in_array($key,$cache_urls))
         { 
-          //echo "----------";dd($response);
           $response['key'] = $this->cacheData($param,$response);
         }
-        //Log::info(json_encode($response));
         if (isset($param['browser']) && $param['browser'] == 1 && !empty($param['view']))
         {
             return view($param['view'], $response);

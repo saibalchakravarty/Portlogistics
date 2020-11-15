@@ -206,7 +206,7 @@ $(document).ready(function(){
             }
         });
         $.ajax({
-            url :APP_URL+"/admin/role-privileges/getPrivileges",
+            url :APP_URL+"/role-privileges/getPrivileges",
             type: "post",
             data : {id : $('#cmbRole').val()},
             success:function(response)
@@ -265,7 +265,7 @@ function changeAccess(chkedPrivilege)
 {
     $('#btnSubmitPrivilege').html('<i class="fas fa-spinner fa-spin"></i> Saving...');
     $.ajax({
-        url :APP_URL+"/admin/role-privileges/save",
+        url :APP_URL+"/role-privileges/save",
         type: "post",
         data: {privileges : chkedPrivilege, roleId : $('#cmbRole').val()},
         success:function(response)
@@ -303,7 +303,7 @@ function savePrivilges()
     });
     $('#btnSubmitPrivilege').html('<i class="fas fa-spinner fa-spin"></i> Saving...');
     $.ajax({
-        url :APP_URL+"/admin/role-privileges/save",
+        url :APP_URL+"/role-privileges/save",
         type: "post",
         data: {privileges : chkedPrivilege, roleId : $('#cmbRole').val()},
         success:function(response)

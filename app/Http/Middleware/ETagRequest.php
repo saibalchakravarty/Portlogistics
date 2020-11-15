@@ -21,7 +21,7 @@ class ETagRequest
                  'isAjaxRequest' => true
                 ]);        
         }  
-      /*  if ($request->isMethod('GET')) {
+      if ($request->isMethod('GET')) {
             if(!empty($request->cache_array))
             {
                 $org_id = $request->cache_array['organization_id'];
@@ -33,7 +33,6 @@ class ETagRequest
                 $etag = md5($requestJson);
                 $requestEtag = str_replace('"', '', $request->getETags());
                 Log::info(json_encode($requestEtag));
-                Log::info(($etag));
                 if($requestEtag && $requestEtag[0]  == $etag) {
                     if(!empty($requestDataCache))
                     {
@@ -60,7 +59,7 @@ class ETagRequest
                 Log::info('Cache Miss');
             }
         }
-        Log::info('Cache Miss Request');*/
+        Log::info('Cache Miss Request');
         return $next($request);
     }
 }

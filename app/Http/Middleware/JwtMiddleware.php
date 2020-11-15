@@ -47,26 +47,15 @@ class JwtMiddleware extends BaseMiddleware
             $response['message'] = 'Something Went Wrong';
             return response()->json($response);
         }
-       /* $rules = [
-            'user_id' => 'bail|required|regex:/^[0-9\s\.]+$/'
-        ];
-        $validator = Validator::make($request->all(), $rules);
-        if($validator->fails())
-        {
-            $api_array['status'] = "failed";
-            $api_array['message'] = 'Something Went Wrong';
-            $api_array['result'] = [$validator->messages()->first()];
-            return response()->json($api_array);
-        }  */
         $user_id = 0;
         if(!empty($user))
-        {
+        { 
             $token = $request->bearerToken();
             $all = $request->all();
             $all['token'] = $token;
             $jwtToken = $this->loginService->getUserByToken($all);
             
-            if($jwtToken['status'] == false)
+            if(!$jwtToken['status'])
             {
                 $api_array['status'] = "failed";
                 $api_array['message'] = "Unauthorized Token";
@@ -77,7 +66,7 @@ class JwtMiddleware extends BaseMiddleware
         }
 
         $getUser = $this->loginService->getUserByUserId($user_id);
-        if($getUser == false){
+        if(!$getUser){
             $api_array['status'] = "failed";
             $api_array['message'] = "User details not found";
             $api_array['result'] = ["User details not found"];

@@ -42,39 +42,13 @@ class JwtTokenRepository
     }
 
     /**
-     * Verify Token by token
+     * Check if token exists for user
+     * @param array $data
      * 
-     * @param string $token
+     * @return \Illuminate\Http\JsonResponse 
      * 
-     * @return Array
-     */
-    public function existToken($token)
-    {
-        try {
-            $existToken = JwtToken::where('token', $token)->first();
-        }
-        catch (Exception $e) {
-            Log::error($e->getMessage());
-            return false;
-        }
-        return true;
-    }
-    /**
-     * Delete Token after logout
-     * 
-     * @param string currentuserid
-     */
-    public function deleteTokenByUserId($currentUserId)
-    {
-        try {
-            $deleteToken = JWTToken::where('user_id', $currentUserId)->delete();
-        }
-        catch (Exception $e) {
-            Log::error($e->getMessage());
-            return false;
-        }
-        return true;
-    }
+    */
+
     public function checkIfExistJwtToken($data)
     {
         try {
@@ -87,10 +61,6 @@ class JwtTokenRepository
             {
                 $tokenArray = $tokenArray->where('user_id', $data['user_id']);                
             }
-            // if(!empty($data['mobile_number']))
-            // {
-            //     $tokenArray = $tokenArray->where('mobile_number', $data['mobile_number']);                
-            // }
             $tokenArray = $tokenArray->first();
             if(!empty($tokenArray))
             {
@@ -109,6 +79,13 @@ class JwtTokenRepository
         return $tokenArray;       
     }
 
+    /**
+     * get user id based on token as input
+     * @param array $data
+     * 
+     * @return \Illuminate\Http\JsonResponse 
+     * 
+    */
     public function getUserByToken($all){
         $data['status'] =false;
          try {
@@ -127,6 +104,5 @@ class JwtTokenRepository
             Log::error($e->getMessage());
         }
        return $data;
-
     }
 }

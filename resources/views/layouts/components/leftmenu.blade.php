@@ -86,7 +86,7 @@
                                 <p>
                                     Administration
                                 </p>
-                            </a>  
+                            </a>   
                             @if(isset($parentMenu['child']) && !empty($parentMenu['child']))                          
                             @foreach($parentMenu['child'] as $childMenu)
                                 <ul class="nav nav-treeview">
@@ -153,16 +153,21 @@
                                         @endif
                                         @if(($childMenu['display_name'] == 'TRUCKS') && ($subchildMenu['display_name'] == 'LIST'))
                                             <li class="nav-item {{ request()->is('truck') ? 'menu-open' : ''}} ">
-                                                <a href="{{ url('truck')}}" class="nav-link {{ request()->is('admin/truck') ? 'active' : ''}}">
-                                                    <em class=" nav-icon fa fa-truck"></em>
+
+                                              
+                                                <a href="{{ url('truck')}}" class="nav-link {{ request()->is('truck') ? 'active' : ''}}">
+                                                    <i class=" nav-icon fa fa-truck"></i>
+
                                                     <p>Trucks</p>
                                                 </a>
                                             </li>
                                         @endif
                                         @if(($childMenu['display_name'] == 'TRUCKING COMPANY') && ($subchildMenu['display_name'] == 'LIST'))
                                             <li class="nav-item {{ request()->is('truck-company') ? 'menu-open' : ''}} ">
-                                                <a href="{{ url('truck-company')}}" class="nav-link {{ request()->is('admin/truck-company') ? 'active' : ''}}">
-                                                    <em class=" nav-icon fas fa-truck"></em>
+
+                                                <a href="{{ url('truck-company')}}" class="nav-link {{ request()->is('truck-company') ? 'active' : ''}}">
+                                                    <i class=" nav-icon fas fa-truck"></i>
+
                                                     <p>Trucking Company</p>
                                                 </a>
                                             </li>
@@ -179,9 +184,11 @@
                                     @endforeach
                                     @endif
                                         @if($childMenu['display_name'] == 'CACHELIST')
-                                            <li class="nav-item  {{ request()->is('admin/clear-cache') ? 'menu-open' : ''}} ">
-                                                <a href="{{url('admin/clear-cache')}}" class="nav-link {{ request()->is('admin/clear-cache') ? 'active' : ''}}">                                       
-                                                    <em class="nav-icon fas fa-cog"></em>
+
+                                            <li class="nav-item  {{ request()->is('cache/clear') ? 'menu-open' : ''}} ">
+                                                <a href="{{url('cache/clear')}}" class="nav-link {{ request()->is('cache/clear') ? 'active' : ''}}">                                       
+                                                    <i class="nav-icon fas fa-cog"></i>
+
                                                     <p>Cache Settings</p>
                                                 </a>
                                             </li>

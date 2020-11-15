@@ -4,7 +4,7 @@ $(function () {
 });
 
 function delCacheRole() {
-   var url= APP_URL + "/admin/clear-cache-menu";
+   var url= APP_URL + "clear-cache-menu";
     $.ajax({
         type: 'post',
         url: url,
@@ -45,7 +45,7 @@ function delCacheRole() {
 });
 
 function delCacheData() {
-   var url= APP_URL + "/admin/clear-cache-data";
+   var url= APP_URL + "clear-cache-data";
     $.ajax({
         type: 'post',
         url: url,
