@@ -48,16 +48,28 @@ $(document).ready(function () {
 
 				let keys = Object.keys(response.result.ttc);
 				let rows = '';
+				let ntu_rows = '';
+				let ttc_rows = '';
+				let ca_rows = '';
+				let index = 1;
 				keys.forEach((val) => {
 
 					rows += `<tr>
-               				<td>Shift-`+ val + `</td>
+               				<td>`+ val + `</td>
                				<td>`+ response.result.ntu[val] + `</td>
                				<td>`+ response.result.ttc[val] + `</td>
-           				</tr>`
+						   </tr>`;
+
+					ntu_rows += `<p><span class="text-label-`+index+`">`+val+`</span> : <span class="default">`+response.result.ntu[val]+`</span></p>`;
+					ttc_rows += `<p><span class="text-label-`+index+`">`+val+`</span> : <span class="default">`+response.result.ttc[val]+`</span></p>`;
+					ca_rows += `<p><span class="text-label-`+index+`">`+val+`</span> : <span class="default">`+response.result.ca[val]+`</span></p>`;
+					index++;	   
 
 				});
 				$('#btp').html(rows);
+				$('.ntu').html(ntu_rows);
+				$('.ttc').html(ttc_rows);
+				$('.ca').html(ca_rows);
 				$("#sectionLoader").hide();
 			}
 		});
@@ -74,14 +86,15 @@ $('.filterBtn').click(function () {
 
 function getChartsDataReady(data, area) {
 	console.log(data);
-	let glabel = ['Shift-A', 'Shift-B', 'Shift-C'];
+	let glabel =  Object.keys(data);
 	let gdata = Object.values(data);
 
 	createChart(area, glabel, gdata, 'doughnut');
-	$('.' + area + '-A').html(data.A);
-	$('.' + area + '-B').html(data.B);
-	$('.' + area + '-C').html(data.C);
-
+	glabel.forEach(val=>
+		{$('.' + area + val).html(data[val]);}
+		);
+	
+	
 
 
 }
@@ -112,7 +125,7 @@ function createChart(location, label, data, type) {
 		}]
 	};
 	var cd = document.getElementById(location);
-	var myDoughnutChart = new Chart(cd, {
+	 new Chart(cd, {
 		type: type,
 		data: graphData,
 		options: {

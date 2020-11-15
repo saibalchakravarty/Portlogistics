@@ -1,13 +1,9 @@
 <?php
-
 use Illuminate\Support\Facades\Auth;
 use App\Models\AccessList;
 use App\Models\RoleAcces;
-
-
 function menuAccess ()
 {
-	$userId = Auth::user()->id;
     $userRoleId = Auth::user()->role_id;
     $organizationId = Auth::user()->organization_id;
 	$accessListObj = new AccessList();
@@ -52,29 +48,6 @@ function menuAccess ()
 		    $cacheRole = array();
 		    $cacheRole[$organizationId][$userRoleId] = $dataArr;
 			cache([$key => $cacheRole], $seconds);
-			/* $getAccessListDetails = $accessListObj->whereIn('id',$chkRoleExist)->get();
-			if(count($getAccessListDetails) > 0 )
-			{
-				foreach($getAccessListDetails as $menu)
-				{
-					if($menu->hierarchy == 'P')
-					{
-						$dataArr['parent'][] = $menu->display_name;
-						$dataArr['parent'][] = $menu->id;
-					}
-					if($menu->hierarchy == 'C')
-					{
-						$dataArr['child'][] = $menu->display_name;
-						$dataArr['child'][] = $menu->id;
-					}
-					
-				}	
-		        $seconds = config('constants.cache_time');
-		        $cacheRole = array();
-		        $cacheRole[$organizationId][$userRoleId] = $dataArr;
-				cache([$key => $cacheRole], $seconds);     
-			} */
-		
 		}
 	}
 	return $dataArr;

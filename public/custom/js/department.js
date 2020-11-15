@@ -4,24 +4,25 @@ $(function() {
         "responsive": true,
         "order": [],
     });
+
     $('#add_department').validate({
         rules: {
-          name: {
-            required: true,
-            maxlength: 50,
-          },
-          description: {
-            maxlength: 150,
-          },
+            name: {
+                required: true,
+                maxlength: 50,
+            },
+            description: {
+                maxlength: 150,
+            },
         },
         messages: {
-          name: {
-            required: "Please enter department name",
-            maxlength: "Department should not exceed 50 charaters."
-          },
-          description: {
-            maxlength: "Description should not exceed 150 charaters."
-          },
+            name: {
+                required: "Please enter department name",
+                maxlength: "Department should not exceed 50 charaters."
+            },
+            description: {
+                maxlength: "Description should not exceed 150 charaters."
+            },
         },    
         errorElement: "span",
         errorPlacement: function (error, element) {
@@ -36,21 +37,17 @@ $(function() {
             $(element).removeClass("is-invalid");
             $(element).addClass("is-valid");
         },
-        
-         submitHandler: function(form) {
-            var text = '';
+        submitHandler: function(form) {
             var URL = '';
             var type = '';
-             if($("#hidden_id").val() != ""){
-                  text = "Updated";
-                  URL =  APP_URL+"/department/"+$("#hidden_id").val();
-                  type = 'put';
-             }else{
-                  URL =  APP_URL+"/department";
-                  text = "Saved";
-                  type = 'post';
-             }         
-           $.ajax({
+            if($("#hidden_id").val() != ""){
+                URL =  APP_URL+"/department/"+$("#hidden_id").val();
+                type = 'put';
+            }else{
+                URL =  APP_URL+"/department";
+                type = 'post';
+            }         
+            $.ajax({
                 type: type,
                 url: URL,
                 data: $(form).serialize(),
@@ -61,8 +58,9 @@ $(function() {
                             icon: 'success',
                             title: response.message,
                             showConfirmButton: false,
-                            timer: 1500});
-                            window.location.reload();
+                            timer: 1500
+                        });
+                        window.location.reload();
                     }else{
                         var msg='';
                         $.each(response.result, function (k,v)  {
@@ -85,6 +83,7 @@ $(function() {
             });
         }    
     });
+
     //Delete the Department row data
     $('#departments').on('click', '.delete', function () {
         
@@ -95,10 +94,8 @@ $(function() {
         $("#dept_id").val(rowId);
         Swal.fire({
             title: "Are you sure?",
-            //text: "You won't be able to revert this!",
             icon: "warning",
             showCancelButton: false,
-            //confirmButtonColor: "#3085d6",
             showConfirmButton: false,
             html :`<p>You want to delete this Department?</p></br>
             <span  class=" tooltips" data-placement="bottom"  title="Delete Department" onClick="return deleteDepartment();" style="cursor:pointer;"><i class="fas fa-3x fa-check-circle tooltips text-success"></i></span>
@@ -165,14 +162,14 @@ function editDepartment(id)
             }
             else
             {
-                 var msg='';
-              $.each(response.result, function (k,v)  {
-               if(msg == '')
-                  msg = v;
-               else
-                  msg = msg+', '+v;
-              });
-              Swal.fire("Error!", "'"+msg+"'", "error");
+                var msg='';
+                $.each(response.result, function (k,v)  {
+                    if(msg == '')
+                        msg = v;
+                    else
+                        msg = msg+', '+v;
+                });
+                Swal.fire("Error!", "'"+msg+"'", "error");
             }
         },
         error: function() {

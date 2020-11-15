@@ -8,23 +8,9 @@
 <div class="content-wrapper">
     <!-- Content Header (Page header) -->
     <div class="content-header">
-        <!-- <div class="container-fluid">
-            <div class="row mb-2">
-                <div class="col-sm-6">
-                    <h1 class="m-0 text-dark">Locations</h1>
-                </div>
-                <div class="col-sm-6">
-                    <ol class="breadcrumb float-sm-right">
-                        <li class="breadcrumb-item"><a href="#">Administration</a></li>
-                        <li class="breadcrumb-item active">Locations</li>
-                    </ol>
-                </div>
-            </div>
-        </div> -->
     </div>
     <!-- /.content-header -->
   @if($status!='failed')
-     <?php // dd($result);?>
     <!-- Main content -->
     <section class="content">
         <div class="container">
@@ -40,40 +26,30 @@
                             <h2 class="m-0 text-dark">Locations</h2>
                             </div>
                             <div class="action-area">
-                                
-                               
                                 <form action="{{url('csv-export')}}" method="post">
                                     @csrf
                                     <input type="hidden" name="key" value = "Location">
-                                    <button  type="submit" class="btn btn-primary float-right tooltips "><i class="fa fa-file-excel"></i> Export</button>
+                                    <button  type="submit" class="btn btn-primary float-right tooltips "><i class="fa fa-file-excel" aria-hidden="true"></i> Export</button>
                                 </form>
 
-                                <button id="btnLocationsAdd" type="button" class="btn btn-success tooltips " data-toggle="modal" data-target="#modal-locations" data-placement="top" ><i class="fa fa-plus"></i> Add New Location</button>
-                               
+                                <button id="btnLocationsAdd" type="button" class="btn btn-success tooltips " data-toggle="modal" data-target="#modal-locations" data-placement="top" ><i class="fa fa-plus"></i> Add New Location</button>   
                             </div> 
-                            </div>
-                            </div>
-
-                         <!-- @if(in_array('ADD',$privilegeArr))
-                            <span  id="btnLocationsAdd" class="float-right tooltips" data-toggle="modal"  style="cursor: pointer;">
-                                <i class="fas fa-3x fa-plus-circle tooltips text-primary"></i>
-                            </span>
-                        @endif -->
-                    
+                        </div>
+                    </div>
                     <!-- /.card-header -->
                     <div class="col-md-12 table p-4">
-                        <table id="dtLocation" class="table  table-striped">
-                            <thead align="center">
+                        <table id="dtLocation" class="table  table-striped" summary="Location Lists">
+                            <thead style="text-align: center;">
                                 <tr>
-                                    <th>Location</th>
-                                    <th>Description</th>
-                                    <th>Type</th>
-                                    <th hidden="">Action</th>
-                                    <th>Action</th>
+                                    <th scope="column">Location</th>
+                                    <th scope="column">Description</th>
+                                    <th scope="column">Type</th>
+                                    <th hidden="" scope="column">Action</th>
+                                    <th scope="column">Action</th>
                                     
                                 </tr>
                             </thead>
-                            <tbody align="center">
+                            <tbody style="text-align: center;">
                             @foreach($result['location'] as $result)
                             <tr>
                                 <td>{{ $result->location }}</td>                                    
@@ -82,9 +58,9 @@
                                 <td hidden="">{{$result->id}}</td>    
                                 <td align="center">
 
-                                     <a href="javascript:void(0);" onclick="return editLocation('{{ $result->id }}')" data-target="top" class="edit tooltips" title="Update Location"><i class="fas fa-2x fa-edit text-success"></i></a> &nbsp;&nbsp;
+                                     <a href="javascript:void(0);" onclick="return editLocation('{{ $result->id }}')" data-target="top" class="edit tooltips" title="Update Location"><i class="fas fa-2x fa-edit text-success" aria-hidden="true"></i></a> &nbsp;&nbsp;
 
-                                     <i class='fas fa-2x fa-trash text-danger tooltips delete' data-placement='top' title='Delete Location' style='cursor:pointer'></i>
+                                     <i class='fas fa-2x fa-trash text-danger tooltips delete' data-placement='top' title='Delete Location' aria-hidden="true" style='cursor:pointer'></i>
 
                                 </td>                                 
                              </tr>
@@ -130,8 +106,8 @@
                                     </div>
                                 </div>
                                 <div class="modal-footer justify-content">
-                                    <button type="button" class="icon-button" data-dismiss="modal" title="Cancel"><i class="fas fa-2x fa-times-circle tooltips text-danger"></i></button>
-                                    <button type="Submit" class="icon-button" data-placement="top" id="btnLocationsSubmit" title="Save"><i class="fas fa-2x fa-save tooltips text-success"></i></button>
+                                    <button type="button" class="icon-button" data-dismiss="modal" title="Cancel"><i class="fas fa-2x fa-times-circle tooltips text-danger" aria-hidden="true"></i></button>
+                                    <button type="Submit" class="icon-button" data-placement="top" id="btnLocationsSubmit" title="Save"><i class="fas fa-2x fa-save tooltips text-success" aria-hidden="true"></i></button>
                                 </div>
                             </form>
                         </div>

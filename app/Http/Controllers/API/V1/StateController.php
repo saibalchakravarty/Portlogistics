@@ -42,8 +42,8 @@ class StateController extends BaseController {
             $auth['id'] = $inputs['id'];
         }
         $response = $this->stateRepository->getStates($auth);
-        if($response['status'] == false){
-           return $this->sendError($response,'No record found !!!', $auth);
+        if(!$response['status']){
+           return $this->sendError($response,'No State found !!!', $auth);
         }
         return $this->sendResponse($response['result'],'Records fetched sucessfully', $auth);
     }

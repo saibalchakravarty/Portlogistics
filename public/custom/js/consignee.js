@@ -36,16 +36,15 @@ $(function () {
             $(element).removeClass("is-invalid");
             $(element).addClass("is-valid");
         },
-
         submitHandler: function (form) {
+            var URL = '';
+            var type = '';
             if ($("#hidden_id").val() != "") {
-                var URL = APP_URL + "/consignee/"+$("#hidden_id").val();
-                var text = "Updated!";
-                var type = "PUT";
+                URL = APP_URL + "/consignee/"+$("#hidden_id").val();
+                type = "PUT";
             } else {
-                var URL = APP_URL + "/consignee";
-                var text = "Saved!";
-                 var type = "post";
+                URL = APP_URL + "/consignee";
+                type = "post";
             }
             $.ajax({
                 type: type,
@@ -58,22 +57,18 @@ $(function () {
                             icon: 'success',
                             title: response.message,
                             showConfirmButton: false,
-                            
-
                             timer: 1500
-
                         });
                         window.location.reload();
                     } else{
                         var msg='';
-                        $.each(response.result, function (k,v)  {
-                         if(msg == '')
-                            msg = v;
-                         else
-                            msg = msg+', '+v;
+                        $.each(response.result, function (k,v) {
+                            if(msg == '')
+                                msg = v;
+                            else
+                                msg = msg+', '+v;
                         });
-                        Swal.fire(
-                            {
+                        Swal.fire({
                                 position: 'center',
                                 icon: 'error',
                                 title: msg,
@@ -82,7 +77,7 @@ $(function () {
                                 cancelButtonText: '<i class="fas fa-3x fa-check-circle tooltips text-success"></i>',
                                 timer: 1500
                             }
-                            );
+                        );
                     }
                 }
             });
@@ -90,18 +85,14 @@ $(function () {
     });
     //Delete the Consignee row data
     $('#list-consignee').on('click', '.delete', function () {
-        
         var table = $('#list-consignee').DataTable();
         var rowData = table.row($(this).closest('tr')).data();
-
         var rowId = rowData[Object.keys(rowData)[2]];
         $("#consignee_id").val(rowId);
         Swal.fire({
             title: "Are you sure?",
-            //text: "You won't be able to revert this!",
             icon: "warning",
             showCancelButton: false,
-            //confirmButtonColor: "#3085d6",
             showConfirmButton: false,
             html :`<p>You want to delete this Consignee?</p></br>
             <span  class=" tooltips" data-placement="bottom"  title="Delete Consignee" onClick="return deleteConsignee();" style="cursor:pointer;"><i class="fas fa-3x fa-check-circle tooltips text-success"></i></span>
@@ -118,7 +109,6 @@ $("#add_consignee_btn").click(function () {
     var validator = $("#add_consignee").validate();
     validator.resetForm();
     $('.modal-title').text("Add Consignee");
-
 });
 
 function editConsignee(id) {
@@ -138,13 +128,13 @@ function editConsignee(id) {
                 $("#hidden_id").val(response.result.id);
             } else {
                 var msg='';
-                        $.each(response.result, function (k,v)  {
-                         if(msg == '')
-                            msg = v;
-                         else
-                            msg = msg+', '+v;
-                        });
-                        Swal.fire("Error!", "'"+msg+"'", "error");
+                $.each(response.result, function (k,v)  {
+                    if(msg == '')
+                        msg = v;
+                    else
+                        msg = msg+', '+v;
+                });
+                Swal.fire("Error!", "'"+msg+"'", "error");
             }
         },
         error: function () {
@@ -154,11 +144,11 @@ function editConsignee(id) {
 
     return false;
 }
+
 function deleteConsignee() {
     $.ajax({
         url: APP_URL + "/consignee/"+$("#consignee_id").val(),
         type: "DELETE",
-        //data: {id:id},
         dataType: "json",
         success: function (response) {
             if(response.status == 'success') {
@@ -168,13 +158,13 @@ function deleteConsignee() {
             else {
                 var msg='';
                 $.each(response.result, function (k,v)  {
-                 if(msg == '')
-                    msg = v;
-                 else
-                    msg = msg+', '+v;
+                    if(msg == '')
+                        msg = v;
+                    else
+                        msg = msg+', '+v;
                 });
                 Swal.fire("Error!", "'"+msg+"'", "error");
-              }
+            }
         },
         error: function () {
             //toastr.error('Unable to delete Consignee');

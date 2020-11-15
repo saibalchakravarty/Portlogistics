@@ -12,7 +12,6 @@ use App\Services\LoginService;
 use App\Http\Requests\UserLoginRequest;
 use Illuminate\Http\Request;
 use App\Http\Requests\GenerateTokenRequest;
-use Tymon\JWTAuth\Exceptions\TokenInvalidException;
 
 class ManageJwtTokenController extends BaseController
 {

@@ -41,7 +41,7 @@ class CityController extends BaseController {
             $auth['id'] = $inputs['id'];
         }
         $response = $this->cityRepository->getCities($auth);
-        if($response['status'] == false){
+        if(!$response['status']){
            return $this->sendError($response,'No record found !!!', $auth);
         }
         return $this->sendResponse($response['result'],'Records fetched sucessfully', $auth);

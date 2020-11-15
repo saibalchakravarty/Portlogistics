@@ -43,16 +43,7 @@ class SendEmailController extends BaseController
      *)
      */
     public function sendEmail(SendEmailRequest $request){
-        //$token = request()->bearerToken();
         $email_data = $request->all();
-        //$jwtTokenArray = ['user_id'=>$email_data['user_id'],'token'=>$jwtToken];
-        //$existJwtToken = $this->jwtTokenRepository->existToken($jwtTokenArray);
-        // if(!$existJwtToken){
-        //     return $this->sendError('something went wrong',[],401);
-        // }
-        // if($existJwtToken['status']=='failed'){
-        //     return $this->sendError('Unauthorized request',[],401);
-        // }
         $status = $this->sendEmailLibrary->modify($email_data);
         if($status['status']=='failed'){
         return $this->sendError($status['message'],[],401);

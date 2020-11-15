@@ -3,8 +3,6 @@
 namespace App\Repositories\Export;
 use App\Models\Export;
 use DB;
-use Exception;
-
  class ExportRepository{
  	/*
  	*Description : It will return the Export key  to Service for building the CSV.
@@ -31,7 +29,8 @@ use Exception;
 			}
 			if($headerColumn)
 			{
-				return $headerColumn;
+				$response['result'] = $headerColumn;
+				$response['message'] = "Export headers fetched";
 			}
 			else
 			{
@@ -42,8 +41,10 @@ use Exception;
             Log::error($e->getMessage());
             $response['status'] = false;
             $response['result'] = $e->getMessage();
-            return $response;
         }
+        unset($export);
+        unset($exportData);
+        return $response;
  	} 
  	/*
  	*Description : It will return the all Export data to Service for building the CSV.
@@ -58,20 +59,20 @@ use Exception;
  	{
  		$response['status'] = true;
  		try{
- 			$export = new Export();
+ 			$export 			= new Export();
 			$export->setConnection($allInput['connection']);
-			$exportData = $export->where('export_key',$allInput['export_key'])->first();
+			$exportData 		= $export->where('export_key',$allInput['export_key'])->first();
 			if($exportData)
 			{
-				$model = $exportData->model_name;
-				$dbColumns = $exportData->db_column;
-				$modelFunction = $exportData->model_function;
-	 			$exportKey = $allInput['export_key'];
-	 			$model = str_replace(' ', '','App\Models\ '.$model);
-	 			$modelObj = new $model();
+				$model 			= $exportData->model_name;
+				$dbColumns 		= $exportData->db_column;
+				$modelFunction 	= $exportData->model_function;
+	 			$exportKey 		= $allInput['export_key'];
+	 			$model 			= str_replace(' ', '','App\Models\ '.$model);
+	 			$modelObj 		= new $model();
 		 		$modelObj->setConnection($allInput['connection']);
-		 		$dbColumns = json_decode($dbColumns);
-		 		$selectColumn = [];
+		 		$dbColumns 		= json_decode($dbColumns);
+		 		$selectColumn 	= [];
 				foreach($dbColumns->master as $column)
 				{
 					$selectColumn[]= $column->$exportKey;
@@ -98,13 +99,11 @@ use Exception;
 		 		if($query)
 		 		{
 		 			$response['result'] = $query;
-		 			return $response;
 		 		}
 		 		else
 		 		{
 		 			$response['message'] = "No data found for this export key!";
 		 			$response['status'] = false;
-		 			return $response;
 		 		}
 		 	}
 		 	else
@@ -116,8 +115,12 @@ use Exception;
             Log::error($e->getMessage());
             $response['status'] = false;
             $response['result'] = $e->getMessage();
-            return $response;
         }
-
+        unset($export);
+        unset($exportData);
+        unset($model);
+        unset($modelsData);
+        unset($query);
+        return $response;
  	}
  }

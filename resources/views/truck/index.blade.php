@@ -8,21 +8,7 @@
 <!-- Content Wrapper. Contains page content -->
 <div class="content-wrapper">
     <!-- Content Header (Page header) -->
-    <div class="content-header">
-        <!-- <div class="container-fluid">
-            <div class="row mb-2">
-                <div class="col-sm-6">
-                    <h1 class="m-0 text-dark">Trucks</h1>
-                </div>
-                <div class="col-sm-6">
-                    <ol class="breadcrumb float-sm-right">
-                        <li class="breadcrumb-item"><a href="#">Administration</a></li>
-                        <li class="breadcrumb-item active">Trucks</li>
-                    </ol>
-                </div>
-            </div>
-        </div> -->
-    </div>
+    <div class="content-header"></div>
     <!-- /.content-header -->
     @if($status!='failed')
     <!-- Main content -->
@@ -32,59 +18,42 @@
                 <div class="row">
                     <input type="hidden" id="truck_id">
                     <div class="col-md-12">
-                        <!-- @if(in_array('ADD',$privilegeArr))
-                        <span  class="float-right" id="add_trucks_btn" data-placement="top" title="Add Truck" style="cursor: pointer;">
-                            <i class="fas fa-3x fa-plus-circle tooltips text-primary"></i>
-                        </span>
-                         @endif
-                    </div><br><br><br> -->
-
                     <div class="card">
-                            <div class="card-header border-0">
+                        <div class="card-header border-0">
                             <div class="header-details">
-                            <div class="name-area">
-                            <h2 class="m-0 text-dark">Trucks</h2>
+                                <div class="name-area">
+                                <h2 class="m-0 text-dark">Trucks</h2>
+                                </div>
+                                <div class="action-area">                              
+                                    <form action="{{url('csv-export')}}" method="post">
+                                        @csrf
+                                        <input type="hidden" name="key" value = "Trucks">
+                                        <button  type="submit" class="btn btn-primary float-right tooltips "><i aria-hidden="true" class="fa fa-file-excel"></i> Export</button>
+                                    </form>                              
+                                    <button id="add_trucks_btn" type="button" class="btn btn-success tooltips " ><i aria-hidden="true" class="fa fa-plus"></i> Add New Truck</button> 
+                                </div> 
                             </div>
-                            <div class="action-area">
-                               
-                               
-                                 <form action="{{url('csv-export')}}" method="post">
-                                    @csrf
-                                    <input type="hidden" name="key" value = "Trucks">
-                                    <button  type="submit" class="btn btn-primary float-right tooltips "><i class="fa fa-file-excel"></i> Export</button>
-                                </form>
-                               
-                                <button id="add_trucks_btn" type="button" class="btn btn-success tooltips " ><i class="fa fa-plus"></i> Add New Truck</button>
-                              
-                            </div> 
-                            </div>
-                            </div>
-               
+                        </div>
                     <!-- /.card-header -->
                     <div class="col-md-12 table p-4">
-                        <table id="trucks" class="table  table-striped">
-                            <thead align="center">
+                        <table id="trucks" class="table  table-striped" summary="Truck List">
+                            <thead style="text-align: center;">
                                 <tr>
-                                   
-                                    <th>Truck/Dumper No</th>
-                                    <th>Trucking Company</th>
-                                    <th hidden="">Action</th>
-                                    <th>Action</th>
+                                    <th scope="col">Truck/Dumper No</th>
+                                    <th scope="col">Trucking Company</th>
+                                    <th scope="col" hidden="">Action</th>
+                                    <th scope="col">Action</th>
                                 </tr>
                             </thead>
-                            <tbody align="center">  
+                            <tbody style="text-align: center;">  
                             @foreach($result['trucks'] as $truck)
                             <tr>
-                                
                                 <td>{{ strtoupper($truck->truck_no) }}</td>                                    
                                 <td>{{ $truck->name }}</td> 
-                                 <td hidden="">{{$truck->id}}</td>    
+                                <td hidden="">{{$truck->id}}</td>    
                                 <td>
-                                   
-                                        <a href="javascript:void(0);" onclick="return editTruck('{{ $truck->id }}')" data-toggle="tooltip" class="edit tooltips" title='Update Truck'><i class="fas fa-2x fa-edit text-success"></i></a> &nbsp;&nbsp;
-                                 
-                                        <i class='fas fa-2x fa-trash text-danger tooltips delete' data-placement='top' title='Delete Truck' style='cursor:pointer'></i>
-                                   
+                                    <a href="javascript:void(0);" onclick="return editTruck('{{ $truck->id }}')" data-toggle="tooltip" class="edit tooltips" title='Update Truck'><i aria-hidden="true" class="fas fa-2x fa-edit text-success"></i></a> &nbsp;&nbsp;                                 
+                                    <i class='fas fa-2x fa-trash text-danger tooltips delete' data-placement='top' title='Delete Truck' style='cursor:pointer' aria-hidden="true"></i>                                  
                                 </td>    
                              </tr>
                             @endforeach                
@@ -98,11 +67,9 @@
             <!-- /.container-fluid -->
         </div>
     </section>
-
     <!-- /.content -->
 </div>
 @endif
-
 <div class="modal fade" id="modal-default">
         <div class="modal-dialog">
           <div class="modal-content">
@@ -115,7 +82,6 @@
               <form id="add_trucks" method="post">
                   <input type="hidden" name="id" id="hidden_id">
             <div class="modal-body"> 
-               <?php  //dd($result);?> 
                 <div class="card-body">
                     <div class="form-group">
                         <label for="truck_no">Truck/Dumper No<span class="text-danger">*</span></label>
@@ -136,8 +102,8 @@
                 <!-- /.card-body -->                
             </div>
             <div class="modal-footer justify-content">
-              <button type="button" class="icon-button" data-dismiss="modal" title="Cancel"><i class="fas fa-2x fa-times-circle tooltips text-danger"></i></button>
-              <button id="trucks_btn" type="submit" class="icon-button" title="Save"><i class="fas fa-2x fa-save tooltips text-success"></i></button>
+              <button type="button" class="icon-button" data-dismiss="modal" title="Cancel"><i aria-hidden="true" class="fas fa-2x fa-times-circle tooltips text-danger"></i></button>
+              <button id="trucks_btn" type="submit" class="icon-button" title="Save"><i aria-hidden="true" class="fas fa-2x fa-save tooltips text-success"></i></button>
             </div>
               </form>
           </div>

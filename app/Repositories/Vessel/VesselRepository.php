@@ -9,10 +9,16 @@ use Log;
 use Illuminate\Contracts\Encryption\DecryptException;
 use Illuminate\Support\Facades\Crypt;
 use App\Libraries\CustomExceptionLibrary;
+use Config;
 
 class VesselRepository
 {
-
+    protected $exception_msg,$empty_err_msg;
+    public function __construct()
+    {
+        $this->exception_msg = Config::get('constants.exception_msg');
+        $this->empty_err_msg = Config::get('constants.empty_err_msg');
+    }
     /**
      * @description Get all Vessels
      * @author
@@ -32,10 +38,12 @@ class VesselRepository
             Log::error($e->getMessage);
             $fetch['status'] = false;
             $fetch['result'] = $e->getMessage();
-            $fetch['message'] = 'Something Went Wrong';
+            $fetch['message'] = $this->exception_msg;
+            unset($vessels);
             return $fetch;
         }
         $fetch['vessel'] = $vessels;
+        unset($vessels);
         return $fetch;
     }
 
@@ -55,15 +63,17 @@ class VesselRepository
             $vesselSave = $vessels->create($allInput);
             if (!$vesselSave) {
                 $fetch['status'] = false;
-                $fetch['message'] = 'No Record Found';
+                $fetch['message'] = $this->empty_err_msg;
             } else {
                 $fetch['message'] = 'Vessel data saved successfully';
             }
+            unset($vessels,$vesselSave);
             return $fetch;
         } catch (Exception $e) {
             Log::error($e->getMessage());
             $fetch['result'] = $e->getMessage();
-            $fetch['message'] = 'Something Went Wrong';
+            $fetch['message'] = $this->exception_msg;
+            unset($vessels,$vesselSave);
             return $fetch;
         }
     }
@@ -91,17 +101,19 @@ class VesselRepository
                     'draft'             => $allInput['draft'],
                     'updated_by'        => $allInput['updated_by']
                 ]);
-                    $fetch['message'] = 'Vessel data updated successfully';
+                $fetch['message'] = 'Vessel data updated successfully';
                 
             }else{
-                $fetch['message'] = 'No Record Found';
+                $fetch['message'] = $this->empty_err_msg;
             }    
+            unset($vesselUpdate);
             return $fetch;
         } catch (Exception $e) {
             $fetch['status'] = false;
             $fetch['result'] = $e->getMessage();
-            $fetch['message'] = 'Something Went Wrong';
+            $fetch['message'] = $this->exception_msg;
             Log::error($e->getMessage());
+            unset($vesselUpdate);
             return $fetch;
         }
     }
@@ -123,16 +135,17 @@ class VesselRepository
             $vessel = $vessel->delete();
             if (!$vessel) {
                 $fetch['status'] = false;
-                $fetch['message'] = 'No Record Found';
+                $fetch['message'] = $this->empty_err_msg;
             } else {
                 $fetch['message'] = 'Vessel deleted successfully';
             }
+            unset($vessels, $vessel);
             return $fetch;
         } catch (Exception $e) {
             Log::error($e->getMessage());
             $errors = new CustomExceptionLibrary();
-            $fetch = $errors->handleException($e, 'Vessel');
-            return $fetch;
+            unset($vessels, $vessel);
+            return $errors->handleException($e, 'Vessel');
         }
     }
 
@@ -152,17 +165,19 @@ class VesselRepository
             $vesselData = $vesselData->firstOrFail();
             if (!$vesselData) {
                 $fetch['status'] = false;
-                $fetch['message'] = 'No Record Found';
+                $fetch['message'] = $this->empty_err_msg;
             } else {
                 $fetch['message'] = 'Vessel edited successfully';
                 $fetch['result'] =  $vesselData->toArray();
             }
+            unset($vesselData);
             return $fetch;
         } catch (Exception $e) {
             $fetch['status'] = false;
             Log::error($e->getMessage());
             $fetch['result'] = $e->getMessage();
-            $fetch['message'] = 'Something Went Wrong';
+            $fetch['message'] = $this->exception_msg;
+            unset($vesselData);
             return $fetch;
         }
     }
@@ -178,11 +193,13 @@ class VesselRepository
             $result['status'] = true;
             $result['data'] = $vesselName;
             $result['message'] = '';
+            unset($vessels, $vesselName);
             return $result;
         } catch (Exception $e) {
             Log::error($e->getMessage());
             $result['data'] = $e->getMessage();
-            $result['message'] = "Unable to fetch vessel info";
+            $result['message'] = $this->exception_msg;
+            unset($vessels, $vesselName);
             return $result;
         }
     }
@@ -196,7 +213,7 @@ class VesselRepository
             $vessels = $vessel->select('id', 'name')->where('name', 'like', '%' . $inputs['keyword'] . '%')->get();
             if ($vessels->isEmpty()) {
                 $response['status'] = false;
-                $response['result'] = 'No Record Found';
+                $response['result'] = $this->empty_err_msg;
             } else {
                 $response['status'] = true;
                 $response['result'] = $vessels;
@@ -206,6 +223,7 @@ class VesselRepository
             $response['status'] = false;
             $response['result'] = $e->getMessage();
         }
+        unset($vessels, $vessel);
         return $response;
     }
 
@@ -223,7 +241,7 @@ class VesselRepository
                     $response['result'] = $obj;
                 } else {
                     $response['status'] = false;
-                    $response['result'] = 'Some error occured';
+                    $response['result'] = $this->exception_msg;
                 }
             } else {
                 $response['status'] = true;
@@ -234,6 +252,7 @@ class VesselRepository
             $response['status'] = false;
             $response['result'] = $e->getMessage();
         }
+        unset($obj, $vessel);
         return $response;
     }
 }

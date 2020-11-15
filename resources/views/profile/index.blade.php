@@ -51,9 +51,9 @@ $imgpath = images('default_profile_photo');
                                         <form id="changeNameForm" method="post">
                                             <div class="profile-div">
                                                 <span><label for="name">Name &nbsp;</label></span>
-                                                <span class="profile-name-edit default-view"><i class="fa fa-pen"></i></span>
+                                                <span class="profile-name-edit default-view"><i class="fa fa-pen" aria-hidden="true"></i></span>
                                                 <span class="profile-name-save edit-view">
-                                                    <button class="btn" type="submit"><i class="fa fa-save"></i></button>
+                                                    <button class="btn" type="submit"><i class="fa fa-save" aria-hidden="true"></i></button>
                                                 </span>
                                             </div>
                                             <div class="profile-div mb20 default-view" id="profile_name">
@@ -96,8 +96,8 @@ $imgpath = images('default_profile_photo');
                                                     </div>
                                                     <div class="modal-footer">
                                                        
-                                                        <button type="button" class="icon-button" data-dismiss="modal" title="Cancel"><i class="fas fa-2x fa-times-circle tooltips text-danger"></i></button>
-              <button type="submit" class="icon-button" title="Save"><i class="fas fa-2x fa-save tooltips text-success"></i></button>
+                                                        <button type="button" class="icon-button" data-dismiss="modal" title="Cancel"><i class="fas fa-2x fa-times-circle tooltips text-danger" aria-hidden="true" ></i></button>
+              <button type="submit" class="icon-button" title="Save"><i class="fas fa-2x fa-save tooltips text-success" aria-hidden="true"></i></button>
 
 
                                                     </div>
@@ -126,8 +126,8 @@ $imgpath = images('default_profile_photo');
                                         <div class="modal-body">
                                             <div class="row">
                                                 <ul class="text-danger">
-                                                    <li><b>Image Type :PNG,JPG and JPEG</b> </li>
-                                                    <li><b>Image Size :Maximum 2MB </b></li>
+                                                    <li><strong>Image Type :PNG,JPG and JPEG</strong> </li>
+                                                    <li><strong>Image Size :Maximum 2MB </strong></li>
                                                 </ul>
                                             </div>
                                            <div class="custom-file">
@@ -137,8 +137,8 @@ $imgpath = images('default_profile_photo');
                                         </div>
                                         <div class="modal-footer justify-content">
                                             <div class="form-group">
-                                                <button type="button" class="icon-button" data-dismiss="modal" title="Cancel"><i class="fas fa-2x fa-times-circle tooltips text-danger"></i></button>
-                                                <button type="button" class="icon-button" data-placement="top" title="Save" id="btnProfileImgUpldSubmit"><i class="fas fa-2x fa-save tooltips text-success"></i></button>
+                                                <button type="button" class="icon-button" data-dismiss="modal" title="Cancel"><i class="fas fa-2x fa-times-circle tooltips text-danger" aria-hidden="true"></i></button>
+                                                <button type="button" class="icon-button" data-placement="top" title="Save" id="btnProfileImgUpldSubmit"><i class="fas fa-2x fa-save tooltips text-success" aria-hidden="true"></i></button>
                                             </div>
                                         </div>
                                     </div>

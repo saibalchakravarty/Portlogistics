@@ -6,10 +6,16 @@ use App\Models\Consignee;
 use App\Libraries\CustomExceptionLibrary;
 use Exception;
 use Log;
+use Config;
 
 class ConsigneeRepository
 {
-
+    protected $exception_msg,$empty_err_msg;
+    public function __construct()
+    {
+        $this->exception_msg = Config::get('constants.exception_msg');
+        $this->empty_err_msg = Config::get('constants.empty_err_msg');
+    }
     /**
      * @description Get all consignees details
      * @author Gaurav Agrawal
@@ -26,15 +32,16 @@ class ConsigneeRepository
             $consignees = $consignee->get();
             $result['status'] = true;
             if (!count($consignees)) {
-                $result['message'] = 'No data available!';
-                return $result;
+                $result['message'] = $this->empty_err_msg;
+            }else{
+                $result['message'] = 'Consignee fetched successfully.';
+                $result['data'] = $consignees;
             }
-            $result['message'] = 'Consignee fetched successfully.';
-            $result['data'] = $consignees;
+            unset($consignees,$consignee);
             return $result;
         } catch (Exception $e) {
             Log::error($e->getMessage());
-            $result['message'] = 'Something went wrong';
+            $result['message'] = $this->exception_msg;
             $result['data'] = $e->getMessage();
             return $result;
         }
@@ -57,11 +64,13 @@ class ConsigneeRepository
             $consignee = $consignee->create($allInput);
             $result['status'] = true;
             $result['message'] = 'Consignee saved successfully.';
+            unset($consignee);
             return $result;
         } catch (Exception $e) {
             Log::error($e->getMessage());
-            $result['message'] = 'Something went wrong';
+            $result['message'] = $this->exception_msg;
             $result['data'] = $e->getMessage();
+            unset($consignee);
             return $result;
         }
     }
@@ -82,14 +91,13 @@ class ConsigneeRepository
             $consignee->setConnection($allInput['connection']);
             $consignees = $consignee->findOrFail($allInput['id']);
             $consignees = $consignees->delete();
-            if(!$consignees)
-            {
-                $result['message'] = 'No Record Found';
-            }
-            else{
+            if(!$consignees){
+                $result['message'] = $this->empty_err_msg;
+            }else{
                 $result['status'] = true;
                 $result['message'] ='Consignee deleted successfully';    
             }
+            unset($consignees,$consignee);
             return $result;
         } catch (Exception $e) {
             Log::error($e->getMessage());
@@ -97,6 +105,7 @@ class ConsigneeRepository
             $exceptions = $errors->handleException($e,'Consignee');
             $result['data'] = $exceptions['result'];
             $result['message'] = $exceptions['message'];
+            unset($consignees,$consignee);
             return $result;
         }
     }
@@ -116,18 +125,20 @@ class ConsigneeRepository
             $consignee = new Consignee();
             $consignee->setConnection($allInput['connection']);
             $consignee = $consignee->where('id', $allInput['id'])->firstOrFail();
-            $result['status'] = true;
             if ($consignee == null) {
-                $result['message'] = 'No consignee data available';
-                return $result;
+                $result['message'] = $this->empty_err_msg;
+            }else {
+                $result['status'] = true;
+                $result['message'] = 'Consignee fetch successfully.';
+                $result['data'] = $consignee->toArray();
             }
-            $result['message'] = 'Consignee fetch successfully.';
-            $result['data'] = $consignee->toArray();
+            unset($consignee);
             return $result;
         } catch (Exception $e) {
             Log::error($e->getMessage());
-            $result['message'] = 'Something went wrong';
+            $result['message'] = $this->exception_msg;
             $result['data'] = $e->getMessage();
+            unset($consignee);
             return $result;
         }
     }
@@ -153,11 +164,13 @@ class ConsigneeRepository
                 ->update(['name' => $allInput['name'], 'description' => $allInput['description'], 'updated_by' => $allInput['updated_by']]);
             $result['status'] = true;
             $result['message'] = 'Consignee updated successfully.';
+            unset($consignee);
             return $result;
         } catch (Exception $e) {
             Log::error($e->getMessage());
-            $result['message'] = 'Something went wrong';
+            $result['message'] = $this->exception_msg;
             $result['data'] = $e->getMessage();
+            unset($consignee);
             return $result;
         }
     }
@@ -182,11 +195,13 @@ class ConsigneeRepository
             }
             $result['status'] = true;
             $result['message'] = '';
+            unset($consignee);
             return $result;
         } catch (Exception $e) {
             Log::error($e->getMessage());
-            $result['message'] = 'Something went wrong';
+            $result['message'] = $this->exception_msg;
             $result['data'] = $e->getMessage();
+            unset($consignee);
             return $result;
         }
     }
@@ -217,11 +232,13 @@ class ConsigneeRepository
             }
             $result['status'] = true;
             $result['message'] = '';
+            unset($consignee,$existName);
             return $result;
         } catch (Exception $e) {
             Log::error($e->getMessage());
-            $result['message'] = 'Something went wrong';
+            $result['message'] = $this->exception_msg;
             $result['data'] = $e->getMessage();
+            unset($consignee,$existName);
             return $result;
         }
     }

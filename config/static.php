@@ -22,6 +22,11 @@ return [
         'save_icon' => 'save.png',
         'cancel_icon' => 'cancel.png',
         'logo'=>'logo.png',
+        'plottoplot'=>'icons/plottoplot.png',
+        'berthtoplot'=>'icons/berthtoplot.png',
+        'nooftrucks'=>'icons/nooftrucks.png',
+        'tripscompleted'=>'icons/tripscompleted.png',
+        'challandep'=>'icons/challandep.png',
         'login_bg'=>'transport.jpg'
     ),
     'js' =>

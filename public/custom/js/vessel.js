@@ -19,6 +19,7 @@ $(document).ready(function () {
             value.match(typeof param == 'string' ? new RegExp(param) : param);
     },
     'Please enter a value in the correct format.');
+
     $("#frmVessels").validate({
         rules: {
             name: {
@@ -76,33 +77,27 @@ $(document).ready(function () {
         },
         submitHandler: function (form) {
             var ajaxUrl = '';
-            if($("#id").val() != "")
-            {
+            var type = '';
+            if($("#id").val() != "") {
                 ajaxUrl = APP_URL+"/vessel/"+$("#id").val();
-                var text = "Updated!";
-                var type = "PUT";     
-            }
-            else
-            {
-               ajaxUrl = APP_URL+"/vessel";
-               var text = "Saved!";
-                 var type = "post";
+                type = "PUT";     
+            }else {
+                ajaxUrl = APP_URL+"/vessel";
+                type = "POST";
             }
             $.ajax({
                 url: ajaxUrl,
                 type: type,
                 data: $(form).serialize(),
                 success: function(response) {
-                   if(response.status == 'success'){
-                    Swal.fire({
-                        position: 'center',
-                        icon: 'success',
-                      //  title: response.message,
-                        html :'<p>'+response.message+'</p>',
-        
-
-                        showConfirmButton: false,
-                        timer: 1500});                        
+                    if(response.status == 'success'){
+                        Swal.fire({
+                            position: 'center',
+                            icon: 'success',
+                            html :'<p>'+response.message+'</p>',
+                            showConfirmButton: false,
+                            timer: 1500
+                        });                        
                         window.location.reload();
                     }else{
                         var msg='';
@@ -130,6 +125,7 @@ $(document).ready(function () {
                
         }
     });
+
     $("#btnVesselsAdd").click(function () {
         $('.form-control').removeClass('is-invalid');
         //Reset the Bootstrap Form validator
@@ -165,55 +161,48 @@ $(document).ready(function () {
         $("#id").val(id);
         $("#modal-vessels").modal("show");
     });
+
     //Delete the Vessel row data
     $('#dtVessel').on('click', '.delete', function () {
-        
         var table = $('#dtVessel').DataTable();
         var rowData = table.row($(this).closest('tr')).data();
-
         var rowId = rowData[Object.keys(rowData)[5]];
-         $("#id").val(rowId);
+        $("#id").val(rowId);
         Swal.fire({
             title: "Are you sure?",
-            //text: "You won't be able to revert this!",
             icon: "warning",
             showCancelButton: false,
-            //confirmButtonColor: "#3085d6",
             showConfirmButton: false,
             html :`<p>You want to delete this Vessel?</p></br>
             <span  class=" tooltips" data-placement="bottom"  title="Delete Vessel" onClick="return deleteVessel();" style="cursor:pointer;"><i class="fas fa-3x fa-check-circle tooltips text-success"></i></span>
             <span  class=" tooltips" data-placement="bottom" title="Cancel" onClick="swal.close();" style="cursor:pointer;"><i class="fas fa-3x fa-times-circle tooltips text-danger"></i></span>`,
         });
     });
-    
 });
-function deleteVessel()
-    {
-        $.ajax({
-            url: APP_URL+"/vessel/"+$("#id").val(),
-            type: "delete",
-            //data: {id: $("#id").val()},
-            dataType: "json",
-            success: function(response) {
-               if(response.status == 'success')
-                {
-                    Swal.fire("Deleted!", "Vessel has been deleted.", "success");
-                    window.location.reload();
-                }
-                else
-                {
-                    var msg='';
-                    $.each(response.result, function (k,v)  {
-                       if(msg == '')
-                          msg = v;
-                       else
-                          msg = msg+', '+v;
-                    });
-                    Swal.fire("Error!", ""+msg+"", "error");
-                }
-            },
-            error: function() {
-                //toastr.error('Unable to Process Please Contact Support');
+
+function deleteVessel() {
+    $.ajax({
+        url: APP_URL+"/vessel/"+$("#id").val(),
+        type: "delete",
+        dataType: "json",
+        success: function(response) {
+            if(response.status == 'success') {
+                Swal.fire("Deleted!", "Vessel has been deleted.", "success");
+                window.location.reload();
             }
-        });
-    }
+            else {
+                var msg='';
+                $.each(response.result, function (k,v)  {
+                    if(msg == '')
+                        msg = v;
+                    else
+                        msg = msg+', '+v;
+                });
+                Swal.fire("Error!", ""+msg+"", "error");
+            }
+        },
+        error: function() {
+            //toastr.error('Unable to Process Please Contact Support');
+        }
+    });
+}

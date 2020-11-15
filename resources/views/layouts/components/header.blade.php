@@ -20,7 +20,7 @@
         <li class="nav-item dropdown">
             <a id="navbarDropdown" class="username-bar dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
             <div style="width:auto">
-                <img class="user-image" src="{{(Auth::user()->image_path)? asset('storage/'.Auth::user()->image_path) : images('default_profile_photo')}}"  ></div>
+                <img alt="User Image" class="user-image" src="{{(Auth::user()->image_path)? asset('storage/'.Auth::user()->image_path) : images('default_profile_photo')}}"  ></div>
             <div style="width:auto">
             <span class="username">{{ Auth::user()->first_name }} {{ Auth::user()->last_name }}<br>{{Auth::user()->department->name}}</span> 
                 <span class="caret"></span>

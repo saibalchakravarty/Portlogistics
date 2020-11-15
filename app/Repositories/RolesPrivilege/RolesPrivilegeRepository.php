@@ -11,19 +11,22 @@ use Illuminate\Contracts\Encryption\DecryptException;
 use Illuminate\Support\Facades\Crypt;
 use DB;
 Class RolesPrivilegeRepository {
-    
+    public $catchErrorMsg = 'Something Went Wrong';
+    public $noRecordMsg = 'No Record Found';
     /*
     * Author : Ashish Barick
     * Function : To save privileges to its respective Menu screen
     */
     public function store($allInput)
     {
+        global $catchErrorMsg;
+        global $noRecordMsg;
         $fetch['status'] =true;
         try 
         {
             $rolePrivilege = new RoleAcces();
             $rolePrivilege->setConnection($allInput['connection']);
-            $deleteFirst = $rolePrivilege->where('user_role_id',$allInput['roleId'])->delete();
+            $rolePrivilege->where('user_role_id',$allInput['roleId'])->delete();
             
             $privilegeArr = implode(',',$allInput['privileges']);
             
@@ -42,22 +45,24 @@ Class RolesPrivilegeRepository {
             if(!$rolePrivilege)
             {
                 $fetch['status'] = false;
-                $fetch['message'] = 'No Record Found';                  
+                $fetch['message'] = $noRecordMsg;                  
             }
             else{
                  $fetch['message'] = 'Roles & Privileges data saved successfully';
             }
-            return $fetch;
         } catch (Exception $e) {
             $fetch['status'] = false;
             $fetch['result'] = $e->getMessage();
-            $fetch['message'] = 'Something Went Wrong';
+            $fetch['message'] = $catchErrorMsg;
             Log::error($e->getMessage());
-            return $fetch;
         }
+        unset($rolePrivilege);
+        return $fetch;
     }
     public function showPrivileges($allInput)
     {
+        global $catchErrorMsg;
+        global $noRecordMsg;
         $fetch['status'] =true;
         try{
             $rolePrivilege = new RoleAcces();
@@ -71,26 +76,20 @@ Class RolesPrivilegeRepository {
             if(!$rolePrivilege)
             {
                 $fetch['status'] = false;
-                $fetch['message'] = 'No Record Found';
+                $fetch['message'] = $noRecordMsg;
             }
             else{
-                $getId = "";
-                foreach($rolePrivilege as $data)
-                {
-
-                }
                  $fetch['message'] = 'Privileges data fetched  Successfully';    
                  $fetch['result'] =  $rolePrivilege;
             }
-            return $fetch;
+            
         }catch(Exception $e){
             $fetch['status'] =false;
             Log::error($e->getMessage());
             $fetch['result'] = $e->getMessage();
-            $fetch['message'] = 'Something Went Wrong';
-            return $fetch;
+            $fetch['message'] = $catchErrorMsg;
        }
-
-
+       unset($rolePrivilege);
+       return $fetch;
     }
 }

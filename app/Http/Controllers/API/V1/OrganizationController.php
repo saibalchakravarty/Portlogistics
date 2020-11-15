@@ -41,14 +41,17 @@ class OrganizationController extends BaseController
         $param  = $this->getAuth($allInput);
         $param['view'] = 'organization.index';
         if($request->id)
+        {
             $param['id'] = $request->id;
+        }
         else
+        {
             $param['id'] = $param['user_auth']['organization_id'];
+        }
         $data['organization'] = $this->organizationRepository->getOrganization($param);
         $data['currencies'] = $this->currencyRepository->getCurrencies($param);
         $data['privileges'] =   isset( $allInput['privilege_array'] )? $allInput['privilege_array'] : "";
-        //dd($data);
-        if($data['organization']['status'] == false){
+        if(!$data['organization']['status']){
            return $this->sendError($data,'No record found !!!', $param);
         }
         return $this->sendResponse($data,'Organization data fetched sucessfully', $param);
@@ -108,24 +111,9 @@ class OrganizationController extends BaseController
         $allInput['connection'] = $param['connection'];
         $allInput['id'] = $request->id;
         $response = $this->organizationRepository->updateDetails($allInput);
-        if($response['status'] == false){
+        if(!$response['status']){
             return $this->sendError($response,'Something went wrong',$param);
         }
         return $this->sendResponse([],$response['message'],$param);
     }
-    
-    /*public function updateOrganizationRate(OrganizationRateRequest $request)
-    {
-        $allInput = $request->all();
-        $param  = $this->getAuth($allInput); 
-        $allInput['updated_by'] = $param['user_id'];
-        $allInput['created_by'] = $param['user_id'];
-        $allInput['connection'] = $param['connection'];
-        $response = $this->organizationRepository->updateRate($allInput);
-        if($response['status'] == false){
-            return $this->sendError($response,'Something went wrong',$param);
-        }
-        return $this->sendResponse([],$response['message'],$param);
-        $param  = $this->getAuth();
-    }*/
 }

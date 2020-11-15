@@ -10,14 +10,12 @@ use Illuminate\Support\Facades\Crypt;
 
 class TruckCompanyController extends BaseController
 {
-
     protected $truckCompanyRepository;
 
     public function __construct(TruckCompanyRepository $truckCompanyRepository)
     {
         $this->truckCompanyRepository = $truckCompanyRepository;
     }
-
     /**
     * @OA\GET(
     *   path="/truck-company",
@@ -36,18 +34,16 @@ class TruckCompanyController extends BaseController
     */
     public function index(Request $request)
     {
-
         $allInput = $request->all();
         $param  = $this->getAuth($allInput);
         $param['view'] = 'truck-companies.index';
         $truckCompany = $this->truckCompanyRepository->getAllTruckCompanies($param);
         $truckCompany['privileges'] =   isset($allInput['privilege_array']) ? $allInput['privilege_array'] : "";
-        if ($truckCompany['status'] == false) {
+        if(!$truckCompany['status']) {
             return $this->sendError($truckCompany, 'No record found !!!', $param);
         }
         return $this->sendResponse($truckCompany, $truckCompany['message'], $param);
     }
-
     /**
      * @OA\POST(
      ** path="/truck-company",
@@ -77,18 +73,16 @@ class TruckCompanyController extends BaseController
      */
     public function store(TruckCompanyFormRequest $request)
     {
-
         $allInput = $request->all();
         $param  = $this->getAuth($allInput); //in post you will need to pass like $this->getAuth($request->all());
         $allInput['created_by'] = $param['user_id'];
         $allInput['connection'] = $param['connection'];
         $response = $this->truckCompanyRepository->saveTruckCompany($allInput);
-        if ($response['status'] == false) {
+        if (!$response['status']) {
             return $this->sendError($response, $response['message'], $param);
         }
         return $this->sendResponse([], $response['message'], $param);
     }
-
     /**
      * @OA\GET(
      ** path="/truck-company/{id}",
@@ -122,12 +116,11 @@ class TruckCompanyController extends BaseController
         $allInput['connection'] = $param['connection'];
         $allInput['id'] = $request->id;
         $response = $this->truckCompanyRepository->editTruckCompany($allInput);
-        if ($response['status'] == false) {
+        if(!$response['status']) {
             return $this->sendError($response, $response['message'], $param);
         }
         return $this->sendResponse($response['result'], $response['message'], $param);
     }
-
     /**
      * @OA\PUT(
      ** path="/truck-company/{id}",
@@ -174,13 +167,11 @@ class TruckCompanyController extends BaseController
         $allInput['updated_by'] = $param['user_id'];
         $allInput['connection'] = $param['connection'];
         $response = $this->truckCompanyRepository->updateTruckCompany($allInput);
-        if ($response['status'] == false) {
+        if (!$response['status']) {
             return $this->sendError($response, $response['message'], $param);
         }
         return $this->sendResponse([], $response['message'], $param);
     }
-
-
     /**
      * @OA\DELETE(
      ** path="/truck-company/{id}",
@@ -214,7 +205,7 @@ class TruckCompanyController extends BaseController
         $allInput['connection'] = $param['connection'];
         $allInput['id'] = $request->id;
         $response =  $this->truckCompanyRepository->deleteTruckCompany($allInput);
-        if ($response['status'] == false) {
+        if (!$response['status']) {
             return $this->sendError($response, $response['message'], $param);
         }
         return $this->sendResponse([], $response['message'], $param);

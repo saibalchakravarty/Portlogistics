@@ -40,7 +40,7 @@ class ShiftController extends BaseController
             $auth['id'] = $inputs['id'];
         }
         $response = $this->shiftRepository->getShifts($auth);
-        if($response['status'] == false){
+        if(!$response['status']){
            return $this->sendError($response['result'],$response['message'], $auth);
         }
         return $this->sendResponse($response['result'],$response['message'], $auth);

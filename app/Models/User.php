@@ -142,17 +142,6 @@ class User extends Authenticatable implements JWTSubject
     public function getJWTCustomClaims() {
         return [];
     }
-
-
-   /* public function getAuthBrowserAttribute()
-   {
-      $browser = 1;
-       if (Request::is('api*')) {
-            $browser = 0;
-       }
-       return $browser;
-   }*/
-
     public function getAuthBrowserAttribute()
    {
     

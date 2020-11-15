@@ -25,16 +25,15 @@ class OrganizationRepository
         $organization = $organization->select('organizations.*','currencies.currency');
         $organization = $organization->leftJoin('currencies', 'organizations.currency_id', '=', 'currencies.id');
         $organization = $organization->firstOrFail();
-        //dd($organization);
         $fetch['message'] ='Organization fetched successfully';
+        $fetch['organization'] =$organization;
         }catch(Exception $e){
             Log::error($e->getMessage());
             $fetch['status'] = false;
             $fetch['result'] = $e->getMessage();
             $fetch['message'] = 'Something Went Wrong';
-            return $fetch;
         }
-        $fetch['organization'] =$organization;
+        unset($organization);
         return $fetch;
     }
 
@@ -84,7 +83,6 @@ class OrganizationRepository
             //If Request Post for Organization Rate
             if($allInput['org_type'] == 'org_rate')
             {
-                //dd($allInput);
                 $organizationUpdate = $organizationUpdate->update(['currency_id' => $allInput['currency_id'],'rate_per_trip' => $allInput['rate_per_trip'],'created_by' =>$allInput['created_by'],'updated_by' =>$allInput['updated_by']]);
                 if(!$organizationUpdate)
                 {
@@ -95,49 +93,15 @@ class OrganizationRepository
                     $fetch['message'] = 'Organization Currency and Rates data updated successfully';
                 }
             }
-            
-            return $fetch;
         }catch(Exception $e){
             $fetch['status'] =false;
             $fetch['result'] = $e->getMessage();
             $fetch['message'] = 'Something Went Wrong';
             Log::error($e->getMessage());
-            return $fetch;
         }
+        unset($organizationUpdate);
+        return $fetch;
     }
-    
-    /**
-     * @description Update organization rate
-     * @author
-     * @param array ['id','currency_id','rate_per_trip','user_id','user_array','created_by','updated_by','connection'] 
-     * @return array ['status','message','result']
-     */
-   /* public function updateRate($allInput)
-    {
-        $fetch['status'] =true;        
-        try{
-            $organizationUpdate = new Organization();
-            $organizationUpdate->setConnection($allInput['connection']);
-            $organizationUpdate = $organizationUpdate->where('id', $allInput['id']);
-            $organizationUpdate = $organizationUpdate->update(['currency_id' => $allInput['currency_id'],'rate_per_trip' => $allInput['rate_per_trip'],'created_by' =>$allInput['created_by'],'updated_by' =>$allInput['updated_by']]);
-            if(!$organizationUpdate)
-            {
-                $fetch['status'] = false;
-                $fetch['message'] = 'No Record Found';
-            }
-            else{
-                $fetch['message'] = 'Organization Currency and Rates data updated successfully';
-            }
-            return $fetch;
-        }catch(Exception $e){
-            $fetch['status'] =false;
-            $fetch['result'] = $e->getMessage();
-            $fetch['message'] = 'Something Went Wrong';
-            Log::error($e->getMessage());
-            return $fetch;
-        }
-    }*/
-    
     function getOrganizationById($orgId, $inputs) {
         $response['status'] = true;
         try {
@@ -156,6 +120,7 @@ class OrganizationRepository
             $response['message'] = $e->getMessage();
             $response['status'] = false;
         }
+        unset($organization);
         return $response;
     }
 

@@ -24,10 +24,10 @@ class OrganizationNameRequest extends JsonRequest {
         * @author : Ashish Barick
         * @description: This two condition because we are handle Org_details and  org_rate in one API. THat's why added handler @$this->input('org_type')
         **/
-        
+        $msgArr = [];
         if($this->input('org_type') == 'org_info') // Organization Information
         {
-            return [
+             $msgArr = [
                 'name' => 'required|max:60',
                 'mobile_no' => 'required|regex:/[0-9]+$/|numeric|digits_between:1,20',
                 'address' => 'required',
@@ -39,7 +39,7 @@ class OrganizationNameRequest extends JsonRequest {
                 'secondary_email' => 'nullable|email|max:60',
             ];
             if ($this->isMethod('put')) {
-                return [
+                $msgArr = [
                     'id' => 'integer|gt:0',
                     'name' => 'required|max:60',
                     'mobile_no' => 'required|regex:/[0-9]+$/|numeric|digits_between:1,20',
@@ -55,18 +55,19 @@ class OrganizationNameRequest extends JsonRequest {
         }
         if($this->input('org_type') == 'org_rate') // Organization Rate
         {
-            return [
+            $msgArr = [
                 'currency_id' => 'required',
                 'rate_per_trip' => 'required|numeric',
             ];
             if ($this->isMethod('put')) {
-                return [
+                $msgArr = [
                     'id' => 'integer|gt:0',
                     'currency_id' => 'required',
                     'rate_per_trip' => 'required|numeric',
                 ];
             }
-        } 
+        }
+        return  $msgArr;
     }
     public function all($keys = null)
     {
@@ -76,9 +77,10 @@ class OrganizationNameRequest extends JsonRequest {
     }
 
     public function messages() {
+        $msgArr = [];
         if($this->input('org_type') == 'org_info') // Organization Information
         {
-            return [
+            $msgArr = [
                 'name.required' => 'Please enter  Organization Name',
                 'name.max' => 'Organization Name length should not exceed 20 characters',
                 'mobile_no.required' => 'Please enter phone number',
@@ -94,12 +96,12 @@ class OrganizationNameRequest extends JsonRequest {
         }
         if($this->input('org_type') == 'org_rate') // Organization Rate
         {
-            return [
+            $msgArr = [
                 'currency_id.required' => 'Please provide currency_id',
                 'rate_per_trip.required' => 'Please provide rate_per_trip',
                 'rate_per_trip.numeric' => 'Please provide deecimal value',
             ];
         }
-        
+        return $msgArr;
     }
 }

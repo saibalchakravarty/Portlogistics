@@ -14,7 +14,10 @@ Class CargoRepository {
      * @param array ['user_id','user_auth','browser','connection','cache_array','view'] 
      * @return array ['status','message','cargo']
      */
+    public $catchErrorMsg = 'Something Went Wrong';
+    public $noRecordMsg = 'No Record Found';
     public function getAllCargo($allInput) {
+        global $catchErrorMsg;
         $fetch['status'] = true;
         try{
         $cargos = new Cargo();
@@ -22,14 +25,14 @@ Class CargoRepository {
         $cargos = $cargos->select('*');
         $cargos = $cargos->get();
         $fetch['message'] ='Cargo fetched successfully';
+        $fetch['cargo'] =$cargos;
         }catch(Exception $e){
             Log::error($e->getMessage());
             $fetch['status'] = false;
             $fetch['result'] = $e->getMessage();
-            $fetch['message'] = 'Something Went Wrong';
-            return $fetch;
+            $fetch['message'] = $catchErrorMsg;
         }
-        $fetch['cargo'] =$cargos;
+        unset($cargos);
         return $fetch;
     }
     
@@ -40,6 +43,8 @@ Class CargoRepository {
      * @return array ['status','message']
      */
     public function saveCargo($allInput){
+        global $catchErrorMsg;
+        global $noRecordMsg;
         $fetch['status'] = true;
         try{   
             $cargos = new Cargo();
@@ -48,20 +53,21 @@ Class CargoRepository {
             if(!$cargoSave)
             {
                 $fetch['status'] =false;
-                $fetch['message'] = 'No Record Found';                  
+                $fetch['message'] = $noRecordMsg;                  
             }
             else{
                  $fetch['message'] = 'Cargo data saved successfully';
             }
-            return $fetch;
 
         }catch(Exception $e){
             $fetch['status'] =false;
             Log::error($e->getMessage());
             $fetch['result'] = $e->getMessage();
-            $fetch['message'] = 'Something Went Wrong';
-            return $fetch;
-        }        
+            $fetch['message'] = $catchErrorMsg;
+        }
+        unset($cargos);
+        unset($cargoSave);
+        return $fetch;        
     }
     
      /**
@@ -71,6 +77,7 @@ Class CargoRepository {
      * @return array ['status','message','result']
      */
     public function deleteCargo($allInput){
+        global $catchErrorMsg;
         $fetch['status'] =true;
         $fetch['result']=[];   
         try{
@@ -81,17 +88,18 @@ Class CargoRepository {
             if(!$cargo)
             {
                 $fetch['status'] = false;
-                $fetch['message'] = 'No Record Found';
+                $fetch['message'] = $noRecordMsg;
             }
             else{
                 $fetch['message'] ='Cargo deleted successfully';    
             }
+            unset($cargos);
+            unset($cargo);
             return $fetch;
         }catch(Exception $e){
             Log::error($e->getMessage());
             $errors = new CustomExceptionLibrary();
-            $fetch = $errors->handleException($e, 'Cargo');
-            return $fetch;
+           return $errors->handleException($e, 'Cargo');
         }
     }
     
@@ -102,6 +110,8 @@ Class CargoRepository {
      * @return array ['status','message','result']
      */
     public function editCargo($allInput){
+        global $catchErrorMsg;
+        global $noRecordMsg;
         $fetch['status'] = true;
         $fetch['result']=[];
         try{
@@ -112,20 +122,20 @@ Class CargoRepository {
             if(!$cargoData)
             {
                 $fetch['status'] = false;
-                $fetch['message'] = 'No Record Found';
+                $fetch['message'] = $noRecordMsg;
             }
             else{
                  $fetch['message'] = 'Cargo Edited Successfully';    
                  $fetch['result'] =  $cargoData->toArray(); 
             }
-            return $fetch;
         }catch(Exception $e){
             $fetch['status'] =false;
             Log::error($e->getMessage());
             $fetch['result'] = $e->getMessage();
-            $fetch['message'] = 'Something Went Wrong';
-            return $fetch;
-        }        
+            $fetch['message'] = $catchErrorMsg;
+        }
+        unset($cargoData);
+        return $fetch;        
     }
     
     /**
@@ -135,6 +145,8 @@ Class CargoRepository {
      * @return array ['status','message']
      */
     public function updateCargo($allInput){
+        global $catchErrorMsg;
+        global $noRecordMsg;
         $fetch['status'] =true;
         $fetch['result']=[];
         try{
@@ -145,18 +157,18 @@ Class CargoRepository {
             if(!$cargoUpdate)
             {
                 $fetch['status'] = false;
-                $fetch['message'] = 'No Record Found';
+                $fetch['message'] = $noRecordMsg;
             }
             else{
                 $fetch['message'] = 'Cargo data updated successfully';
             }
-            return $fetch;
         }catch(Exception $e){
             $fetch['status'] =false;
             $fetch['result'] = $e->getMessage();
             Log::error($e->getMessage());
-            $fetch['message'] = 'Something Went Wrong';
-            return $fetch;
+            $fetch['message'] = $catchErrorMsg;
         }
+        unset($cargoUpdate);
+        return $fetch;
     }        
 }

@@ -12,15 +12,13 @@ use Validator;
 use Log;
 
 class DepartmentController extends BaseController {
-    
     protected $departmentRepository, $userRepository;
-    
+
     public function __construct(DepartmentRepository $departmentRepository, UserRepository $userRepository){
         $this->departmentRepository = $departmentRepository;
         $this->userRepository = $userRepository;
     }
 
-    
     public function index(Request $request){
         $inputs = $request->all();
         $auth  = $this->getAuth($inputs);
@@ -28,12 +26,11 @@ class DepartmentController extends BaseController {
             $auth['id'] = $inputs['id'];
         }
         $response = $this->departmentRepository->getDepartments($auth);
-        if($response['status'] == false){
-           return $this->sendError($response,'No record found !!!', $auth);
+        if(!$response['status']){
+           return $this->sendError($response,$response['message'], $auth);
         }
-        return $this->sendResponse($response['result'],'Records fetched sucessfully', $auth);
+        return $this->sendResponse($response['result'],$response['message'], $auth);
     }
-
     /**
     * @OA\GET(
     *   path="/department",
@@ -54,20 +51,14 @@ class DepartmentController extends BaseController {
         $inputs = $request->all();
         $auth  = $this->getAuth($inputs); 
         $auth['view'] = 'department.index';
-
         $response = $this->departmentRepository->getAllDepartments($auth);   
         $response['privileges'] = isset( $inputs['privilege_array'] )? $inputs['privilege_array'] : "";
-        if ($response['status'] == false)
-
-        {
-            return $this->sendError($department,'No record found !!!', $auth);
+        if(!$response['status']) {
+            return $this->sendError($response,$response['message'], $auth);
         } else {
-            return $this->sendResponse($response,'Department data fetch sucessfully', $auth);
-
+            return $this->sendResponse($response,$response['message'], $auth);
         }
-        //return view('department.index');
     }
-    
     /**
      * @OA\Post(
      ** path="/department",
@@ -93,15 +84,13 @@ class DepartmentController extends BaseController {
      *)
      */
     public function storeDepartments(DepartmentRequest $request){ 
-        
         $inputs = $request->all();
         $auth  = $this->getAuth($inputs);
         $inputs['created_by'] = $auth['user_id'];
         $inputs['connection'] = $auth['connection'];
-        //dd($inputs);
         $response = $this->departmentRepository->store($inputs);
-        if($response['status'] == false){
-            return $this->sendError($response,'Something went wrong',$auth);
+        if(!$response['status']){
+            return $this->sendError($response,$response['message'],$auth);
         }
         return $this->sendResponse([],$response['message'],$auth); 
     }
@@ -141,8 +130,8 @@ class DepartmentController extends BaseController {
         //@Author : Ashish Barick, changes : add $inputs['id'] = $request->id; for getting data from url
         $inputs['id'] = $request->id;
         $response = $this->departmentRepository->edit($inputs);
-        if($response['status'] == false){
-            return $this->sendError($response,'Record not found',$auth);
+        if(!$response['status']){
+            return $this->sendError($response,$response['message'],$auth);
         }
         return $this->sendResponse($response['result'],$response['message'],$auth);
     }
@@ -192,8 +181,8 @@ class DepartmentController extends BaseController {
         //@Author : Ashish Barick, changes : add $inputs['id'] = $request->id; for getting data from url
         $inputs['id'] = $request->id;
         $response = $this->departmentRepository->update($inputs);
-        if($response['status'] == false){
-            return $this->sendError($response,'Something went wrong',$auth);
+        if(!$response['status']){
+            return $this->sendError($response,$response['message'],$auth);
         }
         return $this->sendResponse([],$response['message'],$auth);
     }
@@ -232,15 +221,9 @@ class DepartmentController extends BaseController {
         $inputs['connection'] = $auth['connection'];
         //@Author : Ashish Barick, changes : add $inputs['id'] = $request->id; for getting data from url
         $inputs['id'] = $request->id;
-        /* $validate_user = $this->userRepository->getUser('department_id', $inputs['id']);
-        //dd($validate_user);
-        if($validate_user != null)
-        {
-            return $this->sendError(['Sorry this department cannot be deleted.It has a user.'],'Sorry this department cannot be deleted.It has a user.',$auth);
-        } This check is handle in the catch block of repository*/
         $response = $this->departmentRepository->destroy($inputs);
-        if($response['status'] == false){
-            return $this->sendError($response,'Something went wrong',$auth);
+        if(!$response['status']){
+            return $this->sendError($response,$response['message'],$auth);
         }
         return $this->sendResponse([],$response['message'],$auth);   
     }

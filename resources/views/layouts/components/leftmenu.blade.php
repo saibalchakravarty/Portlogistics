@@ -6,11 +6,7 @@
 @endphp
 <aside class="main-sidebar sidebar-dark-default elevation-4" >
     <!-- Brand Logo -->
-    <!-- <div id="logoBox">
-        <a href="{{route('home')}}" class="brand-link">
-            <img src="{{theme('dist/img/Logo.png')}}" alt="Port Logistic Logo" class="brand-image elevation-3">
-        </a>
-    </div> -->
+    
     <div class="sidebar">
         <!-- Sidebar Menu -->
         <nav class="mt-2">
@@ -19,7 +15,7 @@
                      with font-awesome or any other icon font library -->
                 <li class="nav-item">
                     <a href="{{route('home')}}" class="nav-link {{ request()->is('home') ? 'active' : ''}}">
-                        <i class="nav-icon fas fa-tachometer-alt"></i>
+                        <em class="nav-icon fas fa-tachometer-alt"></em>
                         <p>
                             Dashboard
                         </p>
@@ -37,7 +33,7 @@
                                 <!-- Challan Menu -->
                                 <li class="nav-item">
                                     <a href="{{url('challans')}}" class="nav-link {{ request()->is('challans') ? 'active' : ''}}">
-                                        <i class=" nav-icon fas fa-receipt"></i>
+                                        <em class=" nav-icon fas fa-receipt"></em>
                                         <p>Challans</p>
                                     </a>
                                 </li>
@@ -57,19 +53,19 @@
                                 <!-- Planning Menu -->
                                 <li class="nav-item {{ request()->is('plans') ? 'menu-open' : ''}}">
                                     <a href="javascript:void(0)" class="nav-link ">
-                                        <i class=" nav-icon fas fa-list-alt"></i>
+                                        <em class=" nav-icon fas fa-list-alt"></em>
                                         <p>Planning</p>
                                     </a>
                                     <ul class="nav nav-treeview">
                                         <li class="nav-item {{ (url()->full()==url('plans')) ? 'menu-open' : ''}} ">
                                             <a href="{{url('plans')}}" class="nav-link {{ (url()->full()==url('plans')) ? 'active' : ''}}">
-                                                <i class=" nav-icon fa fa-landmark"></i>
+                                                <em class=" nav-icon fa fa-landmark"></em>
                                                 <p>Berth To Plot</p>
                                             </a>
                                         </li>
                                         <li class="nav-item">
                                             <a href="javascript:void(0)" class="nav-link">
-                                                <i class=" nav-icon fa fa-landmark"></i>
+                                                <em class=" nav-icon fa fa-landmark"></em>
                                                 <p>Plot To Plot</p>
                                             </a>
                                         </li>
@@ -86,7 +82,7 @@
                         <!-- Admin Menu -->
                         <li class="nav-item {{ $request->segment(1) == 'admin' ? 'menu-open' : ''}} ">
                             <a href="#" class="nav-link {{ $request->segment(1) == 'admin' ? 'active' : ''}}">
-                                <i class="nav-icon fas fa-tools"></i>
+                                <em class="nav-icon fas fa-tools"></em>
                                 <p>
                                     Administration
                                 </p>
@@ -99,7 +95,7 @@
                                         @if(($childMenu['display_name'] == 'ORGANIZATION') && ($subchildMenu['display_name'] == 'DETAILS'))
                                             <li class="nav-item {{ request()->is('organization') ? 'menu-open' : ''}} ">
                                                 <a href="{{url('organization')}}" class="nav-link {{ request()->is('organization') ? 'active' : ''}}">
-                                                    <i class=" nav-icon fa fa-landmark"></i>
+                                                    <em class=" nav-icon fa fa-landmark"></em>
                                                     <p>Organization</p>
                                                 </a>
                                             </li>
@@ -107,7 +103,7 @@
                                         @if(($childMenu['display_name'] == 'USERS') && ($subchildMenu['display_name'] == 'LIST'))
                                             <li class="nav-item {{ request()->is('users') ? 'menu-open' : ''}} ">                                    
                                                 <a href="{{url('users')}}" class="nav-link {{ (request()->is('users') || request()->is('users')) ? 'active' : ''}}">
-                                                    <i class=" nav-icon fas fa-user"></i>
+                                                    <em class=" nav-icon fas fa-user"></em>
                                                     <p>Users</p>
                                                 </a>
                                             </li>
@@ -115,7 +111,7 @@
                                         @if(($childMenu['display_name'] == 'DEPARTMENT') && ($subchildMenu['display_name'] == 'LIST'))                                       
                                             <li class="nav-item {{ request()->is('department') ? 'menu-open' : ''}} "> 
                                                 <a href="{{url('department')}}" class="nav-link {{ request()->is('department') ? 'menu-open' : ''}} ">
-                                                    <i class=" nav-icon fas fa-users"></i>
+                                                    <em class=" nav-icon fas fa-users"></em>
                                                     <p>Departments</p>
                                                 </a>
                                             </li>
@@ -123,7 +119,7 @@
                                         @if(($childMenu['display_name'] == 'LOCATIONS') && ($subchildMenu['display_name'] == 'LIST'))
                                             <li class="nav-item {{ request()->is('location') ? 'menu-open' : ''}} "> 
                                                 <a href="{{url('location')}}" class="nav-link {{ $request->segment(2) == 'location' ? 'active' : ''}}">
-                                                    <i class=" nav-icon fas fa-map-marker-alt"></i>
+                                                    <em class=" nav-icon fas fa-map-marker-alt"></em>
                                                     <p>Locations</p>
                                                 </a>
                                             </li>
@@ -131,7 +127,7 @@
                                         @if(($childMenu['display_name'] == 'CARGO') && ($subchildMenu['display_name'] == 'LIST'))
                                             <li class="nav-item {{ request()->is('cargo') ? 'menu-open' : ''}} ">
                                                 <a href="{{url('cargo')}}" class="nav-link {{ request()->is('cargo') ? 'active' : ''}}">
-                                                    <i class=" nav-icon fas fa-shipping-fast"></i>
+                                                    <em class=" nav-icon fas fa-shipping-fast"></em>
                                                     <p>Cargo</p>
                                                 </a>
                                             </li>
@@ -139,7 +135,7 @@
                                         @if(($childMenu['display_name'] == 'VESSEL') && ($subchildMenu['display_name'] == 'LIST'))
                                             <li class="nav-item {{ request()->is('vessel') ? 'menu-open' : ''}} ">
                                                 <a href="{{url('vessel')}}" class="nav-link {{ $request->segment(2) == 'vessel' ? 'active' : ''}}">
-                                                    <i class=" nav-icon fas fa-ship"></i>
+                                                    <em class=" nav-icon fas fa-ship"></em>
                                                     <p>Vessels</p>
                                                 </a>
                                             </li>
@@ -150,7 +146,7 @@
 
 
                                                 <a href="{{url('role')}}" class="nav-link {{ request()->is('role') ? 'active' : ''}}">        
-                                                    <i class=" nav-icon fas fa-user-secret"></i>
+                                                    <em class=" nav-icon fas fa-user-secret"></em>
                                                     <p>Roles & Privileges</p>
                                                 </a>
                                             </li>
@@ -158,7 +154,7 @@
                                         @if(($childMenu['display_name'] == 'TRUCKS') && ($subchildMenu['display_name'] == 'LIST'))
                                             <li class="nav-item {{ request()->is('truck') ? 'menu-open' : ''}} ">
                                                 <a href="{{ url('truck')}}" class="nav-link {{ request()->is('admin/truck') ? 'active' : ''}}">
-                                                    <i class=" nav-icon fa fa-truck"></i>
+                                                    <em class=" nav-icon fa fa-truck"></em>
                                                     <p>Trucks</p>
                                                 </a>
                                             </li>
@@ -166,7 +162,7 @@
                                         @if(($childMenu['display_name'] == 'TRUCKING COMPANY') && ($subchildMenu['display_name'] == 'LIST'))
                                             <li class="nav-item {{ request()->is('truck-company') ? 'menu-open' : ''}} ">
                                                 <a href="{{ url('truck-company')}}" class="nav-link {{ request()->is('admin/truck-company') ? 'active' : ''}}">
-                                                    <i class=" nav-icon fas fa-truck"></i>
+                                                    <em class=" nav-icon fas fa-truck"></em>
                                                     <p>Trucking Company</p>
                                                 </a>
                                             </li>
@@ -175,7 +171,7 @@
                                         @if(($childMenu['display_name'] == 'CONSIGNEE') && ($subchildMenu['display_name'] == 'LIST'))
                                             <li class="nav-item  {{ request()->is('consignee') ? 'menu-open' : ''}} ">
                                                 <a href="{{url('consignee')}}" class="nav-link {{ request()->is('consignee') ? 'active' : ''}}">                       
-                                                    <i class=" nav-icon fas fa-receipt"></i>
+                                                    <em class=" nav-icon fas fa-receipt"></em>
                                                     <p>Consignee</p>
                                                 </a>
                                             </li>
@@ -185,7 +181,7 @@
                                         @if($childMenu['display_name'] == 'CACHELIST')
                                             <li class="nav-item  {{ request()->is('admin/clear-cache') ? 'menu-open' : ''}} ">
                                                 <a href="{{url('admin/clear-cache')}}" class="nav-link {{ request()->is('admin/clear-cache') ? 'active' : ''}}">                                       
-                                                    <i class="nav-icon fas fa-cog"></i>
+                                                    <em class="nav-icon fas fa-cog"></em>
                                                     <p>Cache Settings</p>
                                                 </a>
                                             </li>

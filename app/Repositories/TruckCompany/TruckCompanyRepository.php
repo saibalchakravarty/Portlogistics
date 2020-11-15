@@ -7,10 +7,16 @@ use App\Models\TruckCompany;
 use App\Libraries\CustomExceptionLibrary;
 use Exception;
 use Log;
+use Config;
 
 class TruckCompanyRepository
 {
-
+    protected $exception_msg,$empty_err_msg;
+    public function __construct()
+    {
+        $this->exception_msg = Config::get('constants.exception_msg');
+        $this->empty_err_msg = Config::get('constants.empty_err_msg');
+    }
     /**
      * @description Get all trucking companies details
      * @author
@@ -31,10 +37,12 @@ class TruckCompanyRepository
             Log::error($e->getMessage());
             $fetch['status'] = false;
             $fetch['result'] = $e->getMessage();
-            $fetch['message'] = 'Something Went Wrong';
+            $fetch['message'] = $this->exception_msg;
+            unset($truckCompanies);
             return $fetch;
         }
         $fetch['truck_company'] = $truckCompanies;
+        unset($truckCompanies);
         return $fetch;
     }
 
@@ -46,7 +54,6 @@ class TruckCompanyRepository
      */
     public function saveTruckCompany($allInput)
     {
-
         $fetch['status'] = true;
         try {
             $truckCompanies = new TruckCompany();
@@ -55,17 +62,19 @@ class TruckCompanyRepository
             if(!$truckCompanies)
             {
                 $fetch['status'] = false;
-                $fetch['message'] = 'No Record Found';                  
+                $fetch['message'] = $this->empty_err_msg;                  
             }
             else{
                  $fetch['message'] = 'Trucking Company saved successfully';
             }
+            unset($truckCompanies);
             return $fetch;
         } catch (Exception $e) {
             $fetch['status'] = false;
             Log::error($e->getMessage());
             $fetch['result'] = $e->getMessage();
-            $fetch['message'] = 'Something Went Wrong';
+            $fetch['message'] = $this->exception_msg;
+            unset($truckCompanies);
             return $fetch;
         }
     }
@@ -88,17 +97,19 @@ class TruckCompanyRepository
             if(!$truckCompanies)
             {
                 $fetch['status'] = false;
-                $fetch['message'] = 'No Record Found';
+                $fetch['message'] = $this->empty_err_msg;
             }else{
                 $fetch['message'] = 'Truck Company fetched Successfully';    
                 $fetch['result'] =  $truckCompanies->toArray();
             }
+            unset($truckCompanies);
             return $fetch;
             }catch(Exception $e){
                 $fetch['status'] =false;
                 Log::error($e->getMessage());
                 $fetch['result'] = $e->getMessage();
-                $fetch['message'] = 'Something Went Wrong';
+                $fetch['message'] = $this->exception_msg;
+                unset($truckCompanies);
                 return $fetch;
             } 
     }
@@ -112,7 +123,6 @@ class TruckCompanyRepository
     public function updateTruckCompany($allInput)
     {
         $fetch['status'] = true;
-
         try {
             $truckCompanies = new TruckCompany();
             $truckCompanies->setConnection($allInput['connection']);
@@ -127,21 +137,22 @@ class TruckCompanyRepository
             ]);
             if (!$truckCompanies) {
                 $fetch['status'] = false;
-                $fetch['message'] = 'No Record Found';
+                $fetch['message'] = $this->empty_err_msg;
             }
             else{
                 $fetch['message'] = 'Trucking Company updated successfully';
             }
+            unset($truckCompanies);
             return $fetch;
         } catch (Exception $e) {
             $fetch['status'] = false;
             $fetch['result'] = $e->getMessage();
-            $fetch['message'] = 'Something Went Wrong';
+            $fetch['message'] = $this->exception_msg;
             Log::error($e->getMessage());
+            unset($truckCompanies);
             return $fetch;
         }
     }
-
     /**
      * @description Delete trucking company details by trucking company id
      * @author
@@ -158,19 +169,19 @@ class TruckCompanyRepository
             $truckCompanies->setConnection($allInput['connection']);
             $truckCompanies = $truckCompanies->findOrFail($allInput['id']);
             $truckCompanies = $truckCompanies->delete();
-            if (!$truckCompanies) {
+            if(!$truckCompanies) {
                 $fetch['status'] = false;
-                $fetch['message'] = 'No Record Found';
-            }
-            else{
+                $fetch['message'] = $this->empty_err_msg;
+            }else{
                 $fetch['message'] ='Trucking company deleted successfully';    
             }
+            unset($truckCompanies);
             return $fetch;
         }catch(Exception $e){
             Log::error($e->getMessage());
             $errors = new CustomExceptionLibrary();
-            $fetch = $errors->handleException($e, 'Trucking Company');
-            return $fetch;
+            unset($truckCompanies);
+            return $errors->handleException($e, 'Trucking Company');
         }
     }
 }

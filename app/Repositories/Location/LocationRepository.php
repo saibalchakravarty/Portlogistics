@@ -11,6 +11,8 @@ use Log;
 class LocationRepository
 {
 
+    public $catchErrorMsg = 'Something Went Wrong';
+    public $noRecordMsg = 'No Record Found';
     /**
      * @description Get all location details
      * @author
@@ -19,6 +21,7 @@ class LocationRepository
      */
     public function getAllLocation($allInput)
     {
+        global $catchErrorMsg;
         $fetch['status'] = true;
 
         try {
@@ -30,14 +33,14 @@ class LocationRepository
             }
             $locations = $locations->get();
             $fetch['message'] = 'Location fetched successfully';
+            $fetch['location'] = $locations;
         } catch (Exception $e) {
             Log::error($e->getMessage());
             $fetch['status'] = false;
             $fetch['result'] = $e->getMessage();
-            $fetch['message'] = 'Something Went Wrong';
-            return $fetch;
+            $fetch['message'] = $catchErrorMsg;
         }
-        $fetch['location'] = $locations;
+        unset($locations);
         return $fetch;
     }
 
@@ -49,6 +52,8 @@ class LocationRepository
      */
     public function store($allInput)
     {
+        global $catchErrorMsg;
+        global $noRecordMsg;
         $fetch['status'] = true;
         try {
             $locations = new Location();
@@ -57,19 +62,20 @@ class LocationRepository
             if(!$locationSave)
             {
                 $fetch['status'] =false;
-                $fetch['message'] = 'No Record Found';                  
+                $fetch['message'] = $noRecordMsg;                  
             }
             else{
                 $fetch['message'] = 'Location data saved successfully';
             }
-            return $fetch;
         } catch (Exception $e) {
             $fetch['status'] = false;
             Log::error($e->getMessage());
             $fetch['result'] = $e->getMessage();
-            $fetch['message'] = 'Something Went Wrong';
-            return $fetch;
+            $fetch['message'] = $catchErrorMsg;
         }
+        unset($locations);
+        unset($locationSave);
+        return $fetch;
     }
 
     /**
@@ -80,6 +86,8 @@ class LocationRepository
      */
     public function update($allInput)
     {
+        global $catchErrorMsg;
+        global $noRecordMsg;
         $fetch['status'] = true;
         try {
             $locationUpdate = new Location();
@@ -88,19 +96,19 @@ class LocationRepository
             $locationUpdate = $locationUpdate->update(['location' => $allInput['location'], 'description' => $allInput['description'], 'type' => $allInput['type'], 'updated_by' => $allInput['updated_by']]);
             if (!$locationUpdate) {
                 $fetch['status'] = false;
-                $fetch['message'] = 'No Record Found';
+                $fetch['message'] = $noRecordMsg;
             }
             else{
                 $fetch['message'] = 'Location data updated successfully';
             }
-            return $fetch;
         } catch (Exception $e) {
             $fetch['status'] = false;
             $fetch['result'] = $e->getMessage();
-            $fetch['message'] = 'Something Went Wrong';
+            $fetch['message'] = $catchErrorMsg;
             Log::error($e->getMessage());
-            return $fetch;
         }
+        unset($locationUpdate);
+        return $fetch;
     }
 
     /**
@@ -111,6 +119,8 @@ class LocationRepository
      */
     public function destroy($allInput)
     {
+        global $catchErrorMsg;
+        global $noRecordMsg;
         $fetch['status'] = true;
         try {
             $locations = new Location();
@@ -119,18 +129,18 @@ class LocationRepository
             $location = $location->delete();
             if (!$location) {
                 $fetch['status'] = false;
-                $fetch['message'] = 'No Record Found';
+                $fetch['message'] = $noRecordMsg;
             }
             else{
                 $fetch['message'] ='Location deleted successfully';    
             }
-            return $fetch;
         }catch(Exception $e){
             Log::error($e->getMessage());
             $errors = new CustomExceptionLibrary();
             $fetch = $errors->handleException($e,'Location');
-            return $fetch;
         }
+        unset($locations);
+        return $fetch;
     }
 
     /**
@@ -141,6 +151,8 @@ class LocationRepository
      */
     public function edit($allInput)
     {
+        global $catchErrorMsg;
+        global $noRecordMsg;
         $fetch['status'] = true;
         try {
             $locationData = new Location();
@@ -150,20 +162,20 @@ class LocationRepository
             if(!$locationData)
             {
                 $fetch['status'] = false;
-                $fetch['message'] = 'No Record Found';
+                $fetch['message'] = $noRecordMsg;
             }
             else{
                  $fetch['message'] = 'Location Edited Successfully';    
                  $fetch['result'] =  $locationData->toArray(); 
             }
-            return $fetch;
         } catch (Exception $e) {
             $fetch['status'] = false;
             Log::error($e->getMessage());
             $fetch['result'] = $e->getMessage();
-            $fetch['message'] = 'Something Went Wrong';
-            return $fetch;
+            $fetch['message'] = $catchErrorMsg;
         }
+        unset($locationData);
+        return $fetch;
     }
     /**
      * Fetch Location by location_id
@@ -171,6 +183,8 @@ class LocationRepository
      */
     public function getLocationById($allInput, $type)
     {
+        global $catchErrorMsg;
+        global $noRecordMsg;
         $fetch['status'] = true;
         try {
             $locationData = new Location();
@@ -181,19 +195,19 @@ class LocationRepository
             if(!$locationData)
             {
                 $fetch['status'] = false;
-                $fetch['message'] = 'No Reord Found';
+                $fetch['message'] = $noRecordMsg;
             }
             else{
                  $fetch['message'] = 'Location Data Fetched Successfully';    
                  $fetch['result'] =  $locationData->toArray(); 
             }
-            return $fetch;
         } catch (Exception $e) {
             $fetch['status'] = false;
             Log::error($e->getMessage());
             $fetch['result'] = $e->getMessage();
-            $fetch['message'] = 'Something Went Wrong';
-            return $fetch;
+            $fetch['message'] = $catchErrorMsg;
         }
+        unset($locationData);
+        return $fetch;
     }
 }

@@ -14,85 +14,6 @@ use Carbon\Carbon;
 
 Class DashboardRepository
 {
-
-	/**
-	 * @description Get dashboard details
-	 * @author
-	 * @param array ['connection','date','vessel','cargo','customer'] 
-	 * @return array ['status','message','organization']
-	 */
-	public function dashboardDetails($allInput)
-	{
-		$dataArr = array();
-		$dataArr['status'] = true;
-		try 
-		{
-			$shift = new Shift();
-            $shift->setConnection($allInput['connection']);
-            $shifts = $shift->get();
-            $planning = new BtopPlanning();
-			$planningFilter = '';
-			$consigneeFilter = '';
-			
-			$planning->setConnection($allInput['connection']);
-			$planning->where('date_from',date_format(date_create($allInput['date']), 'yy-m-d'));
-			if($allInput['vessel'] != 'all' && $allInput['cargo'] != 'all')
-			{
-				$planning->whereIn('vessel_id',$allInput['vessel'])->orWhereIn('cargo_id',$allInput['cargo']);
-			}
-			if($allInput['vessel'] != 'all' && $allInput['cargo'] == 'all')
-			{
-				$planning->whereIn('vessel_id',$allInput['vessel']);
-			}
-			if($allInput['vessel'] == 'all' && $allInput['cargo'] != 'all')
-			{
-				$planning->whereIn('cargo_id',$allInput['cargo']);
-			}
-			$planningId = $planning->distinct('id')->pluck('id')->toArray();
-			$planningDetail = new BtopPlanningDetail();
-			$planningDetail->setConnection($allInput['connection']);
-			if($allInput['customer'] != 'all')
-			{
-				$planningDetail->whereIn('consignee_id',$allInput['customer']);
-			}
-			$planningDetailId = $planningDetail->distinct('id')->pluck('id')->toArray();
-
-			$planningIds = array_unique( array_merge( $planningId , $planningDetailId ) );
-
-			$ttcArr = [];
-			$ntuArr = [];
-			$caArr = [];
-			foreach($shifts as $shift)
-			{
-				$challan = new Challan();
-				$challan->setConnection($allInput['connection']);
-				$dataArr['ttc'][$shift->type] = $challan->where('shift_id',$shift->id)
-									->where('status',2)
-									->whereNotNull('unloaded_by')
-									->where('type',1)
-									->whereIn('btop_planning_id',$planningIds)->count();
-
-				$dataArr['ntu'][$shift->type] = $challan->where('shift_id',$shift->id)
-									->where('status',2)
-									->whereNotNull('unloaded_by')
-									->where('type',1)
-									->whereIn('btop_planning_id',$planningIds)->distinct('truck_id')->count();
-				$dataArr['ca'][$shift->type] = $challan->where('shift_id',$shift->id)
-									->where('status',2)
-									->where('is_deposit',1)
-									->where('type',1)
-									->whereIn('btop_planning_id',$planningIds)->count();
-			}
-		} catch (Exception $e) {
-	        Log::error($e->getMessage());
-	        $dataArr['status'] = false;
-			$dataArr['result'] = $e->getMessage();
-			$dataArr['message'] = 'Something Went Wrong';
-	        return $dataArr;
-	    }
-		return $dataArr;
-	}
-
 	public function getDetails($allInput){
 		/*For BTP details
 		@author: Saibal Chakravarty
@@ -117,8 +38,6 @@ Class DashboardRepository
 		}
 		if (array_key_exists('date', $allInput) && $allInput['date']!=null) {
 			$date =	Carbon::parse($allInput['date'])->format('Y-m-d');
-			// $start = Carbon::parse($date)->startOfDay(); 
-			// $end = Carbon::parse($date)->endOfDay();	
 			$challans = $challans->where(function ($query) use($date) {
 				$query->whereDate('challans.loaded_at',$date)
 				->orWhereDate('challans.unloaded_at',$date);
@@ -132,22 +51,22 @@ Class DashboardRepository
 
 		foreach ($shifts as $shift) {
 			$c =clone $challans;
-		$dataArr['ttc'][$shift->type] = $c->where('challans.shift_id', $shift->id)
+		$dataArr['ttc'][$shift->type] = $c->where('shift_id', $shift->id)
 					->where('challans.status', 2)
-					->whereNotNull('challans.unloaded_by')
-					->where('challans.type', 1)
+					->whereNotNull('unloaded_by')
+					->where('type', 1)
 					->count();
 					$d =clone $challans;
-				$dataArr['ntu'][$shift->type] = $d->where('challans.shift_id', $shift->id)
+				$dataArr['ntu'][$shift->type] = $d->where('shift_id', $shift->id)
 					->where('challans.status', 2)
-					->whereNotNull('challans.unloaded_by')
-					->where('challans.type', 1)
-					->distinct('challans.truck_id')->count();
+					->whereNotNull('unloaded_by')
+					->where('type', 1)
+					->distinct('truck_id')->count();
 					$e =clone $challans;
-				$dataArr['ca'][$shift->type] = $e->where('challans.shift_id', $shift->id)
+				$dataArr['ca'][$shift->type] = $e->where('shift_id', $shift->id)
 					->where('challans.status', 2)
-					->where('challans.is_deposit', 1)
-					->where('challans.type', 1)
+					->where('is_deposit', 1)
+					->where('type', 1)
 					->count();
 		}
 		

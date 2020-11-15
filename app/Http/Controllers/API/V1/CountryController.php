@@ -42,8 +42,8 @@ class CountryController extends BaseController {
             $auth['id'] = $inputs['id'];
         }
         $response = $this->countryRepository->getCountries($auth);
-        if($response['status'] == false){
-           return $this->sendError($response,'No record found !!!', $auth);
+        if(!$response['status']){
+           return $this->sendError($response,'No countries found !!!', $auth);
         }
         return $this->sendResponse($response['result'],'Records fetched sucessfully', $auth);
     }

@@ -8,12 +8,12 @@
 </head>
 
 <body>
-    <table width="100%">
+    <table  summary="Reset Password" style="width:100%">
         <tr>
-            <td>
-                <table align="center" width="600px" style="padding: 30px;margin-left: auto;margin-right: auto;background:url('https://i.ibb.co/D86Gc2v/Email-Template-Bkg-Image.jpg');background-repeat: no-repeat;background-size: auto;">
+            <th>
+                <table summary="Details" style="text-align:center;width:600px;padding: 30px;margin-left: auto;margin-right: auto;background:url('https://i.ibb.co/D86Gc2v/Email-Template-Bkg-Image.jpg');background-repeat: no-repeat;background-size: auto;">
                     <tr>
-                        <td><b>Dear {{ucfirst($email_data['name'])}},</b></td>
+                        <th><b>Dear {{ucfirst($email_data['name'])}},</b></th>
                     </tr>
                     <tr>
                         <td></td>
@@ -68,7 +68,7 @@
                         <td>Port Logistics Team</td>
                     </tr>
                 </table>
-            </td>
+            </th>
         </tr>
     </table>
 </body>

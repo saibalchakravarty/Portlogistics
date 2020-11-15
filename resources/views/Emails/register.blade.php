@@ -8,12 +8,12 @@
 </head>
 
 <body>
-    <table width="100%">
+    <table style="width:100%" summary="Registration of New User into Port Logistic">
         <tr>
-            <td>
-                <table align="center" width="600px" style="padding: 30px;margin-left: auto;margin-right: auto;background:url('https://i.ibb.co/D86Gc2v/Email-Template-Bkg-Image.jpg');background-repeat: no-repeat;background-size: auto;">
+            <th>
+                <table summary="Registration Details" style="width:600px;padding: 30px;margin-left: auto;margin-right: auto;background:url('https://i.ibb.co/D86Gc2v/Email-Template-Bkg-Image.jpg');background-repeat: no-repeat;background-size: auto;text-align: center;">
                     <tr>
-                        <td><b>Dear {{ucfirst($email_data['name'])}},</b></td>
+                        <th><b>Dear {{ucfirst($email_data['name'])}},</b></th>
                     </tr>
                     <tr>
                         <td></td>
@@ -68,7 +68,7 @@
                         <td>Port Logistics Team</td>
                     </tr>
                 </table>
-            </td>
+            </th>
         </tr>
     </table>
 </body>

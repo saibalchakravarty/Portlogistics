@@ -14,7 +14,8 @@ use DB;
 
 class UserRoleRepository
 {
-
+    public $catchErrorMsg = 'Something Went Wrong';
+    public $noRecordMsg = 'No Record Found';
     /**
      * @description Get all user roles
      * @author
@@ -23,6 +24,7 @@ class UserRoleRepository
      */
     public function getRoles($inputs)
     {
+        global $catchErrorMsg;
         $response['status'] = true;
         try {
             $role = new UserRole();
@@ -37,9 +39,9 @@ class UserRoleRepository
             Log::error($e->getMessage());
             $response['status'] = false;
             $response['result'] = $e->getMessage();
-            $fetch['message'] = 'Something Went Wrong';
-            return $response;
+            $fetch['message'] = $catchErrorMsg;
         }
+        unset($role);
         return $response;
     }
 
@@ -52,6 +54,7 @@ class UserRoleRepository
      */
     public function getRolesForPriviliges($allInput)
     {
+        global $catchErrorMsg;
         $fetch['status'] = true;
         try {
             $roles = new UserRole();
@@ -59,14 +62,14 @@ class UserRoleRepository
             $roles = $roles->select('*');
             $roles = $roles->get();
             $fetch['message'] = 'Role fetched successfully';
+            $fetch['role'] = $roles;
         } catch (Exception $e) {
             Log::error($e->getMessage());
             $fetch['status'] = false;
             $fetch['result'] = $e->getMessage();
-            $fetch['message'] = 'Something Went Wrong';
-            return $fetch;
+            $fetch['message'] = $catchErrorMsg;
         }
-        $fetch['role'] = $roles;
+        unset($roles);
         return $fetch;
     }
 
@@ -76,6 +79,7 @@ class UserRoleRepository
 
     public function store($allInput)
     {
+        global $catchErrorMsg;
         $fetch['status'] = true;
         $roles = new UserRole();
 
@@ -87,13 +91,13 @@ class UserRoleRepository
             } else {
                 $fetch['message'] = 'Role data saved successfully';
             }
-            return $fetch;
         } catch (Exception $e) {
             Log::error($e->getMessage());
             $fetch['result'] = $e->getMessage();    
-            $fetch['message'] = 'Something Went Wrong';
-            return $fetch;
+            $fetch['message'] = $catchErrorMsg;
         }
+        unset($roles);
+        return $fetch;
     }
 
     /*
@@ -102,6 +106,7 @@ class UserRoleRepository
 
     public function update($allInput)
     {
+        global $catchErrorMsg;
         $fetch['status'] = true;
         $roleUpdate = new UserRole();
 
@@ -118,14 +123,14 @@ class UserRoleRepository
             } else {
                 $fetch['message'] = 'Role data updated successfully';
             }
-            return $fetch;
         } catch (Exception $e) {
             $fetch['status'] =false;
             $fetch['result'] = $e->getMessage();         
-            $fetch['message'] = 'Something Went Wrong';
+            $fetch['message'] = $catchErrorMsg;
             Log::error($e->getMessage());
-            return $fetch;
         }
+        return $fetch;
+        unset($roleUpdate);
     }
 
     /*
@@ -134,16 +139,10 @@ class UserRoleRepository
 
     public function destroy($allInput)
     {
+        global $noRecordMsg;
         $fetch['status'] = true;
         $user = new User();
         $user->setConnection($allInput['connection']);
-        /* $chkRoleAssigned =  $user->where('role_id',$allInput['id'])->get();
-        if(count( $chkRoleAssigned) > 0)
-        {
-            $fetch['status'] = false;
-            $fetch['message'] = 'Selected role is already configured for a User, Please change the User’s role before deleting';
-            return $fetch;
-        } This code is handled in the catch()*/
         try 
         {
             $roles = new UserRole();
@@ -153,18 +152,19 @@ class UserRoleRepository
             if(!$role)
             {
                 $fetch['status'] = false;
-                $fetch['message'] = 'No Record Found';
+                $fetch['message'] = $noRecordMsg;
             }
             else{
                 $fetch['message'] ='Role deleted successfully';    
             }
-            return $fetch;
         }catch(Exception $e){
             Log::error($e->getMessage());
             $errors = new CustomExceptionLibrary();
             $fetch = $errors->handleException($e, 'Role');
-            return $fetch;
         }
+        unset($user);
+        unset($role);
+        return $fetch;
     }
 
     /*
@@ -173,6 +173,8 @@ class UserRoleRepository
 
     public function edit($allInput)
     {
+        global $catchErrorMsg;
+        global $noRecordMsg;
         $fetch['status'] = true;
         try {
             $roleData = new UserRole();
@@ -182,20 +184,20 @@ class UserRoleRepository
             if(!$roleData)
             {
                 $fetch['status'] = false;
-                $fetch['message'] = 'No Record Found';
+                $fetch['message'] = $noRecordMsg;
             }
             else{
                  $fetch['message'] = 'Role data edited successfully';    
                  $fetch['result'] =  $roleData->toArray(); 
             }
-            return $fetch;
         } catch (Exception $e) {
             $fetch['status'] = false;
             Log::error($e->getMessage());
             $fetch['result'] = $e->getMessage();
-            $fetch['message'] = 'Something Went Wrong';
-            return $fetch;
+            $fetch['message'] = $catchErrorMsg;
         }
+        unset($roleData);
+        return $fetch;
     }
 
     /**
@@ -206,26 +208,22 @@ class UserRoleRepository
      */
     public function getAllMenuPrivilegesList($allInput)
     {
+        global $catchErrorMsg;
         $fetch['status'] = true;
-        $parentArr = array();
-        $childArr = array();
-        $subChildArr = array();
-        $output['parent'] = array();
-
         try {
             $menu = new AccessList();
             $menu->setConnection($allInput['connection']);
             $menu = $menu->where('parent_id', 0)->with('children.subChild')->get(); // Realtionship binded with Parent Menu
 
             $fetch['message'] = 'Privileges fetched successfully';
+            $fetch['menu'] = $menu;
         } catch (Exception $e) {
             Log::error($e->getMessage());
             $fetch['status'] = false;
             $fetch['result'] = $e->getMessage();
-            $fetch['message'] = 'Something Went Wrong';
-            return $fetch;
+            $fetch['message'] = $catchErrorMsg;
         }
-        $fetch['menu'] = $menu;
+        unset($menu);
         return $fetch;
     }
 }

@@ -5,9 +5,16 @@ use App\Libraries\CustomExceptionLibrary;
 use App\Models\Department;
 use Exception;
 use Log;
+use Config;
 
 class DepartmentRepository
 {
+    protected $exception_msg,$empty_err_msg;
+    public function __construct()
+    {
+        $this->exception_msg = Config::get('constants.exception_msg');
+        $this->empty_err_msg = Config::get('constants.empty_err_msg');
+    }
     /**
      * Get departments by Id
      * 
@@ -28,9 +35,11 @@ class DepartmentRepository
             Log::error($e->getMessage());
             $response['status'] = false;
             $response['result'] = $e->getMessage();
-            $response['message'] = 'Something Went Wrong';
+            $response['message'] = $this->exception_msg;
+            unset($department);
             return $response;
         }
+        unset($department);
         return $response;
     }
 
@@ -48,15 +57,17 @@ class DepartmentRepository
             $department->setConnection($inputs['connection']);
             $department = $department->select('*');
             $department = $department->get();
-            $response['message'] = 'Department data fetched successfully';
+            $response['message'] = 'Department data fetched successfully'; 
         } catch (Exception $e) {
             Log::error($e->getMessage());
             $response['status'] = false;
             $response['result'] = $e->getMessage();
-            $response['message'] = 'Something Went Wrong';
+            $response['message'] = $this->exception_msg;
+            unset($department);
             return $response;
         }
         $response['department'] = $department;
+        unset($department);
         return $response;
     }
 
@@ -76,17 +87,19 @@ class DepartmentRepository
             if(!$department)
             {
                 $response['status'] =false;
-                $response['message'] = 'No Record Found';                  
+                $response['message'] = $this->empty_err_msg;                  
             }
             else{
                 $response['message'] = 'Department data saved successfully';
             }
+            unset($department);
             return $response;
         } catch (Exception $e) {
             $response['status'] = false;
             Log::error($e->getMessage());
             $response['result'] = $e->getMessage();
-            $response['message'] = 'Something Went Wrong';
+            $response['message'] = $this->exception_msg;
+            unset($department);
             return $response;
         }
     }
@@ -108,18 +121,20 @@ class DepartmentRepository
             if(!$department)
             {
                 $response['status'] = false;
-                $response['message'] = 'No Record Found';
+                $response['message'] = $this->empty_err_msg;
             }
             else{
-                 $response['message'] = 'department Edited Successfully';    
+                 $response['message'] = 'Department Edited Successfully';    
                  $response['result'] =  $department->toArray(); 
             }
+            unset($department);
             return $response;
         } catch (Exception $e) {
             $response['status'] = false;
             Log::error($e->getMessage());
             $response['result'] = $e->getMessage();
-            $response['message'] = 'Something Went Wrong';
+            $response['message'] = $this->exception_msg;
+            unset($department);
             return $response;
         }
     }
@@ -140,17 +155,19 @@ class DepartmentRepository
             $department = $department->update(['name' => $inputs['name'], 'description' => $inputs['description'], 'updated_by' => $inputs['updated_by']]);
             if (!$department) {
                 $response['status'] = false;
-                $response['message'] = 'No Record Found';
+                $response['message'] = $this->empty_err_msg;
             }
             else{
                 $response['message'] = 'Department data updated successfully';
             }
+            unset($department);
             return $response;
         } catch (Exception $e) {
             $response['status'] = false;
             $response['result'] = $e->getMessage();
-            $response['message'] = 'Something Went Wrong';
+            $response['message'] = $this->exception_msg;
             Log::error($e->getMessage());
+            unset($department);
             return $response;
         }
     }
@@ -171,17 +188,18 @@ class DepartmentRepository
             $department = $department->delete();
             if (!$department) {
                 $response['status'] = false;
-                $response['message'] = 'No Record Found';
+                $response['message'] = $this->empty_err_msg;
             }
             else{
                 $response['message'] ='Department deleted successfully';    
             }
+            unset($department);
             return $response;
         }catch(Exception $e){
             Log::error($e->getMessage());
             $errors = new CustomExceptionLibrary();
-            $response = $errors->handleException($e, 'Department');
-            return $response;
+            unset($department);
+            return $errors->handleException($e, 'Department');
         }
     }
 }

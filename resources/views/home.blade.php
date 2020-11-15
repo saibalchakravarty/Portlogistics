@@ -29,13 +29,12 @@
                         <div class="input-group">
                             <input type="text" id="plotDate" name="filter.plotDate" class="form-control datetimepicker-input" />
                             <div class="input-group-append datetimepicker" data-target="#plotDate" data-toggle="datetimepicker">
-                                <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                                <div class="input-group-text"><em class="fa fa-calendar"></em></div>
                             </div>
                         </div>
                     </div>
                     <div class="dashboard-filter-content">
                         <select class="multiselect" multiple="multiple" id="cmbVessel" name="filter.cmbVessel[]" data-placeholder="Select Vessel" style="width: 100%;">
-                            <!-- <option value="all" selected="selected">All Vessel</option> -->
                             @foreach($result[0]['vessel'] as $data)
                             <option value="{{ $data->id }}">{{ $data->name }}</option>
                             @endforeach
@@ -46,7 +45,6 @@
                     </div>
                     <div class="dashboard-filter-content">
                         <select class="multiselect" multiple="multiple" data-placeholder="Select Customer" style="width: 100%;" id="cmbCustomer" name="filter.cmbCustomer[]">
-                            <!-- <option value="all" selected="selected">All Customer</option> -->
                             @foreach($result[2]['data'] as $data)
                             <option value="{{ $data->id }}">{{ $data->name }}</option>
                             @endforeach
@@ -55,7 +53,6 @@
 
                     <div class="dashboard-filter-content">
                         <select class="multiselect" multiple="multiple" data-placeholder="Select Cargo" style="width: 100%;" id="cmbCargo" name="filter.cmbCargo[]">
-                            <!-- <option value="all" selected="selected">All Cargo</option> -->
                             @foreach($result[1]['cargo'] as $data)
                             <option value="{{ $data->id }}">{{ $data->name }}</option>
                             @endforeach
@@ -83,8 +80,8 @@
                 <div class="card-header border-0 col-md-12">
                     <div class="header-details dashboard-filter bg-navy">
                         <span>Berth to Plot </span>
-                        <img class="img img-reponsive" src="{{url('custom/icons/berthtoplot.png')}}">
-
+                        <img class="img img-reponsive"  src="{{images('berthtoplot')}}" alt="BTP">
+                       
                     </div>
                     <div class="header-details dashboard-filter p-0">
 
@@ -107,7 +104,7 @@
                 <div class="card-header border-0 col-md-12">
                     <div class="header-details dashboard-filter bg-navy">
                         <span>Plot to Plot</span>
-                        <img class="img img-reponsive" src="{{url('custom/icons/plottoplot.png')}}">
+                        <img class="img img-reponsive"  src="{{images('plottoplot')}}" alt="PTP">
 
                     </div>
                     <div class="header-details dashboard-filter p-0">
@@ -134,15 +131,13 @@
                 <div class="card-header border-0 col-md-12">
                     <div class="header-details dashboard-filter bg-navy">
                         <span>No of Trucks </span>
-                        <img class="img img-reponsive" src="{{url('custom/icons/nooftrucks.png')}}">
+                        <img class="img img-reponsive"  src="{{images('nooftrucks')}}" alt="No Of Trucks">
 
                     </div>
                     <div class="header-details dashboard-filter">
-                        <div class="col-md-8">
+                        <div class="col-md-8 ntu">
                             <p><span class="text-label-1">Shift A</span> : <span class="default grapharea-nooftrucks-A">0</span></p>
-                            <p><span class="text-label-2">Shift B</span> : <span class="default grapharea-nooftrucks-B">0</span></p>
-                            <p><span class="text-label-3">Shift C</span> : <span class="default grapharea-nooftrucks-C">0</span></p>
-                        </div>
+                            </div>
                         <div class="col-md-4">
                             <canvas id="grapharea-nooftrucks" width="100%" height="100%"></canvas>
 
@@ -156,12 +151,12 @@
                     <div class="header-details dashboard-filter bg-navy">
 
                         <span>Trips Completed </span>
-                        <img class="img img-reponsive" src="{{url('custom/icons/tripscompleted.png')}}">
+                        <img class="img img-reponsive"  src="{{images('tripscompleted')}}" alt="No Of Trips Completed">
 
 
                     </div>
                     <div class="header-details dashboard-filter">
-                        <div class="col-md-8">
+                        <div class="col-md-8 ttc">
                             <p><span class="text-label-1">Shift A</span> : <span class="default grapharea-tripscompleted-A">0</span></p>
                             <p><span class="text-label-2">Shift B</span> : <span class="default grapharea-tripscompleted-B">0</span></p>
                             <p><span class="text-label-3">Shift C</span> : <span class="default grapharea-tripscompleted-C">0</span></p>
@@ -177,11 +172,11 @@
                 <div class="card-header border-0 col-md-12">
                     <div class="header-details dashboard-filter bg-navy">
                         <span>Challans Deposited </span>
-                        <img class="img img-reponsive" src="{{url('custom/icons/challandep.png')}}">
+                        <img class="img img-reponsive"  src="{{images('challandep')}}" alt="Challans Deposited">
 
                     </div>
                     <div class="header-details dashboard-filter">
-                        <div class="col-md-8">
+                        <div class="col-md-8 ca">
                             <p><span class="text-label-1">Shift A</span> : <span class="default grapharea-challansdep-A">0</span></p>
                             <p><span class="text-label-2">Shift B</span> : <span class="default grapharea-challansdep-B">0</span></p>
                             <p><span class="text-label-3">Shift C</span> : <span class="default grapharea-challansdep-C">0</span></p>

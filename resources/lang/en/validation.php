@@ -1,5 +1,6 @@
 <?php
-
+$existMsg = 'The selected :attribute is invalid.';
+$not_regex = 'The :attribute format is invalid.';
 return [
 
     /*
@@ -41,7 +42,7 @@ return [
     'distinct' => 'The :attribute field has a duplicate value.',
     'email' => 'The :attribute must be a valid email address.',
     'ends_with' => 'The :attribute must end with one of the following: :values.',
-    'exists' => 'The selected :attribute is invalid.',
+    'exists' => $existMsg,
     'file' => 'The :attribute must be a file.',
     'filled' => 'The :attribute field must have a value.',
     'gt' => [
@@ -57,7 +58,7 @@ return [
         'array' => 'The :attribute must have :value items or more.',
     ],
     'image' => 'The :attribute must be an image.',
-    'in' => 'The selected :attribute is invalid.',
+    'in' => $existMsg,
     'in_array' => 'The :attribute field does not exist in :other.',
     'integer' => 'The :attribute must be an integer.',
     'ip' => 'The :attribute must be a valid IP address.',
@@ -90,12 +91,12 @@ return [
         'string' => 'The :attribute must be at least :min characters.',
         'array' => 'The :attribute must have at least :min items.',
     ],
-    'not_in' => 'The selected :attribute is invalid.',
-    'not_regex' => 'The :attribute format is invalid.',
+    'not_in' => $existMsg,
+    'not_regex' => $not_regex,
     'numeric' => 'The :attribute must be a number.',
     'password' => 'The password is incorrect.',
     'present' => 'The :attribute field must be present.',
-    'regex' => 'The :attribute format is invalid.',
+    'regex' => $not_regex,
     'required' => 'The :attribute field is required.',
     'required_if' => 'The :attribute field is required when :other is :value.',
     'required_unless' => 'The :attribute field is required unless :other is in :values.',
@@ -115,7 +116,7 @@ return [
     'timezone' => 'The :attribute must be a valid zone.',
     'unique' => 'The :attribute has already been taken.',
     'uploaded' => 'The :attribute failed to upload.',
-    'url' => 'The :attribute format is invalid.',
+    'url' => $not_regex,
     'uuid' => 'The :attribute must be a valid UUID.',
 
     /*

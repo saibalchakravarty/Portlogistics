@@ -39,9 +39,6 @@ class DashboardController extends BaseController
         $dataArr[]                   = $this->cargoService->getAllCargos($param);
         $dataArr[]                   = $this->consigneeRepository->getAllConsignees($allInput);
         $dataArr[]                = $this->shiftRepository->getShifts($param);
-        /*if($dataArr['status'] == false){
-           return $this->sendError($dataArr,'No record found !!!', $param);
-        }*/
         return $this->sendResponse($dataArr, 'Dashboard data fetched sucessfully', $param);
     }
 
@@ -80,11 +77,10 @@ class DashboardController extends BaseController
     public function fetchDetails(Request $request)
     {
         $allInput                 = $request->all();
-        //dd($allInput);
         $param                  = $this->getAuth($allInput);
         $allInput['connection'] = $param['connection'];
         $response = $this->dashboardRepository->getDetails($allInput);
-        if ($response['status'] == false) {
+        if ($response['status']) {
             return $this->sendError($response, 'Something wen\'t wrong', $param);
         }
         return $this->sendResponse($response, "Data fetched successfully.", $param);

@@ -3,7 +3,6 @@
 @section('content')
 <?php 
      $privilegeArr = isset( $result['privileges']['display_name'])? $result['privileges']['display_name']:array();
-	//dd($privilegeArr);
 ?>
 <!-------------------------------- 
 	Author : Ashish Barick
@@ -14,19 +13,6 @@
 <div class="content-wrapper">
     <!-- Content Header (Page header) -->
     <div class="content-header">
-        <!-- <div class="container-fluid">
-            <div class="row mb-2">
-                <div class="col-sm-6">
-                    <h1 class="m-0 text-dark">Roles & Privileges</h1>
-                </div>
-                <div class="col-sm-6">
-                    <ol class="breadcrumb float-sm-right">
-                        <li class="breadcrumb-item"><a href="#">Administration</a></li>
-                        <li class="breadcrumb-item active">Roles & Privileges</li>
-                    </ol>
-                </div>
-            </div>
-        </div> -->
     </div>
     <!-- /.content-header -->
 
@@ -41,7 +27,7 @@
 		                	<h2 style="font-size: 1.75rem;" class="card-title">Roles & Privileges</h2>
 		                	<div class="card-tools">
 			                  	<button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
-			                    <i class="fas fa-minus"></i>
+			                    <i class="fas fa-minus" aria-hidden="true"></i>
 			                  	</button>
 		                	</div>
 		              	</div>
@@ -64,11 +50,11 @@
 						            <div class= "col-md-4">
 						              	<div class="form-group" style="cursor: pointer;">
 						              		
-					            				<span id="btnRoleAdd"><i class="fas fa-2x fa-plus-circle tooltips text-primary" data-placement="top" title="Add Roles & Privilege" ></i></span>&nbsp;&nbsp;
+					            				<span id="btnRoleAdd"><i class="fas fa-2x fa-plus-circle tooltips text-primary" data-placement="top" title="Add Roles & Privilege" aria-hidden="true"></i></span>&nbsp;&nbsp;
 					            			
-							            		<span id="btnRoleEdit"><i class="fas fa-2x fa-edit tooltips text-warning" data-placement="top" title="Update Roles & Privilege" id="btnRoleEdit"></i></span> &nbsp;&nbsp;
+							            		<span id="btnRoleEdit"><i class="fas fa-2x fa-edit tooltips text-warning" data-placement="top" title="Update Roles & Privilege" id="btnRoleEdit" aria-hidden="true"></i></span> &nbsp;&nbsp;
 							            
-							            		<span id="btnRoleDelete"><i class="fas fa-2x fa-trash tooltips text-danger" data-placement="top" title="Delete Roles & Privilege" id="btnRoleDelete"></i></span>
+							            		<span id="btnRoleDelete"><i class="fas fa-2x fa-trash tooltips text-danger" data-placement="top" title="Delete Roles & Privilege" id="btnRoleDelete" aria-hidden="true"></i></span>
 							            	
 							            </div>
 							        </div>
@@ -94,8 +80,8 @@
 				                                
 				                                <div class="modal-footer justify-content">
 				                                	<div class="form-group">
-					                                    <button type="button" class="icon-button" data-dismiss="modal" title="Cancel"><i class="fas fa-2x fa-times-circle tooltips text-danger"></i></button>
-					                                    <button type="Submit" class="icon-button" data-placement="top" title="Save" id="btnRoleSubmit"><i class="fas fa-2x fa-save tooltips text-success"></i></button>
+					                                    <button type="button" class="icon-button" data-dismiss="modal" title="Cancel"><i class="fas fa-2x fa-times-circle tooltips text-danger" aria-hidden="true"></i></button>
+					                                    <button type="Submit" class="icon-button" data-placement="top" title="Save" id="btnRoleSubmit"><i class="fas fa-2x fa-save tooltips text-success" aria-hidden="true"></i></button>
 					                                </div>
 				                                </div>
 					                        </div>

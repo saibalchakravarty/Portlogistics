@@ -52,7 +52,7 @@ class  ExcelOrCsvExportService implements FromArray, WithHeadings, ShouldAutoSiz
 				$row = 2;
 				for($i =1 ;$i<=$dataCellCount;$i++)
 				{
-					$row = $i+1;
+					$row += $i;
 					$event->sheet->getDelegate()->getStyle('A'.$row.':'.$columns[$cellCount].$row)->getFont()->setSize(10);
 				}
 				
@@ -66,26 +66,18 @@ class  ExcelOrCsvExportService implements FromArray, WithHeadings, ShouldAutoSiz
             	$merge_columns = Coordinate::stringFromColumnIndex(count($this->excelHeader)-1);
             	$last_column = Coordinate::stringFromColumnIndex(count($this->excelHeader));
 	            // calculate last row + 1 (total results + header rows + column headings row + new row)
-	            $last_row = count($this->excelHeader) + 2 + 1 + 1;
-
 
 	            // at row 1, insert 2 rows
 	            $event->sheet->insertNewRowBefore(1);
 
 	            // merge cells for full-width
 	            $event->sheet->mergeCells(sprintf('A1:%s1',$merge_columns));
-	           // $event->sheet->mergeCells(sprintf('A2:%s2',$merge_columns));
-	           // $event->sheet->mergeCells(sprintf('A%d:%s%d',$last_row,$merge_columns,$last_row)); //merge the footer cell row
-
 	            // assign cell values
 	            $event->sheet->setCellValue('A1',$this->allInput['export_key'].' Data Export');
 	            $event->sheet->setCellValue($last_column.'1',date('d/m/Y'));
-	            // $event->sheet->setCellValue(sprintf('A%d',$last_row),'Footer add Description'); // set as comment for future reference
-
 	            // assign cell styles
 	            $event->sheet->getStyle('A1')->applyFromArray($styleArray);
 	            $event->sheet->getStyle($last_column.'1')->applyFromArray($styleArray);
-	            //$event->sheet->getStyle(sprintf('A%d',$last_row))->applyFromArray($styleArray);
 	            $event->sheet->getDelegate()->getStyle('A1')->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)->getStartColor()->setARGB('305496');
 	            $event->sheet->getDelegate()->getStyle($last_column.'1')->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)->getStartColor()->setARGB('305496');
             },

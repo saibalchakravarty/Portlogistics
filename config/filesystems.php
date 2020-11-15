@@ -85,7 +85,7 @@ return [
     'image_upload' =>[
         'doc_type'          =>['png','jpg','jpeg'],
         'size'              =>'2096',
-        'folder_path'       =>'storage/app/public',
+        'storage_path'       =>'app/public',
         'upload_directory'  =>'local'
     ],
 

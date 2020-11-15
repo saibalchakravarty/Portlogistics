@@ -129,8 +129,8 @@
                                 </div>
                             </div>
                             <div class="card-footer">
-                                <button type="submit" class="icon-button" title="Save"><i class="fas fa-3x fa-save tooltips text-success"></i></button>
-                                <button type="button" class="icon-button" title="Cancel"><a href="{{url('users')}}"><i class="fas fa-3x fa-times-circle tooltips text-danger"></i></a></button>
+                                <button type="submit" class="icon-button" title="Save"><i class="fas fa-3x fa-save tooltips text-success" aria-hidden="true"></i></button>
+                                <button type="button" class="icon-button" title="Cancel"><a href="{{url('users')}}"><i class="fas fa-3x fa-times-circle tooltips text-danger" aria-hidden="true"></i></a></button>
                             </div>
                         </form>
                     </div>

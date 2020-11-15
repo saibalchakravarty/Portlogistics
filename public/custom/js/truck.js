@@ -4,6 +4,7 @@ $(function() {
         "responsive": true,
         "order": [],
     });
+
     //form validation for add and delete
     $('#add_trucks').validate({
         rules: {
@@ -36,46 +37,48 @@ $(function() {
         unhighlight: function (element, errorClass, validClass) {
           $(element).removeClass('is-invalid');
         },
-        
-         submitHandler: function(form) {
-             //console.log(e);
-             if($("#hidden_id").val() != ""){
-                var text = "Updated";
-                var URL =  APP_URL+"/truck/"+$("#hidden_id").val();
-                var type = "PUT";
+
+
+        submitHandler: function(form) {
+            var URL = '';
+            var type = '';
+            if($("#hidden_id").val() != ""){
+                URL =  APP_URL+"/truck/"+$("#hidden_id").val();
+                type = "PUT";
             }else{
-                var URL =  APP_URL+"/truck";
-                var text = "Saved";
-                var type = "POST";
+                URL =  APP_URL+"/truck";
+                type = "POST";
             }  
-             $.ajax({
+            $.ajax({
                 type: type,
                 url: URL,
                 data: $(form).serialize(),
                 success: function(response) {
                     if(response.status_code == 200){
-                           Swal.fire({
+                        Swal.fire({
                              position: 'center',
                              icon: 'success',
                               title: response.message,
                              showConfirmButton: false,
-                             timer: 1500});
-                            window.location.reload();
-                        }else{
-                            var msg='';
-                            $.each(response.result, function (k,v)  {
-                             if(msg == '')
+                             timer: 1500
+                        });
+                        window.location.reload();
+                    }else{
+                        var msg='';
+                        $.each(response.result, function (k,v)  {
+                            if(msg == '')
                                 msg = v;
-                             else
+                            else
                                 msg = msg+', '+v;
-                            });
-                            Swal.fire("Error!", "'"+msg+"'", "error");
-                        }
+                        });
+                        Swal.fire("Error!", "'"+msg+"'", "error");
+                    }
                 }            
             });
         }    
     });
     
+    //To open add modal
     $("#add_trucks_btn").click(function () {   
         $('.form-control').removeClass('is-invalid');  
         $("#modal-default").modal("show");
@@ -85,63 +88,60 @@ $(function() {
         validator.resetForm();
         $('.modal-title').text("Add Truck");     
     });
+
     //Delete the Location row data
     $('#trucks').on('click', '.delete', function () {
-        
         var table = $('#trucks').DataTable();
         var rowData = table.row($(this).closest('tr')).data();
-
         var rowId = rowData[Object.keys(rowData)[2]];
         $("#truck_id").val(rowId);
         Swal.fire({
             title: "Are you sure?",
-            //text: "You won't be able to revert this!",
             icon: "warning",
             showCancelButton: false,
-            //confirmButtonColor: "#3085d6",
             showConfirmButton: false,
             html :`<p>You want to delete this Truck?</p></br>
             <span  class=" tooltips" data-placement="bottom"  title="Delete Truck" onClick="return deleteTruck();" style="cursor:pointer;"><i class="fas fa-3x fa-check-circle tooltips text-success"></i></span>
             <span  class=" tooltips" data-placement="bottom" title="Cancel" onClick="swal.close();" style="cursor:pointer;"><i class="fas fa-3x fa-times-circle tooltips text-danger"></i></span>`,
         });
     });
-
 });
 
-function editTruck(id)
-{       $('.form-control').removeClass('is-invalid');
-        $('.modal-title').text("Edit Truck");
-        $("#modal-default").modal("show");
-        var validator = $( "#add_trucks" ).validate();       
-        validator.resetForm();
-         $.ajax({
-                 url: APP_URL+"/truck/"+id,
-                 type: "GET",
-                 dataType: "json",
-                 success: function(response) {
-                     if(response.status == 'success'){
-                         $("#truck_no").val(response.result.truck_no);
-                         $("#truck_company_id").val(response.result.truck_company_id);
-                         $("#hidden_id").val(response.result.id);
-                     }else{
-                         var msg='';
-                         $.each(response.result, function (k,v)  {
-                          if(msg == '')
-                             msg = v;
-                          else
-                             msg = msg+', '+v;
-                         });
-                         Swal.fire("Error!", "'"+msg+"'", "error");
-                     }
-                 },
-                 error: function() {
-                     Swal.fire('Unable to get data Contact Support');
-                 }
-             });
-        
-        return false;
+//to edit truck
+function editTruck(id) {       
+    $('.form-control').removeClass('is-invalid');
+    $('.modal-title').text("Edit Truck");
+    $("#modal-default").modal("show");
+    var validator = $( "#add_trucks" ).validate();       
+    validator.resetForm();
+    $.ajax({
+        url: APP_URL+"/truck/"+id,
+        type: "GET",
+        dataType: "json",
+        success: function(response) {
+            if(response.status == 'success'){
+                $("#truck_no").val(response.result.truck_no);
+                $("#truck_company_id").val(response.result.truck_company_id);
+                $("#hidden_id").val(response.result.id);
+            }else{
+                var msg='';
+                $.each(response.result, function (k,v)  {
+                    if(msg == '')
+                        msg = v;
+                    else
+                        msg = msg+', '+v;
+                });
+                Swal.fire("Error!", "'"+msg+"'", "error");
+            }
+        },
+        error: function() {
+            Swal.fire('Unable to get data Contact Support');
+        }
+    });
+    return false;
  } 
 
+ //to delete truck
  function deleteTruck(){
     $.ajax({
         url: APP_URL+"/truck/"+$("#truck_id").val(),

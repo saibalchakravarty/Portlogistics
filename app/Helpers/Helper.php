@@ -1,5 +1,4 @@
 <?php
-
 if (!function_exists('css')) {
 
     /**
@@ -9,10 +8,10 @@ if (!function_exists('css')) {
      * @return string
      */
     function css($key = '') {
+        $cdnVersion = config('url.CDN_version');
         $get_data = config('static.css');
         $key_name = $get_data[$key];
-        $url = config('url.static_css_url') . '/' . $key_name . '?v=' . config('url.CDN_version');
-        return $url;
+        return config('url.static_css_url') . '/' . $key_name . '?v=' .$cdnVersion;
     }
 
 }
@@ -26,10 +25,10 @@ if (!function_exists('images')) {
      * @return string
      */
     function images($key = '') {
+        $cdnVersion = config('url.CDN_version');
         $get_data = config('static.images');
         $key_name = $get_data[$key];
-        $url = config('url.static_img_url') . '/' . $key_name . '?v=' . config('url.CDN_version');
-        return $url;
+       return config('url.static_img_url') . '/' . $key_name . '?v=' .$cdnVersion;
     }
 
 }
@@ -43,10 +42,10 @@ if (!function_exists('js')) {
      * @return string
      */
     function js($key = '') {
+        $cdnVersion = config('url.CDN_version');
         $get_data = config('static.js');
         $key_name = $get_data[$key];
-        $url = config('url.static_js_url') . '/' . $key_name . '?v=' . config('url.CDN_version');
-        return $url;
+        return config('url.static_js_url') . '/' . $key_name . '?v=' .$cdnVersion;
     }
 
 }
@@ -60,8 +59,8 @@ if (!function_exists('theme')) {
      * @return string
      */
     function theme($key = '') {
-        $url = config('url.static_theme_url') . '/' . $key . '?v=' . config('url.CDN_version');
-        return $url;
+        $cdnVersion = config('url.CDN_version');
+        return config('url.static_theme_url') . '/' . $key . '?v=' .$cdnVersion;
     }
 
 }

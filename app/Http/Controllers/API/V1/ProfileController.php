@@ -40,13 +40,13 @@ class ProfileController extends BaseController {
         $data['updated_at'] = date("Y-m-d H:i:s");
         $user = $this->userRepository->saveUser($data);
         if(!$user) {
-            return $this->sendError('Something went wrong','Something went wrong',$auth);
+            return $this->sendError([],$user['message'],$auth);
         }
         //Update Auth Values
         if(isset(Auth::user()->auth_browser)) {
             Auth::user();
         }
-        return $this->sendResponse($user['result'],"Name updated successfully",$auth);
+        return $this->sendResponse($user['result'],$user['message'],$auth);
     }
     
     public function updatePassword(ChangePasswordRequest $request) {
@@ -64,17 +64,16 @@ class ProfileController extends BaseController {
         $data['updated_at'] = date("Y-m-d H:i:s");
         $user = $this->userRepository->saveUser($data);
         if(!$user) {
-            return $this->sendError($user,'Something went wrong',$auth);
+            return $this->sendError($user,$user['message'],$auth);
         }
         //Update Auth Values
         if(isset(Auth::user()->auth_browser)) {
             Auth::user();
         }
-        return $this->sendResponse($user,"Password updated successfully",$auth);
+        return $this->sendResponse($user,$user['message'],$auth);
     }
     
     public function validateCurrentPassword(Request $request) {
-        $status = 'false';
         if($request->has('old_password')) {
             $inputs = $request->all();
             $auth = $this->getAuth($inputs);
@@ -104,7 +103,7 @@ class ProfileController extends BaseController {
         $allInput['last_image']         = $param['user_auth']['image_path'];
         $allInput['image_upload']       = Config::get('filesystems.image_upload');
         $response =  $this->imageUploadService->customImageUpload($allInput);
-        if($response['status'] == false){
+        if(!$response['status'] ){
             return $this->sendError($response,$response['message'],$param);
         }
         return $this->sendResponse([],$response['message'],$param);

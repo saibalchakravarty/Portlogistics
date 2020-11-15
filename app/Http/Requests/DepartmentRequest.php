@@ -14,7 +14,6 @@ class DepartmentRequest extends JsonRequest
     {
         return true;
     }
-
     /**
      * Get the validation rules that apply to the request.
      *
@@ -42,11 +41,11 @@ class DepartmentRequest extends JsonRequest
         }
         
     }
+    
     public function all($keys = null)
     {
         $data = parent::all();
-        $data =  array_merge($data, $this->route()->parameters());
-        return $data;
+        return array_merge($data, $this->route()->parameters());
     }
 
     public function messages()

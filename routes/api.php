@@ -145,7 +145,7 @@ Route::group([
     Route::delete('plan/truck/{plan_id}/{truck_id}','BtopPlanningController@deleteTruckForBtopPlan');
     
     //Planning API
-    Route::get('plans/detail/{origin_id?}','BtopPlanningController@getPlanningDetailsByBerthAndDate');
+    Route::get('plan/detail/{origin_id?}','BtopPlanningController@getPlanningDetailsByBerthAndDate');
     Route::get('plan/{id?}', 'BtopPlanningController@edit');
     Route::delete('plan/{id?}', 'BtopPlanningController@delete');
     Route::post('plan', 'BtopPlanningController@store');

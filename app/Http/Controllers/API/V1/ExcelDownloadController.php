@@ -1,7 +1,6 @@
 <?php
 
 namespace App\Http\Controllers\API\V1;
-
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Services\ExcelOrCsvExportService;
@@ -33,15 +32,8 @@ class ExcelDownloadController extends BaseController
         $configFilename = Config::get('export.filename');
         $configFilePath = Config::get('export.path');
         $fileName       = $configFilename.$allInput['export_key'].'DataExport_'.date('d-m-Y').'.xlsx';
-		$path           = $configFilePath.$allInput['organization_id'].'/'.$allInput['export_key'].'/';
-    	$excelheader =  $this->exportRepository->getExportHeaders($allInput);
-        $excelRowData = $this->exportRepository->getExportDetail($allInput);
-        //dd($excelRowData);
-    	/*if($response){
-            return $response;
-        }*/
-        // $data = ;
-        // dd($data);
-        return Excel::download(new ExcelOrCsvExportService($excelRowData,$excelheader,$allInput), $fileName);
+    	$excelheader     =  $this->exportRepository->getExportHeaders($allInput);
+        $excelRowData    = $this->exportRepository->getExportDetail($allInput);
+        return Excel::download(new ExcelOrCsvExportService($excelRowData,$excelheader['result'],$allInput), $fileName);
     }
 }

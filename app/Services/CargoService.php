@@ -29,8 +29,7 @@ class CargoService {
      * @return array ['status','message']
      */
     public function saveCargo($param){
-        $response = $this->cargoRepository->saveCargo($param);
-        return $response;
+        return $this->cargoRepository->saveCargo($param);
     }
 
      /**
@@ -40,8 +39,7 @@ class CargoService {
      * @return array ['status','message','result']
      */
     public function deleteCargo($param){
-        $response = $this->cargoRepository->deleteCargo($param);
-        return $response;
+        return $this->cargoRepository->deleteCargo($param);
     }
 
     /**
@@ -51,8 +49,7 @@ class CargoService {
      * @return array ['status','message','result']
      */
     public function editCargo($param){
-        $response = $this->cargoRepository->editCargo($param);
-        return $response;
+       return $this->cargoRepository->editCargo($param);
     }
 
     /**
@@ -62,7 +59,6 @@ class CargoService {
      * @return array ['status','message']
      */
     public function updateCargo($param){
-        $response = $this->cargoRepository->updateCargo($param);
-        return $response;
+       return $this->cargoRepository->updateCargo($param);
     }
 }

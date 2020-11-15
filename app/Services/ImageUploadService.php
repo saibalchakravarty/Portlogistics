@@ -5,6 +5,7 @@ use Log;
 use App\Libraries\ServerUpload;
 use App\Repositories\User\UserRepository;
 use Storage;
+use Exception;
 class ImageUploadService{
 	/*
 	* Description : Service function for profile image upload. Here Handle the functionality part
@@ -25,6 +26,8 @@ class ImageUploadService{
 	public function customImageUpload($allInput)
 	{
 		$fetch['status'] = true;
+		$imageDetail = Config::get('filesystems.image_upload');
+		$staticStoragePath = $imageDetail['storage_path'];
 		try{
 			if($allInput['image_upload']['upload_directory'] == 'local') // For Local upload
 			{
@@ -35,20 +38,20 @@ class ImageUploadService{
 					}
 		           	
 		            $fileName =  $allInput['user_id']."_".time().'.'.$allInput['image']->getClientOriginalExtension();
-		            $filePath = storage_path("app/public/".$path);
+		            $filePath = storage_path($staticStoragePath.$path);
 		            if(isset($allInput['last_image']))
 		            {
-		            	if(file_exists(storage_path("app/public/".$allInput['last_image']))){
-					        unlink(storage_path("app/public/".$allInput['last_image']));
+		            	if(file_exists(storage_path($staticStoragePath.$allInput['last_image']))){
+					        unlink(storage_path($staticStoragePath.$allInput['last_image']));
 					    };
 		            }
 		           
 		           	$uploadResponse = $this->serverUpload->upload($allInput['image'], $filePath,$fileName); // Sending to upload custom library function for Upload
-		            if($uploadResponse['status'] == true)
+		            if($uploadResponse['status'] )
 					{
 						$repoData = ["image_path" =>$path.$fileName,"user_id" =>$allInput['user_id'],"connection" =>$allInput['connection']];
 						$repoResponse =  $this->userRepository->saveProfileImage($repoData);
-						if($repoResponse['status'] == true)
+						if($repoResponse['status'] )
 						{
 							$fetch['message'] = 'Profile image uploaded successfully';
 						}

@@ -3,15 +3,12 @@
 namespace App\Http\Controllers\API\V1;
 use App\Services\CargoService;
 use App\Http\Requests\CargoFormRequest;
-
 use Illuminate\Http\Request;
 use Validator;
 use Crypt;
-
 class CargoController extends BaseController
 {
     protected $cargoService;
-
     public function __construct(CargoService $cargoService){
         $this->cargoService = $cargoService;
     }
@@ -38,7 +35,7 @@ class CargoController extends BaseController
         $param['view'] = 'cargo.index';
         $cargo = $this->cargoService->getAllCargos($param);
         $cargo['privileges'] = isset( $allInput['privilege_array'] )? $allInput['privilege_array'] : "";
-        if($cargo['status'] == false){
+        if(!$cargo['status']){
            return $this->sendError($cargo,'No record found !!!', $param);
         }
         return $this->sendResponse($cargo,'Cargo data fetch sucessfully', $param);
@@ -74,7 +71,7 @@ class CargoController extends BaseController
         $allInput['created_by'] = $param['user_id'];
         $allInput['connection'] = $param['connection'];
         $response = $this->cargoService->saveCargo($allInput);
-        if($response['status'] == false){
+        if(!$response['status']){
             return $this->sendError($response,$response['message'],$param);
         }
         return $this->sendResponse([],$response['message'],$param);    
@@ -113,7 +110,7 @@ class CargoController extends BaseController
         $allInput['connection'] = $param['connection'];
         $allInput['id'] = $request->id;
         $response = $this->cargoService->deleteCargo($allInput);
-        if($response['status'] == false){
+        if(!$response['status']){
             return $this->sendError($response['result'],$response['message'],$param);
         }
         return $this->sendResponse($response['result'],$response['message'],$param);    
@@ -152,7 +149,7 @@ class CargoController extends BaseController
         $allInput['connection'] = $param['connection'];
         $allInput['id'] =$request->id;
         $response = $this->cargoService->editCargo($allInput);
-        if($response['status'] == false){
+        if(!$response['status']){
             return $this->sendError($response['result'],$response['message'],$param);
         }
         return $this->sendResponse($response['result'],$response['message'],$param);    
@@ -202,10 +199,9 @@ class CargoController extends BaseController
         $allInput['connection'] = $param['connection'];
         $allInput['id'] = $request->id;
         $response = $this->cargoService->updateCargo($allInput);
-        if($response['status'] == false){
+        if(!$response['status']){
             return $this->sendError($response['result'],$response['message'],$param);
         }
         return $this->sendResponse($response['result'],$response['message'],$param);    
     }
-    
 }

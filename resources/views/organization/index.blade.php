@@ -8,23 +8,9 @@
 <div class="content-wrapper">
     <!-- Content Header (Page header) -->
     <div class="content-header">
-        <!-- <div class="container-fluid">
-            <div class="row mb-2">
-                <div class="col-sm-6">
-                    <h1 class="m-0 text-dark">Organization Information</h1>
-                </div>
-                <div class="col-sm-6">
-                    <ol class="breadcrumb float-sm-right">
-                        <li class="breadcrumb-item"><a href="#">Administration</a></li>
-                        <li class="breadcrumb-item active">Organization</li>
-                    </ol>
-                </div>
-            </div>
-        </div> -->
     </div>
     <!-- /.content-header -->
     @if($status!='failed')
-     <?php //dd($result);?>
     <!-- Main content -->
     <section class="content">
         <div class="container">
@@ -43,33 +29,34 @@
                                     <div class="col-sm-6">
                                         <h4>Name and Information &nbsp;&nbsp;
                                             
-                                                <button type="button" class="btn tooltips" id="orgNameEdit" name="orgNameEdit" visibility="hidden" title="Update Organization" data-target="right"><i class="fas fa-pencil-alt"></i></button>
-                                                <button type="submit" class="btn tooltips" id="orgNameSave" name="orgNameSave" visibility="hidden" title="Update Organization" data-target="right"><i class="fas fa-save"></i></button>
+                                                <button type="button" class="btn tooltips" id="orgNameEdit" name="orgNameEdit" visibility="hidden" title="Update Organization" data-target="right"><i class="fas fa-pencil-alt" aria-hidden="true"></i></button>
+                                                <button type="submit" class="btn tooltips" id="orgNameSave" name="orgNameSave" visibility="hidden" title="Update Organization" data-target="right" aria-hidden="true"><i class="fas fa-save"></i></button>
                                            
                                         </h4>    
                                     </div>
                                 </div>
                                 <!-- /.name and information card header -->
                                 <fieldset id="disableOrg" disabled="disabled">
+                                    <legend></legend>
                                     <!-- /.name and information card body -->
                                     <div class="row">
                                         <div class="col-sm-4">
                                     <div class="card-body">
                                         <input type="text" class="text-line" id="id" name="id" value="{{ $result['organization']['organization']->id }}" hidden/> 
                                         <div class="form-group">
-                                            <label for="name">Organization Name<!-- <span class="text-danger">*</span> --></label><br>
+                                            <label for="name">Organization Name</label><br>
                                             <input type="text" class="text-line w-75" id="name" name="name" value="{{ $result['organization']['organization']->name }}"/>
                                         </div>
                                         <div class="form-group">
-                                            <label for="mobile_no">Phone<!-- <span class="text-danger">*</span> --></label><br>
+                                            <label for="mobile_no">Phone</label><br>
                                             <input type="text" class="text-line w-75" id="mobile_no" name="mobile_no" value="{{ $result['organization']['organization']->mobile_no }}"/>
                                         </div>
                                         <div class="form-group">
-                                            <label for="email">Email<!-- <span class="text-danger">*</span> --></label><br>
+                                            <label for="email">Email</label><br>
                                             <input type="text" class="text-line w-75" id="email" name="email" value="{{ $result['organization']['organization']->email }}" readonly/>
                                         </div>
                                         <div class="form-group">
-                                            <label for="address">Address<!-- <span class="text-danger">*</span> --></label><br>
+                                            <label for="address">Address</label><br>
                                             <input type="text" class="text-line w-75" id="address" name="address" value="{{ $result['organization']['organization']->address}}"/>
                                         </div>
                                     </div>  
@@ -80,15 +67,15 @@
                                                 <label for="name">Primary Contact</label>
                                             </div>
                                             <div class="form-group">                                                
-                                                <label for="primary_contact">Name<!-- <span class="text-danger">*</span> --></label><br>
+                                                <label for="primary_contact">Name</label><br>
                                                 <input type="text" class="text-line w-75" id="primary_contact" name="primary_contact" value="{{ $result['organization']['organization']->primary_contact }}"/>
                                             </div>
                                             <div class="form-group">
-                                                <label for="primary_mobile_no">Phone<!-- <span class="text-danger">*</span> --></label><br>
+                                                <label for="primary_mobile_no">Phone</label><br>
                                                 <input type="text" class="text-line w-75" id="primary_mobile_no" name="primary_mobile_no" value="{{ $result['organization']['organization']->primary_mobile_no }}"/>
                                             </div>
                                             <div class="form-group">
-                                                <label for="primary_email">Email<!-- <span class="text-danger">*</span> --></label><br>
+                                                <label for="primary_email">Email</label><br>
                                                 <input type="text" class="text-line w-75" id="primary_email" name="primary_email" value="{{ $result['organization']['organization']->primary_email }}"/>
                                             </div>
                                         </div>  
@@ -100,15 +87,15 @@
                                               <label for="name">Secondary Contact</label>  
                                             </div>                                            
                                             <div class="form-group">
-                                                <label for="secondary_contact">Name<!-- <span class="text-danger">*</span> --></label><br>
+                                                <label for="secondary_contact">Name</label><br>
                                                 <input type="text" class="text-line w-75" id="secondary_contact" name="secondary_contact" value="{{ $result['organization']['organization']->secondary_contact }}"/>
                                             </div>
                                             <div class="form-group">
-                                                <label for="secondary_mobile_no">Phone<!-- <span class="text-danger">*</span> --></label><br>
+                                                <label for="secondary_mobile_no">Phone</label><br>
                                                 <input type="text" class="text-line w-75" id="secondary_mobile_no" name="secondary_mobile_no" value="{{ $result['organization']['organization']->secondary_mobile_no }}"/>
                                             </div>
                                             <div class="form-group">
-                                                <label for="secondary_email">Email<!-- <span class="text-danger">*</span> --></label><br>
+                                                <label for="secondary_email">Email</label><br>
                                                 <input type="text" class="text-line w-75" id="secondary_email" name="secondary_email" value="{{ $result['organization']['organization']->secondary_email }}"/>
                                             </div>
                                         </div>  
@@ -142,7 +129,7 @@
                                     
                                         <div class="form-group">
                                             <input type="text" class="text-line" id="id" name="id" value="{{ $result['organization']['organization']->id}}" hidden/>
-                                            <label for="currency_id">Currency<!-- <span class="text-danger">*</span> --></label><br>
+                                            <label for="currency_id">Currency</label><br>
                                             <select class="text-line" id="currency_id" name="currency_id">
                                                 <option></option>
                                                 @if(!empty($result['currencies']['currencies']))
@@ -153,7 +140,7 @@
                                             </select>
                                         </div>
                                         <div class="form-group">
-                                            <label for="currency_code">Rates per Trip<!-- <span class="text-danger">*</span> --></label><br>
+                                            <label for="currency_code">Rates per Trip</label><br>
                                             <select  id="currency_code" name="currency_code" class="text-line readonly" disabled>
                                                 <option></option>
                                                 @if(!empty($result['currencies']['currencies']))

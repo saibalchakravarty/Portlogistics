@@ -38,12 +38,11 @@ class LocationController extends BaseController
         $param['view'] = 'location.index';
         $location = $this->locationRepository->getAllLocation($param);  
         $location['privileges'] =   isset( $allInput['privilege_array'] )? $allInput['privilege_array'] : "";
-        //dd($param);
-        if ($location['status'] == false)
+        if (!$location['status'] )
         {
-            return $this->sendError($location,'No record found !!!', $param);
+            return $this->sendError($location,$location['message'], $param);
         } else {
-            return $this->sendResponse($location,'Location data fetched sucessfully', $param);
+            return $this->sendResponse($location,$location['message'], $param);
         }
     }
 
@@ -78,11 +77,10 @@ class LocationController extends BaseController
         $param  = $this->getAuth($allInput);
         $allInput['created_by'] = $param['user_id'];
         $allInput['connection'] = $param['connection'];
-        //dd($allInput);
         $response = $this->locationRepository->store($allInput);
-        if($response['status'] == false)
+        if(!$response['status'])
         {
-            return $this->sendError($response,'Something went wrong',$param);
+            return $this->sendError($response,$response['message'],$param);
         }
         return $this->sendResponse([],$response['message'],$param);
     }
@@ -131,8 +129,8 @@ class LocationController extends BaseController
         $allInput['updated_by'] = $param['user_id'];
         $allInput['connection'] = $param['connection'];
         $response = $this->locationRepository->update($allInput);
-        if($response['status'] == false){
-            return $this->sendError($response,'Something went wrong',$param);
+        if(!$response['status']){
+            return $this->sendError($response,$response['message'],$param);
         }
         return $this->sendResponse([],$response['message'],$param);
     }
@@ -170,8 +168,8 @@ class LocationController extends BaseController
         $param  = $this->getAuth($allInput);
         $allInput['connection'] = $param['connection'];
         $response = $this->locationRepository->destroy($allInput);
-        if($response['status'] == false){
-            return $this->sendError($response,'Something went wrong',$param);
+        if(!$response['status']){
+            return $this->sendError($response,$response['message'],$param);
         }
         return $this->sendResponse([],$response['message'],$param);   
     }
@@ -209,8 +207,8 @@ class LocationController extends BaseController
         $param  = $this->getAuth($allInput); 
         $allInput['connection'] = $param['connection'];
         $response = $this->locationRepository->edit($allInput);
-        if($response['status'] == false){
-            return $this->sendError($response,'Record not found',$param);
+        if(!$response['status']){
+            return $this->sendError($response,$response['message'],$param);
         }
         return $this->sendResponse($response['result'],$response['message'],$param);
     }

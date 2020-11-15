@@ -8,10 +8,10 @@
 
 @section('content')
   <div class="container">
-    <img src="https://i.imgur.com/qIufhof.png" height=250 width=250/>
+    <img src="https://i.imgur.com/qIufhof.png" height=250 width=250 alt=""/>
     <br>
     <h1>
-      <span><b>500<b></span><br/>
+      <span><strong>500</strong></span><br/>
     </h1>
     <h2>
       Oops! Something went wrong..

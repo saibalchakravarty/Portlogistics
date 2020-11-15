@@ -22,7 +22,7 @@ trait CustomTrait {
             $password_length = strlen($password);
             $salt = config('constants.app_salt');
             $m = substr($password, 0, 4) . $salt . substr($password, 4, ($password_length-4)) . $salt;
-            $passcode = md5($m);
+            $passcode = password_hash($m, PASSWORD_BCRYPT);
             $strlen = strlen($passcode);
             if ($strlen == 31) {
                 $passcode = '0' . $passcode;
@@ -55,11 +55,7 @@ trait CustomTrait {
                    }
                }
            }
-           if (count($arr) !== count(array_unique($arr, SORT_REGULAR))) {
-               return true;
-           } else {
-               return false;
-           }
+           return count($arr) !== count(array_unique($arr, SORT_REGULAR));
        } else {
            return false;
        }

@@ -8,7 +8,7 @@ use Log;
 
 class UserRepository
 {
-
+    public $catchErrorMsg = 'Something Went Wrong';
     /**
      * Get User Details By Id
      * @param  string $currentUserId
@@ -23,6 +23,7 @@ class UserRepository
             Log::error($e->getMessage());
             return false;
         }
+        unset($userArray);
         return $userArray;
     }
 
@@ -34,6 +35,7 @@ class UserRepository
      */
     public function getUsers($inputs)
     {
+        global  $catchErrorMsg;
         $response['status'] = true;
         try {
             $users = new User();
@@ -49,9 +51,9 @@ class UserRepository
             Log::error($e->getMessage());
             $response['status'] = false;
             $response['result'] = $e->getMessage();
-            $response['message'] = 'Something Went Wrong';
-            return $response;
+            $response['message'] = $catchErrorMsg;
         }
+        unset($users);
         return $response;
     }
 
@@ -64,6 +66,7 @@ class UserRepository
      */
     public function getUser($inputs)
     {
+        global  $catchErrorMsg;
         $response['status'] = true;
         try {
             $user = new User();
@@ -81,13 +84,15 @@ class UserRepository
             Log::error($e->getMessage());
             $response['status'] = false;
             $response['result'] = $e->getMessage();
-            $response['message'] = 'Something Went Wrong';
+            $response['message'] = $catchErrorMsg;
         }
+        unset($user);
         return $response;
     }
     
     //Store or Update User Details
     public function saveUser($inputs) {
+        global  $catchErrorMsg;
         $response['status'] = true;
         try {
             $user = new User();
@@ -163,17 +168,21 @@ class UserRepository
                 $response['result'] = $user;
             } else {
                 $response['status'] = false;
+                $response['message'] = 'Unable update User data';
             }
-            return $response;
+            
         } catch (Exception $e) {
             Log::error($e->getMessage());
             $response['result'] = $e->getMessage();
-            return $response;
+            $response['message'] = $catchErrorMsg;
         }
+        unset($user);
+        return $response;
     }
 
     public function checkIfEmailExist($data)
     {
+        global  $catchErrorMsg;
         $fetch['status'] = false;
         $fetch['result'] = "User Doesn't Exist";
         try {
@@ -183,14 +192,14 @@ class UserRepository
                 $fetch['user'] = $user;
                 $fetch['status'] = true;
             }
-            return $fetch;
         } catch (Exception $e) {
             Log::error($e->getMessage());
             $fetch['status'] = false;
             $fetch['result'] = $e->getMessage();
-            $fetch['message'] = 'Something Went Wrong';
-            return $fetch;
+            $fetch['message'] = $catchErrorMsg;
         }
+        unset($user);
+        return $fetch;
     }
 
     /*@Description : To save user profile image path in to users table
@@ -200,6 +209,7 @@ class UserRepository
     */
     public function saveProfileImage($allInput)
     {
+        global  $catchErrorMsg;
         $fetch['status'] = true;
         try{
             $user = new User();
@@ -219,15 +229,13 @@ class UserRepository
                     $fetch['message'] = "Unable to save Image data ";
                 }
             }
-            return $fetch;
         }catch (Exception $e) {
             Log::error($e->getMessage());            
             $fetch['status'] = false;
             $fetch['result'] = $e->getMessage();
-            $fetch['message'] = 'Something Went Wrong';
-            return $fetch;
+            $fetch['message'] = $catchErrorMsg;
         }
-
-
+        unset($user);
+        return $fetch;
     }
 }

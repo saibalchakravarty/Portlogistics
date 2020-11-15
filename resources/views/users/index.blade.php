@@ -30,12 +30,12 @@ $privilegeArr = isset($result['privileges']['display_name']) ? $result['privileg
                                     <form action="{{url('csv-export')}}" method="post">
                                         @csrf
                                         <input type="hidden" name="key" value="Users">
-                                        <button type="submit" class="btn btn-primary float-right tooltips "><i class="fa fa-file-excel"></i> Export</button>
+                                        <button type="submit" class="btn btn-primary float-right tooltips "><i class="fa fa-file-excel" aria-hidden="true"></i> Export</button>
                                     </form>
 
 
                                     <a href="{{url('user')}}" class="btn btn-success tooltips" data-placement="top">
-                                        <i class="fa fa-plus"></i> Add New User
+                                        <i class="fa fa-plus" aria-hidden="true"></i> Add New User
                                     </a>
 
                                 </div>
@@ -44,19 +44,19 @@ $privilegeArr = isset($result['privileges']['display_name']) ? $result['privileg
 
                         <!-- /.card-header -->
                         <div class="col-md-12 table p-4">
-                           <table id="userlisttbl" class="table table-striped table-responsive">
+                           <table summary="Users Details" id="userlisttbl" class="table table-striped table-responsive">
 
                                 <thead>
                                     <tr>
-                                        <th>Id</th>
-                                        <th width="15%"> User Name</th>
-                                        <th>Phone</th>
-                                        <th>Address</th>
-                                        <th>Email</th>
-                                        <th>Department</th>
-                                        <th>Role</th>
-                                        <th>Is Active</th>
-                                        <th>Action</th>
+                                        <th scope="column">Id</th>
+                                        <th style="width:15%" scope="column"> User Name</th>
+                                        <th scope="column">Phone</th>
+                                        <th scope="column">Address</th>
+                                        <th scope="column">Email</th>
+                                        <th scope="column">Department</th>
+                                        <th scope="column">Role</th>
+                                        <th scope="column">Is Active</th>
+                                        <th scope="column">Action</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -73,7 +73,7 @@ $privilegeArr = isset($result['privileges']['display_name']) ? $result['privileg
 
 
                                         <td align="center">
-                                            <a class="btn" title="Update User" href="{{url('user/'.$result->id)}}"><i class="fas fa-user-edit"></i></a>
+                                            <a class="btn" title="Update User" href="{{url('user/'.$result->id)}}"><i class="fas fa-user-edit" aria-hidden="true"></i></a>
                                         </td>
 
                                     </tr>

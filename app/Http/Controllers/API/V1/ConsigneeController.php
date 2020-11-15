@@ -11,7 +11,6 @@ class ConsigneeController extends BaseController
     public function __construct(ConsigneeRepository $consigneeRepository){
         $this->consigneeRepository = $consigneeRepository;
     }
-
     /**
     * @OA\Get(
     *   path="/consignee",
@@ -35,12 +34,11 @@ class ConsigneeController extends BaseController
         $param['view'] = 'consignee.index';
         $response = $this->consigneeRepository->getAllConsignees($allInput);
         $response['privileges'] =   isset( $allInput['privilege_array'] )? $allInput['privilege_array'] : "";
-        if($response['status'] == false){
+        if(!$response['status']){
            return $this->sendError($response,$response['message'], $param);
         }
         return $this->sendResponse($response,$response['message'], $param);
     }
-
      /**
      * @OA\Post(
      ** path="/consignee",
@@ -71,16 +69,15 @@ class ConsigneeController extends BaseController
         $allInput['created_by'] = $param['user_id'];
         $allInput['connection'] = $param['connection'];
         $existName = $this->consigneeRepository->checkUniqueConsigneeName($allInput);
-        if($existName['status']==false){
+        if(!$existName['status']){
             return $this->sendError($existName['data'],$existName['message'],$param);
         }   
         $response = $this->consigneeRepository->storeConsignee($allInput);
-        if($response['status'] == false){
+        if(!$response['status']){
             return $this->sendError($response['data'],$response['message'],$param);
         }
         return $this->sendResponse($response['data'],$response['message'],$param);    
     }
-
     /**
      * @OA\Delete(
      ** path="/consignee/{id}",
@@ -114,16 +111,15 @@ class ConsigneeController extends BaseController
         $allInput['id'] = $request->id;
         $allInput['connection'] = $param['connection'];
         $existId = $this->consigneeRepository->checkExistsConsigneeById($allInput);   
-        if($existId['status']==false){
+        if(!$existId['status']){
             return $this->sendError($existId['data'],$existId['message'],$param);
         }
         $response = $this->consigneeRepository->deleteConsigneeById($allInput);
-        if($response['status'] == false){
+        if(!$response['status']){
             return $this->sendError($response['data'],$response['message'],$param);
         }
         return $this->sendResponse($response['data'],$response['message'],$param);    
     }
-
     /**
      * @OA\Get(
      ** path="/consignee/{id}",
@@ -156,12 +152,11 @@ class ConsigneeController extends BaseController
         $allInput['id'] = $request->id;
         $allInput['connection'] = $param['connection'];
         $response = $this->consigneeRepository->getConsigneeById($allInput);
-        if($response['status'] == false){
+        if(!$response['status']){
             return $this->sendError($response['data'],$response['message'],$param);
         }
         return $this->sendResponse($response['data'],$response['message'],$param);    
     }
-    
     /**
      * @OA\Put(
      ** path="/consignee/{id}",
@@ -203,18 +198,21 @@ class ConsigneeController extends BaseController
         $allInput['updated_by'] = $param['user_id'];
         $allInput['connection'] = $param['connection'];
         $existId = $this->consigneeRepository->checkExistsConsigneeById($allInput);
-        if($existId['status']==false){
-            return $this->sendError($existId['data'],$existId['message'],$param);
+        if(!$existId['status']){
+            $send = $this->sendError($existId['data'],$existId['message'],$param);
         }
         $existName = $this->consigneeRepository->checkUniqueConsigneeName($allInput);
-        if($existName['status'] ==false){
-            return $this->sendError($existName['data'],$existName['message'],$param);
+        if(!$existName['status']){
+            $send = $this->sendError($existName['data'],$existName['message'],$param);
         } 
         $response = $this->consigneeRepository->updateConsigneeById($allInput);
-        if($response['status'] == false){
-            return $this->sendError($response['data'],$response['message'],$param);
+        if(!$response['status']){
+            $send = $this->sendError($response['data'],$response['message'],$param);
         }
-        return $this->sendResponse($response['data'],$response['message'],$param);    
+        if($response['status']){
+            $send = $this->sendResponse($response['data'],$response['message'],$param);
+        }
+        return $send;    
     }
     
 }

@@ -55,8 +55,7 @@ class TruckCompanyFormRequest extends JsonRequest
     public function all($keys = null)
     {
         $data = parent::all();
-        $data =  array_merge($data, $this->route()->parameters());
-        return $data;
+        return array_merge($data, $this->route()->parameters());
     }
 
     public function messages()

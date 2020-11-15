@@ -255,6 +255,11 @@ body{
     color:#fff;
     box-shadow: 0px 0px 10px 1px #4c4c4c;
 }
+.dropdown-menu.show {
+    display: block;
+    height: 170px;
+    overflow: auto;
+}
 
 .brand-link {
     border-bottom: none !important;
@@ -464,14 +469,20 @@ table .fas{
 .text-label-1{
     color: #ffce57;
     font-weight: 700;
+    text-transform: capitalize;
 }
 .text-label-2 {
     color: #3ca5ec;
     font-weight: 700;
+    text-transform: capitalize;
 }
 .text-label-3 {
     color: #ff6686;
     font-weight: 700;
+    text-transform: capitalize;
+}
+#btp,#ptp td {
+    text-transform: capitalize;
 }
 
 .form-control:disabled, .form-control[readonly] {

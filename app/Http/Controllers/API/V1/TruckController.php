@@ -16,7 +16,6 @@ class TruckController extends BaseController
         $this->truckRepository = $truckRepository;
         $this->truckCompanyRepository = $truckCompanyRepository;
     }
-
     /**
     * @OA\GET(
     *   path="/truck",
@@ -33,27 +32,25 @@ class TruckController extends BaseController
     *   security={{ "apiAuth": {} }}
     *     )
     */
-    public function getAllTrucks(Request $request) 
-    {
+    public function getAllTrucks(Request $request){
         $data['status'] = false;
         $allInput = $request->all();
         $param  = $this->getAuth($allInput);        
         $param['view'] = 'truck.index';
         $trucks = $this->truckRepository->getAllTrucks($param);
         $trucking_company = $this->truckCompanyRepository->getAllTruckCompanies($param);
-        if($trucks['status'] == true && $trucking_company['status'] == true)
+        if($trucks['status'] && $trucking_company['status'])
         {
             $data['status'] = true;
             $data['trucks'] = $trucks['trucks'];
             $data['trucking_company'] = $trucking_company['truck_company'];
             $data['privileges'] =   isset( $allInput['privilege_array'] )? $allInput['privilege_array'] : "";
         }
-        if($data['status'] == false){
+        if(!$data['status']){
            return $this->sendError($data,'No record found !!!', $param);
         }
         return $this->sendResponse($data,'Truck data fetch sucessfully', $param);
     }
-
     /**
      * @OA\POST(
      ** path="/truck",
@@ -79,23 +76,19 @@ class TruckController extends BaseController
      *)
      */
     public function storeTrucks(TruckFormRequest $request){ 
-        
         $allInput = $request->all();
         $param  = $this->getAuth($allInput);
         $allInput['created_by'] = $param['user_id'];
         $allInput['connection'] = $param['connection'];
-        //dd($allInput);
-        if($allInput['truck_company_id'] == null)
-        {
-            $allInput['truck_company_id'] = Config::get('constants.default_truck_company');;
+        if($allInput['truck_company_id'] == null) {
+            $allInput['truck_company_id'] = Config::get('constants.default_truck_company');
         }
         $response = $this->truckRepository->saveTruck($allInput);
-        if($response['status'] == false){
+        if(!$response['status']) {
             return $this->sendError($response,$response['message'],$param);
         }
         return $this->sendResponse([],$response['message'],$param); 
     }
-
     /**
      * @OA\GET(
      ** path="/truck/{id}",
@@ -128,13 +121,11 @@ class TruckController extends BaseController
         $allInput['connection'] = $param['connection'];
         $allInput['id'] = $request->id;
         $response = $this->truckRepository->editTruck($allInput);
-
-        if($response['status'] == false){
+        if(!$response['status']){
             return $this->sendError($response,'Record not found',$param);
         }
         return $this->sendResponse($response['result'],$response['message'],$param);
     }
-
     /**
      * @OA\PUT(
      ** path="/truck/{id}",
@@ -177,12 +168,11 @@ class TruckController extends BaseController
         $allInput['updated_by'] = $param['user_id'];
         $allInput['connection'] = $param['connection'];
         $response = $this->truckRepository->updateTruck($allInput);
-        if($response['status'] == false){
+        if(!$response['status']){
             return $this->sendError($response,$response['message'],$param);
         }
         return $this->sendResponse([],$response['message'],$param); 
     }
-
     /**
      * @OA\DELETE(
      ** path="/truck/{id}",
@@ -215,7 +205,7 @@ class TruckController extends BaseController
         $allInput['connection'] = $param['connection'];
         $allInput['id'] = $request->id;
         $response =  $this->truckRepository->deleteTruck($allInput);
-        if($response['status'] == false){
+        if(!$response['status']){
             return $this->sendError($response,$response['message'],$param);
         }
         return $this->sendResponse([],$response['message'],$param);

@@ -57,7 +57,7 @@ class UserController extends BaseController {
         }
         $response = $this->userRepository->getUsers($param);
         $response['privileges'] =   isset( $inputs['privilege_array'] )? $inputs['privilege_array'] : "";
-        if($response['status'] == false){
+        if(!$response['status'] ){
            return $this->sendError($response,'No record found !!!', $param);
         }
         return $this->sendResponse($response,'User data fetched sucessfully', $param);
@@ -109,7 +109,7 @@ class UserController extends BaseController {
         $inputs = $request->all();
         $auth  = $this->getAuth($inputs);
         $response = $this->save($inputs, $auth);
-        if($response['status'] == true) {
+        if($response['status']) {
             return $this->sendResponse([],$response['message'],$auth);
         } else {
             return $this->sendError($response['message'],$response['message'],$auth);
@@ -197,7 +197,7 @@ class UserController extends BaseController {
         $inputs = $request->all();
         $auth  = $this->getAuth($inputs);
         $response = $this->save($inputs, $auth);
-        if($response['status'] == true) {
+        if($response['status']) {
             return $this->sendResponse([],$response['message'],$auth);
         } else {
             return $this->sendError($response['message'],$response['message'],$auth);
@@ -263,12 +263,8 @@ class UserController extends BaseController {
     public function validateEmail($inputs) {
         $validateInput = ['email' => $inputs['email'], 'connection' => $inputs['connection']];
         $response = $this->userRepository->getUser($validateInput);
-        if($response['status'] == true) {
-            if(isset($inputs['id']) && !empty($inputs['id']) && ($response['result']->id == $inputs['id'])) {
-                return true;
-            } else {
-                return false;
-            }
+        if($response['status']) {
+            return isset($inputs['id']) && !empty($inputs['id']) && ($response['result']->id == $inputs['id']);
         } else {
             return true;
         }

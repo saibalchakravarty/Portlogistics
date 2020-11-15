@@ -41,26 +41,35 @@ class SendEmailLibrary
         }
         $view = $this->sendEmailService->generateEmailTemplate($email_data['template']);
         $heading = $this->sendEmailService->generateEmailHeading($email_data['template']);
-        if (!$checkSendEmail['isError'] && !empty($checkSendEmail['data'])) {
+        if (!$checkSendEmail['isError'] && !empty($checkSendEmail['data'])) 
+        {
            $diff = $this->calculateDifferenceSeconds($checkSendEmail['data']->updated_at);
-            if ($diff <= config('constants.email_resend_time')) { //If diff between now and last updated at <= email resend time
+            if ($diff <= config('constants.email_resend_time')) 
+            { //If diff between now and last updated at <= email resend time
                 return ['status' => 'success', 'message' => 'Please check your inbox'];
-            } else { //If diff between now and last updated at > email resend time
-                if($diff >= config('constants.email_token_expiry_time')) { //If token time is expired, generate a new token
+            } else 
+            { //If diff between now and last updated at > email resend time
+                if($diff >= config('constants.email_token_expiry_time')) 
+                { //If token time is expired, generate a new token
                     $email_data['token'] = $this->generateRandomToken();
                     $updatestatus = $this->sendEmailRepository->updateSendEmail($email_data);
-                    if (!$updatestatus) {
-                        return ['status' => 'failed', 'message' => 'something went wrong'];
+                    if (!$updatestatus) 
+                    {
+                        $errorMsg = 'something went wrong';
+                        return ['status' => 'failed', 'message' =>$errorMsg];
                     }
-                } else { //If token time is not expired, send the same token again
+                } else
+                { //If token time is not expired, send the same token again
                     $email_data['token'] = $checkSendEmail['data']->token;
                 }
             }
         }
-        if (!$checkSendEmail['isError'] && empty($checkSendEmail['data'])) {
+        if (!$checkSendEmail['isError'] && empty($checkSendEmail['data'])) 
+        {
             $email_data['token'] = $this->generateRandomToken();
             $status = $this->sendEmailRepository->saveSendEmail($email_data);
-            if (!$status) {
+            if (!$status) 
+            {
                 return ['status' => 'failed', 'message' => 'something went wrong'];
             }
         }

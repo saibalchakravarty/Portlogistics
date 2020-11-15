@@ -20,15 +20,9 @@ class APIAccess
      */
     public function handle($request, Closure $next)
     {
-        $apiVersion = Config::get('constants.api_version');
         $response['message'] = "";
         $response['status'] = true;
-        //$addApiVersion = 'api/v'.$apiVersion.'/';
         $routeUrl = $request->route()->uri;
-       // dd($routeUrl);
-        //list($api,$route) = explode($addApiVersion, $routeUrl);
-       // $routeUrl = substr($routeUrl, strrpos($routeUrl, '/') + 1);
-       // $routeUrl =  $addApiVersion. $routeUrl;
         $userId = Auth::user()->id;
         $userRoleId = Auth::user()->role_id;
         $accessListObj = new AccessList();

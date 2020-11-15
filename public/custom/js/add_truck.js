@@ -1,15 +1,15 @@
 $(function () {
-    var selectedTrucks = [];
     $('.select2').select2({        
         tags: true,
     })
     
     $('.cmb_truck').on('change', function() {
-         $('.cmb_truck ').each(function () {
+        $('.cmb_truck ').each(function () {
             $('.cmb_truck').valid();       
-     });
+        });
     });
-  $('.truck_company').on('select2:select', function (e) {
+
+    $('.truck_company').on('select2:select', function (e) {
 	 	$(this).valid();
 	});
 
@@ -19,8 +19,7 @@ $(function () {
              if($(this).find('.truck_company option:selected').text() == ""){
                  $('#-error').remove();
              }
-        });
-                
+        });     
         $('.cmb_truck ').each(function () {            
             $(this).rules("add", {
                 required: true,
@@ -29,7 +28,7 @@ $(function () {
                 }
             });
         });
-        $('.truck_company').each(function (e) {             
+        $('.truck_company').each(function () {             
                 $(this).rules("add", {
                 required: true,
                 messages: {
@@ -37,11 +36,12 @@ $(function () {
                 }
             });
         });
-          $('.truck_company').on('select2:select', function (e) {
-	 	$(this).valid();
-	});
+        $('.truck_company').on('select2:select', function () {
+	 	    $(this).valid();
+	    });
         e.preventDefault();
     });
+
     $('#addTruckForm').validate({
         errorElement: 'div',
         errorPlacement: function (error, element) {
@@ -147,10 +147,9 @@ $(document).on('change', '.truck', function () {
     trucking_company_id = $(el).closest('.planTruckDetailTr').find('.truck_company').val(); 
     $(el).closest('.planTruckDetailTr').find('.truck_company_id').val(trucking_company_id);
 });
+
 $(document).on('change', '.cmb_truck', function () {
-    
     var selection = '<select  style="font-size:0.8rem"  class="form-control select2 truck truck_company"  trucking_company_name=""><option value="">Select Trucking Company</option>';
-    
     $.each(truck_company, (key, val) => {
         selection += '<option value="' + val.id + '">' + val.name + '</option>';
     });
@@ -165,7 +164,6 @@ $(document).on('change', '.cmb_truck', function () {
         }
         else {
             $(el).closest('.planTruckDetailTr').find('.trucking_company').html(selection);
-
         }
         $(el).closest('.planTruckDetailTr').find('.hdn_truck_id').val(el.find('option:selected').val());
     } else {
@@ -178,17 +176,15 @@ $(document).on('click', '.remove_plan_details', function () {
     var el = $(this);
     if ($(".planTruckDetailTr").length > 1) {
         var getId = $(el).closest('.planTruckDetailTr').find('.hdn_truck_id').val();
-
-        var el = $(this);
+        el = $(this);
         if (el.closest('tr').find('.hdnPlanDetailId').val() !== '') {
             Swal.fire({
                 title: 'Are you sure?',
-        text: "You want to delete this truck?",
-        icon: 'warning',
-        showCancelButton: true,
-        
-        cancelButtonText: '<i title="Cancel"  class="fas fa-3x fa-times-circle tooltips text-danger"></i>',
-        confirmButtonText: '<i title="Delete Truck"class="fas fa-3x fa-check-circle tooltips text-success"></i>',
+                text: "You want to delete this truck?",
+                icon: 'warning',
+                showCancelButton: true,
+                cancelButtonText: '<i title="Cancel"  class="fas fa-3x fa-times-circle tooltips text-danger"></i>',
+                confirmButtonText: '<i title="Delete Truck"class="fas fa-3x fa-check-circle tooltips text-success"></i>',
             }).then((result) => {
                 if (result.isConfirmed) {
                     if (getId != "") {
@@ -231,7 +227,7 @@ $(document).on('click', '.remove_plan_details', function () {
             resetPlanDetailFieldNames();
         }
     } else {
-        Swal.fire('There should be atlease 1 truck associated with this plan');
+        Swal.fire('There should be atleast 1 truck associated with this plan');
     }
 });
 

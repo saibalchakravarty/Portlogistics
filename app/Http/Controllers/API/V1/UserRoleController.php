@@ -41,7 +41,7 @@ class UserRoleController extends BaseController {
             $auth['id'] = $inputs['id'];
         }
         $response = $this->userRoleRepository->getRoles($auth);
-        if($response['status'] == false){
+        if(!$response['status'] ){
            return $this->sendError($response,'No record found !!!', $auth);
         }
         return $this->sendResponse($response['result'],$response['message'], $auth);
@@ -75,7 +75,7 @@ class UserRoleController extends BaseController {
         $dataArr[] =  $menuPrivilege;
         $dataArr['privileges'] =  isset( $allInput['privilege_array'] )? $allInput['privilege_array'] : "";
 
-        if($role['status'] == false){
+        if(!$role['status'] ){
            return $this->sendError($dataArr,'No record found !!!', $param);
         }
         return $this->sendResponse($dataArr,'Role data fetch sucessfully', $param);
@@ -110,7 +110,7 @@ class UserRoleController extends BaseController {
         $allInput['created_by'] = $param['user_id'];
         $allInput['connection'] = $param['connection'];
         $response = $this->userRoleRepository->store($allInput);
-        if($response['status'] == false){
+        if(!$response['status']){
             return $this->sendError($response,$response['message'],$param);
         }
         return $this->sendResponse([],$response['message'],$param);  
@@ -154,12 +154,11 @@ class UserRoleController extends BaseController {
     {
         $allInput = $request->all();
         $param  = $this->getAuth($allInput);
-        $postVesselData = $request->all();
         $allInput['updated_by'] = $param['user_id'];
         $allInput['connection'] = $param['connection'];
         $allInput['id'] = $request->id;
         $response = $this->userRoleRepository->update($allInput);
-        if($response['status'] == false){
+        if(!$response['status']){
             return $this->sendError($response,$response['message'],$param);
         }
         return $this->sendResponse([],$response['message'],$param);           
@@ -198,7 +197,7 @@ class UserRoleController extends BaseController {
         $allInput['connection'] = $param['connection'];
         $allInput['id'] = $request->id;
         $response = $this->userRoleRepository->destroy($allInput);
-        if($response['status'] == false){
+        if(!$response['status'] ){
             return $this->sendError($response,$response['message'],$param);
         }
         return $this->sendResponse([],$response['message'],$param);          
@@ -237,7 +236,7 @@ class UserRoleController extends BaseController {
         $allInput['connection'] = $param['connection'];
         $allInput['id'] = $request->id;
         $response = $this->userRoleRepository->edit($allInput);
-        if($response['status'] == false){
+        if(!$response['status']){
             return $this->sendError($response,'Record not found',$param);
         }
         return $this->sendResponse($response['result'],$response['message'],$param);

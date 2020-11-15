@@ -29,9 +29,7 @@
         <link rel="stylesheet" href="{{css('bootstrap_multiselect_css')}}">
         
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@9.17.1/dist/sweetalert2.min.css">
-        <style type="text/css">
-
-        </style>
+       
         @stack('style')
     </head>
 
@@ -82,7 +80,6 @@
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
         <script src="{{theme('plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js')}}"></script>
         <script src="{{theme('plugins/moment/moment.min.js')}}"></script>
-        <!--<script src="{{theme('dist/js/pages/dashboard2.js')}}"></script>-->
         <script>
             var APP_URL = {!!json_encode(url('/')) !!};
         </script>

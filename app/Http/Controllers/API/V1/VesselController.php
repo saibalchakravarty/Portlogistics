@@ -15,7 +15,6 @@ class VesselController extends BaseController
     {
         $this->vesselRepository = $vesselRepository;
     }
-
     /**
     * @OA\Get(
     *   path="/vessel",
@@ -39,12 +38,11 @@ class VesselController extends BaseController
         $param['view'] = 'vessel.index';
         $vessel = $this->vesselRepository->getAllVessel($param);
         $vessel['privileges'] =  isset($allInput['privilege_array'])?$allInput['privilege_array'] : "";
-        if($vessel['status'] == false){
-           return $this->sendError($vessel,'No record found !!!', $param);
+        if(!$vessel['status']){
+           return $this->sendError($vessel,$response['message'], $param);
         }
-        return $this->sendResponse($vessel,'Vessel data fetch sucessfully', $param);
+        return $this->sendResponse($vessel,$response['message'], $param);
     }
-
     /**
      * @OA\Post(
      ** path="/vessel",
@@ -80,12 +78,11 @@ class VesselController extends BaseController
         $allInput['created_by'] = $param['user_id'];
         $allInput['connection'] = $param['connection'];
         $response = $this->vesselRepository->store($allInput);
-        if($response['status'] == false){
-            return $this->sendError($response,'Something wen\'t wrong',$param);
+        if(!$response['status']){
+            return $this->sendError($response,$response['message'],$param);
         }
         return $this->sendResponse([],$response['message'],$param);  
     }
-
     /**
      * @OA\Put(
      ** path="/vessel/{id}",
@@ -144,12 +141,11 @@ class VesselController extends BaseController
             $allInput['draft']=null;
         }
         $response = $this->vesselRepository->update($allInput);
-        if($response['status'] == false){
+        if(!$response['status']){
             return $this->sendError($response['result'],$response['message'],$param);
         }
         return $this->sendResponse($response['result'],$response['message'],$param);           
     }
-
     /**
      * @OA\Delete(
      ** path="/vessel/{id}",
@@ -183,12 +179,11 @@ class VesselController extends BaseController
         $param  = $this->getAuth($allInput);//in post you will need to pass like $this->getAuth($request->all());
         $allInput['connection'] = $param['connection'];
         $response = $this->vesselRepository->destroy($allInput);
-        if($response['status'] == false){
+        if(!$response['status']){
             return $this->sendError($response['result'],$response['message'],$param);
         }
         return $this->sendResponse($response['result'],$response['message'],$param);          
     }
-
      /**
      * @OA\Get(
      ** path="/vessel/{id}",
@@ -222,12 +217,11 @@ class VesselController extends BaseController
         $param  = $this->getAuth($allInput); //in post you will need to pass like $this->getAuth($request->all());
         $allInput['connection'] = $param['connection'];
         $response = $this->vesselRepository->edit($allInput);
-        if($response['status'] == false){
-            return $this->sendError($response['result'],'Record not found',$param);
+        if(!$response['status']){
+            return $this->sendError($response['result'],$response['message'],$param);
         }
         return $this->sendResponse($response['result'],$response['message'],$param);
     }
-    
     /**
     * @OA\GET(
     * path="/vessel/sorted-list/{keyword}",
@@ -257,7 +251,7 @@ class VesselController extends BaseController
         $inputs['connection'] = $auth['connection'];
         if(isset($inputs['keyword']) && !empty($inputs['keyword'])) {
             $response = $this->vesselRepository->searchVesselsByKeyword($inputs);
-            if($response['status'] == true) {
+            if($response['status']) {
                 return $this->sendResponse($response['result'],'Vessel lists fetched successfully',$auth);
             } else {
                 return $this->sendError($response['result'],$response['result'],$auth);

@@ -21,15 +21,17 @@ class UserRequest extends JsonRequest {
      * @return array
      */
     public function rules() {
+        $requiredCheckMaxSize_40 = 'required|max:40';
+        $checkMaxSize_60 = 'max:60';
         if ($this->isMethod('put')) {
             return [
                 'id' => 'required|integer|gt:0',
                 'email' => 'required|email|max:60',
-                'first_name' => 'required|max:40',
-                'last_name' => 'required|max:40',
+                'first_name' => $requiredCheckMaxSize_40,
+                'last_name' => $requiredCheckMaxSize_40,
                 'mobile_no' => 'required|max:20',
-                'address1' => 'max:60',
-                'address2' => 'max:60',
+                'address1' =>  $checkMaxSize_60,
+                'address2' =>  $checkMaxSize_60,
                 'country_id' => 'required',
                 'state_id' => 'required',
                 'city_id' => 'required',
@@ -40,11 +42,11 @@ class UserRequest extends JsonRequest {
         } else {
             return [
                 'email' => 'required|email|max:60',
-                'first_name' => 'required|max:40',
-                'last_name' => 'required|max:40',
+                'first_name' => $requiredCheckMaxSize_40,
+                'last_name' => $requiredCheckMaxSize_40,
                 'mobile_no' => 'required|max:20',
-                'address1' => 'max:60',
-                'address2' => 'max:60',
+                'address1' =>  $checkMaxSize_60,
+                'address2' =>  $checkMaxSize_60,
                 'country_id' => 'required',
                 'state_id' => 'required',
                 'city_id' => 'required',

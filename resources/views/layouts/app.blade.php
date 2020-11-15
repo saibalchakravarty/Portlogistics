@@ -35,11 +35,7 @@
       
         <!-- End Flash Message -->
         <div class="login-box">
-            <!-- <div class="login-logo">
-                <a href="javascript:void(0);">
-                    <img src="{{theme('dist/img/Logo.png')}}" height="50"/>
-                </a>
-            </div> -->
+            
             <div class="">
                 @yield('content')
             </div>

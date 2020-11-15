@@ -6,7 +6,6 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Repositories\RolesPrivilege\RolesPrivilegeRepository;
 use Cache;
-//use App\Http\Requests\UserRoleRequest;
 class RoleprivilegeController extends BaseController
 {   
     protected $userRoleRepository;
@@ -32,7 +31,7 @@ class RoleprivilegeController extends BaseController
         $key = 'roleCache-'.$organizationId.':'.$userRoleId;
         Cache::forget($key);
         $response = $this->rolesPrivilegeRepository->store($allInput);
-        if($response['status'] == false){
+        if(!$response['status'] ){
             return $this->sendError($response,$response['message'],$param);
 
         }
@@ -44,7 +43,7 @@ class RoleprivilegeController extends BaseController
         $param  = $this->getAuth($allInput); //in post you will need to pass like $this->getAuth($request->all());
         $allInput['connection'] = $param['connection'];
         $response = $this->rolesPrivilegeRepository->showPrivileges($allInput);
-        if($response['status'] == false){
+        if(!$response['status'] ){
             return $this->sendError($response,'Record not found',$param);
         }
         return $this->sendResponse($response['result'],$response['message'],$param);

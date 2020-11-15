@@ -35,5 +35,7 @@ return [
         14 => 'challan',
         15 => 'cachekey'
     ),   
-    'cache_time' => 100000  //in seconds
+    'cache_time' => 100000,  //in seconds
+    'exception_msg' => 'Something Went Wrong!',
+    'empty_err_msg' => 'No Record Found!'
 ];
