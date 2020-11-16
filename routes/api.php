@@ -113,9 +113,9 @@ Route::group([
     Route::post('plan', 'BtopPlanningController@store');
     Route::put('plan/{id?}', 'BtopPlanningController@update');
     /*List of challan APIs */
-    Route::get('/challan/inbound-list/{plan_id?}/{plot_id?}', 'ChallanController@getInboundChallanList');
+    Route::get('/challan/inbound-list/{plan_id?}/{destination_id?}', 'ChallanController@getInboundChallanList');
     Route::post('/challan/reconcile', 'ChallanController@reconcileChallan');
-    Route::get('/challan/barcode/{plan_id?}/{plot_id?}/{truck_id?}', 'ChallanController@fetchBarcodeApi');
+    Route::get('/challan/barcode/{plan_id?}/{destination_id?}/{truck_id?}', 'ChallanController@fetchBarcodeApi');
     Route::post('/trip/end', 'ChallanController@endTrip');     //End Trip API
     Route::post('/challan/scan', 'ChallanController@scanChallanApi');
     Route::post('/challan', 'ChallanController@createChallan');

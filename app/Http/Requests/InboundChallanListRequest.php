@@ -2,9 +2,15 @@
 
 namespace App\Http\Requests;
 use App\Http\Requests\JsonRequest;
+use Config;
 
 class InboundChallanListRequest extends JsonRequest
 {
+    protected $id_validation_rules;
+    public function __construct()
+    {
+        $this->id_validation_rules = Config::get('constants.id_validation_rules');
+    }
     /**
      * Determine if the user is authorized to make this request.
      *
@@ -24,8 +30,8 @@ class InboundChallanListRequest extends JsonRequest
     { 
         if ($this->isMethod('get')) {
             return [
-                'plan_id' => 'required|integer|gt:0',
-                'plot_id'=>'required|integer|gt:0'
+                'plan_id' => $this->id_validation_rules,
+                'destination_id' => $this->id_validation_rules
             ];
         }
     }
@@ -37,7 +43,7 @@ class InboundChallanListRequest extends JsonRequest
     {
         return [
             'plan_id.required'=>'Plan id is required',
-            'plot_id.required'=>'Plot id is required'
+            'destination_id.required'=>'Destination id is required'
         ];
     }
 
@@ -45,7 +51,7 @@ class InboundChallanListRequest extends JsonRequest
     {
         $data = parent::all($keys);
         $data['plan_id'] = $this->route('plan_id');
-        $data['plot_id'] = $this->route('plot_id');
+        $data['destination_id'] = $this->route('destination_id');
         return $data;
     }
 }

@@ -12,9 +12,8 @@ class BarcodeService {
         try {
             $imgPath = '';
             $DNS1D = new DNS1D();
-            $format = config('barcode.format');
-            $directory = 'org_'.$auth['user_auth']->organization_id . '/planning_'.$challan['btop_planning_id'].'_'.$challan['type'].'/barcode/';
-            Storage::makeDirectory($directory, $mode = '0777', true, true);
+            $directory = 'org_'.$auth['user_auth']->organization_id . '/plan_'.$challan['plan_id'].'_'.$challan['type'].'/barcode/';
+            Storage::makeDirectory($directory, '0777', true, true);
             $barcodeImg = $DNS1D->getBarcodePNG($challan['challan_no'], config('barcode.format'));
             $imgPath = $directory . $challan['challan_no'] . '.png';
             Storage::put($imgPath, base64_decode($barcodeImg));

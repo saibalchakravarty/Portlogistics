@@ -2,9 +2,15 @@
 
 namespace App\Http\Requests;
 use App\Http\Requests\JsonRequest;
+use Config;
 
 class CreateChallanRequest extends JsonRequest
 {
+    protected $id_validation_rules;
+    public function __construct()
+    {
+        $this->id_validation_rules = Config::get('constants.id_validation_rules');
+    }
     /**
      * Determine if the user is authorized to make this request.
      *
@@ -23,13 +29,12 @@ class CreateChallanRequest extends JsonRequest
     public function rules()
     {
         return [
-            'user_id'=>'required',
-            'planning_id' => 'required',
-            'truck_id'=>'required',
-            'origin_location_id'=>'required',
-            'destination_location_id'=>'required',
-            'consignee_id'=>'required',
-            'shift_id'=>'required'
+            'plan_id' => $this->id_validation_rules,
+            'truck_id' => $this->id_validation_rules,
+            'origin_id' => $this->id_validation_rules,
+            'destination_id' => $this->id_validation_rules,
+            'consignee_id' => $this->id_validation_rules,
+            'shift_id' => $this->id_validation_rules
         ];
     }
 
@@ -39,11 +44,10 @@ class CreateChallanRequest extends JsonRequest
     public function messages()
     {
         return [
-            'user_id.required'=>'User id is required',
-            'planning_id.required'=>'Planning id is required',
+            'plan_id.required'=>'Plan id is required',
             'truck_id.required'=>'Truck id is required',
-            'origin_location_id.required'=>'Origin id is required',
-            'destination_location_id.required'=>'Destination id is required',
+            'origin_id.required'=>'Origin id is required',
+            'destination_id.required'=>'Destination id is required',
             'consignee_id.required'=>'Consignee id is required',
             'shift_id.required'=>'Shift id is required'
         ];

@@ -3,9 +3,15 @@
 namespace App\Http\Requests;
 
 use App\Http\Requests\JsonRequest;
+use Config;
 
 class EndTripRequest extends JsonRequest {
 
+    protected $id_validation_rules;
+    public function __construct()
+    {
+        $this->id_validation_rules = Config::get('constants.id_validation_rules');
+    }
     /**
      * Determine if the user is authorized to make this request.
      *
@@ -22,20 +28,18 @@ class EndTripRequest extends JsonRequest {
      */
     public function rules() {
         return [
-            'planning_id' => 'required',
-            'user_id' => 'required',
-            'truck_id' => 'required',
-            'location_id' => 'required'
+            'plan_id' => $this->id_validation_rules,
+            'truck_id' => $this->id_validation_rules,
+            'destination_id' => $this->id_validation_rules
         ];
     }
 
     public function messages() {
         
         return [
-            'planning_id' => 'planning_id is required',     
-            'user_id' => 'user_id is required',
-            'truck_id' => 'truck_id is required', 
-            'location_id' => 'location_id is required'
+            'planning_id' => 'Plan id is required', 
+            'truck_id' => 'Truck id is required', 
+            'destination_id' => 'Destination id is required'
         ];
     }
 

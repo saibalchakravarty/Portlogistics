@@ -10,24 +10,31 @@ use Illuminate\Support\Facades\Log;
 use Carbon\Carbon;
 use DB;
 use App\Http\Controllers\DateTime;
+use Config;
 
 Class ChallanRepository {
-
+    
+    protected $exception_msg,$empty_err_msg;
+    public function __construct()
+    {
+        $this->exception_msg = Config::get('constants.exception_msg');
+        $this->empty_err_msg = Config::get('constants.empty_err_msg');
+    }
     /**
-     * Fetch List of challans for mobile api
-     * 
-     */
+        @description : Fetch List of inbound challans for mobile api
+        @author : Itishree Nath
+    */
     public function getInboundChallanList($inputs) {
         $response['status'] = true;
         try {
             $challans = new Challan();
             $challans->setConnection($inputs['connection']);
             $challans = $challans::with('shift');
-            if (isset($inputs['planning_id']) && !empty($inputs['planning_id'])) {
-                $challans = $challans->where('btop_planning_id', $inputs['planning_id']);
+            if (isset($inputs['plan_id']) && !empty($inputs['plan_id'])) {
+                $challans = $challans->where('plan_id', $inputs['plan_id']);
             }
-            if (isset($inputs['location_id']) && !empty($inputs['location_id'])) {
-                $challans = $challans->where('destination_location_id', $inputs['location_id']);
+            if (isset($inputs['destination_id']) && !empty($inputs['destination_id'])) {
+                $challans = $challans->where('destination_id', $inputs['destination_id']);
             }
             if (isset($inputs['truck_id']) && !empty($inputs['truck_id'])) {
                 $challans = $challans->where('truck_id', $inputs['truck_id']);
@@ -38,7 +45,7 @@ Class ChallanRepository {
             if(empty($challans))
             {
                 $response['status'] = false;
-                $response['message'] = 'No Record Found';
+                $response['message'] = $this->empty_err_msg;
             }
             else{
                 $response['result'] = $challans;
@@ -48,16 +55,16 @@ Class ChallanRepository {
             Log::error($e->getMessage());
             $response['status'] = false;
             $response['result'] = $e->getMessage();
-            $response['message'] = 'Something Went Wrong';
+            $response['message'] = $this->exception_msg;
             return $response;
         }
         return $response;
     }
 
     /**
-     * Fetch List of challans for datatable
-     * 
-     */
+        @description : Challan list for ajax
+        @author : Madhusmita Das
+    */
     public function getListChallans($auth, $start, $limit, $order = [], $where = '', $filterCondition = [], $countOnly = false) {
         $data = [];
         $fields = "
@@ -67,8 +74,8 @@ Class ChallanRepository {
             trucks.truck_no,
             locations.location as origin,
             cargos.name as cargo_name,
-            btop_plannings.date_from,
-            btop_plannings.date_to,
+            plans.date_from,
+            plans.date_to,
             shifts.name as shift_name,
             IF(challans.status = 1, 'Unload Pending', 'Unloaded') as status,
             challans.is_deposit,
@@ -80,7 +87,7 @@ Class ChallanRepository {
             INNER JOIN `locations` ON `locations`.`id` = `challans`.`origin_location_id`
             INNER JOIN `cargos` ON `cargos`.`id` = `challans`.`cargo_id`
             INNER JOIN `shifts` ON `shifts`.`id` = `challans`.`shift_id`
-            INNER JOIN `btop_plannings` ON `btop_plannings`.`id` = `challans`.`btop_planning_id`
+            INNER JOIN `plans` ON `plans`.`id` = `challans`.`plan_id`
         ";
         try {
             $challans = new Challan();
@@ -118,7 +125,11 @@ Class ChallanRepository {
         }
         return $data;
     }
-
+    
+    /**
+        @description : Get reconciled challan count, not reconciled challan count and total challn count
+        @author : Madhusmita Das
+    */
     public function getReconciledCounts($auth, $filterCondition) {
         $response['status'] = true;
         try {
@@ -153,53 +164,53 @@ Class ChallanRepository {
             $response['status'] = false;
             Log::error($e->getMessage());
             $response['result'] = $e->getMessage();
-            $response['message'] = 'Something Went Wrong';
+            $response['message'] = $this->exception_msg;
         }
         return $response;
     }
 
+    /**
+        @description : Reconcile challan using id(s)
+        @author : Madhusmita Das
+    */
     public function reconcileChallan($inputs) {
         $response['status'] = true;
         try {
             $challan = new Challan();
             $challan->setConnection($inputs['connection']);
-            foreach($inputs['challan_ids'] as $id) {
-                $challan = $challan->where('id', $id)->first();
-                if($challan->is_deposit == '0') {
-                    $challan->is_deposit = '1';
-                    $challan->updated_by = $inputs['user_id'];
-                    $challan->save();
-                }
+            $status = $challan->whereIn('id', $inputs['challan_ids'])->where('is_deposit', 0)->update(['is_deposit' => 1, 'updated_by' => $inputs['user_id']]);
+            if($status) {
+                $response['message'] = $response['result'] = 'Selected challan(s) reconciled successfully';
+            } else {
+                $response['status'] = false;
+                $response['message'] = $response['result'] = 'Unable to reconcile the selected challan(s)';               
             }
-            $response['message'] = 'Reconciled successfully';
-            $response['result'] = 'Reconciled successfully';
-            return $response;
         } catch (Exception $e) {
             $response['status'] = false;
             Log::error($e->getMessage());
             $response['result'] = $e->getMessage();
-            $response['message'] = 'Something Went Wrong';
-            return $response;
+            $response['message'] = $this->exception_msg;
         }
+        return $response;
     }
 
     /**
-     * Update Challan table for end trip api
-     * 
-     */
-    public function updateChallanTableForEndTrip($allInput) {
+        @description : Update Challan table for end trip api
+        @author : Itishree Nath
+    */
+    public function updateChallanToEndTrip($allInput) {
         //dd($allInput);
         $fetch['status'] = true;
         try {
             $challan = new Challan();
             $challan->setConnection($allInput['connection']);
-            $challan = $challan->where('destination_location_id', $allInput['location_id']);
-            $challan = $challan->where('btop_planning_id', $allInput['planning_id']);
+            $challan = $challan->where('destination_id', $allInput['destination_id']);
+            $challan = $challan->where('plan_id', $allInput['plan_id']);
             $challan = $challan->where('truck_id', $allInput['truck_id']);
             $challan = $challan->update(['status' => 2, 'unloaded_at' => Carbon::now(), 'unloaded_by' => $allInput['user_id'], 'updated_by' => $allInput['user_id']]);
             if (!$challan) {
                 $fetch['status'] = false;
-                $fetch['message'] = 'No Record Found';
+                $fetch['message'] = $this->empty_err_msg;
             } else {
                 $fetch['message'] = 'Challan data updated successfully';
             }
@@ -207,28 +218,28 @@ Class ChallanRepository {
         } catch (Exception $e) {
             $fetch['status'] = false;
             $fetch['result'] = $e->getMessage();
-            $fetch['message'] = 'Something Went Wrong';
+            $fetch['message'] = $this->exception_msg;
             Log::error($e->getMessage());
             return $fetch;
         }
     }
 
     /**
-     * Fetch Location by id
-     * 
-     */
+        @description : Fetch Challans by destination_id, plan_id, truck_id
+        @author : Itishree Nath
+    */
     public function getChallanByInput($allInput) {
         $fetch['status'] = true;
         try {
             $challan = new Challan();
             $challan->setConnection($allInput['connection']);
-            $challan = $challan->where('destination_location_id', $allInput['location_id']);
-            $challan = $challan->where('btop_planning_id', $allInput['planning_id']);
+            $challan = $challan->where('destination_id', $allInput['destination_id']);
+            $challan = $challan->where('plan_id', $allInput['plan_id']);
             $challan = $challan->where('truck_id', $allInput['truck_id']);
             $challan = $challan->firstOrFail();
             if (!$challan) {
                 $fetch['status'] = false;
-                $fetch['message'] = 'No Record Found';
+                $fetch['message'] = $this->empty_err_msg;
             } else {
                 $fetch['message'] = 'Challan data fetched successfully';
                 $fetch['result'] = $challan->toArray();
@@ -238,19 +249,21 @@ Class ChallanRepository {
             $fetch['status'] = false;
             Log::error($e->getMessage());
             $fetch['result'] = $e->getMessage();
-            $fetch['message'] = 'Something Went Wrong';
+            $fetch['message'] = $this->exception_msg;
             return $fetch;
         }
     }
 
-    /* For Scan Challan API */
-
+    /**
+        @description : Get challan details by challan_no used in scan challan api
+        @author : Madhusmita Das
+    */
     public function getChallanDetails($inputs) {
         $response['status'] = true;
         try {
             $challans = new Challan();
             $challans->setConnection($inputs['connection']);
-            $challans = $challans::with('btop_planning')->with('origin')->with('destination')->with('truck')->with('shift')->with('cargo');
+            $challans = $challans::with('plan')->with('origin')->with('destination')->with('truck')->with('shift')->with('cargo');
             if (isset($inputs['challan_no']) && !empty($inputs['challan_no'])) {
                 $challans = $challans->where('challan_no', $inputs['challan_no']);
             }
@@ -271,51 +284,52 @@ Class ChallanRepository {
     }
 
     /**
-     * Update scan challan status
-     * 
-     */
+        @description : Update challan status as scanned
+        @author : Madhusmita Das
+    */
     public function updateChallanScanStatus($inputs) {
         $response['status'] = true;
         try {
             $challan = new Challan();
             $challan->setConnection($inputs['connection']);
-            $challan = $challan->where('destination_location_id', $inputs['location_id']);
+            $challan = $challan->where('destination_id', $inputs['destination_id']);
             $challan = $challan->where('challan_no', $inputs['challan_no']);
             $challan = $challan->update(['is_scanned' => '1']);
             if (!$challan) {
                 $response['status'] = false;
-                $response['message'] = 'No Record Found';
+                $response['message'] = $this->empty_err_msg;
             } else {
                 $response['message'] = 'Challan scanned successfully';
             }
         } catch (Exception $e) {
             $response['status'] = false;
             $response['result'] = $e->getMessage();
-            $response['message'] = 'Something Went Wrong';
+            $response['message'] = $this->exception_msg;
             Log::error($e->getMessage());
         }
         return $response;
     }
-
+    
+    /**
+        @description : Get challn list by plan_id, truck_id, origin_id, destination_id, consignee_id and status
+        @author : Madhusmita Das
+    */
     public function getFilteredChallans($inputs) {
         $response['status'] = true;
         try {
             $challans = new Challan();
             $challans->setConnection($inputs['connection']);
-            if (isset($inputs['planning_id']) && !empty($inputs['planning_id'])) {
-                $challans = $challans->where('btop_planning_id', $inputs['planning_id']);
-            }
-            if (isset($inputs['location_id']) && !empty($inputs['location_id'])) {
-                $challans = $challans->where('destination_location_id', $inputs['location_id']);
+            if (isset($inputs['plan_id']) && !empty($inputs['plan_id'])) {
+                $challans = $challans->where('plan_id', $inputs['plan_id']);
             }
             if (isset($inputs['truck_id']) && !empty($inputs['truck_id'])) {
                 $challans = $challans->where('truck_id', $inputs['truck_id']);
             }
-            if (isset($inputs['origin_location_id']) && !empty($inputs['origin_location_id'])) {
-                $challans = $challans->where('origin_location_id', $inputs['origin_location_id']);
+            if (isset($inputs['origin_id']) && !empty($inputs['origin_id'])) {
+                $challans = $challans->where('origin_id', $inputs['origin_id']);
             }
-            if (isset($inputs['destination_location_id']) && !empty($inputs['destination_location_id'])) {
-                $challans = $challans->where('destination_location_id', $inputs['destination_location_id']);
+            if (isset($inputs['destination_id']) && !empty($inputs['destination_id'])) {
+                $challans = $challans->where('destination_id', $inputs['destination_id']);
             }
             if (isset($inputs['consignee_id']) && !empty($inputs['consignee_id'])) {
                 $challans = $challans->where('consignee_id', $inputs['consignee_id']);
@@ -324,18 +338,26 @@ Class ChallanRepository {
                 $challans = $challans->where('status', $inputs['status']);
             }
             $challans = $challans->get();
-            $response['result'] = $challans;
-            $response['message'] = 'Records fetched successfully';
+            if($challans->isEmpty()) {
+                $response['status'] = false;
+                $response['message'] = $response['result'] = $this->empty_err_msg;
+            } else{
+                $response['result'] = $challans;
+                $response['message'] = 'Records fetched successfully';
+            }
         } catch (Exception $e) {
             Log::error($e->getMessage());
             $response['status'] = false;
             $response['result'] = $e->getMessage();
-            $response['message'] = 'Something Went Wrong';
-            return $response;
+            $response['message'] = $this->exception_msg;
         }
         return $response;
     }
-
+    
+    /**
+        @description : Insert/Update Challan
+        @author : Madhusmita Das
+    */
     public function saveChallan($inputs) {
         $response['status'] = true;
         try {
@@ -346,9 +368,9 @@ Class ChallanRepository {
                 $challan = $challan->where('id', $inputs['id'])->first();
             }
             
-            $challan->btop_planning_id = $inputs['btop_planning_id'];
-            $challan->origin_location_id = $inputs['origin_location_id'];
-            $challan->destination_location_id = $inputs['destination_location_id'];
+            $challan->plan_id = $inputs['plan_id'];
+            $challan->origin_id = $inputs['origin_id'];
+            $challan->destination_id = $inputs['destination_id'];
             $challan->truck_id = $inputs['truck_id'];
             $challan->shift_id = $inputs['shift_id'];
             $challan->cargo_id = $inputs['cargo_id'];
@@ -367,13 +389,13 @@ Class ChallanRepository {
                 $response['result'] = $challan;
             } else {
                 $response['status'] = false;               
-                $response['message'] = 'No Record Found';
+                $response['message'] = $this->empty_err_msg;
             }
             return $response;
         } catch (Exception $e) {
             Log::error($e->getMessage());
             $response['result'] = $e->getMessage();
-            $response['message'] = 'Something Went Wrong';
+            $response['message'] = $this->exception_msg;
             return $response;
         }
     }

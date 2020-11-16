@@ -37,5 +37,6 @@ return [
     ),   
     'cache_time' => 100000,  //in seconds
     'exception_msg' => 'Something Went Wrong!',
-    'empty_err_msg' => 'No Record Found!'
+    'empty_err_msg' => 'No Record Found!',
+    'id_validation_rules' => 'required|integer|gt:0'
 ];

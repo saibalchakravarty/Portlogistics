@@ -2,9 +2,15 @@
 
 namespace App\Http\Requests;
 use App\Http\Requests\JsonRequest;
+use Config;
 
 class ScanChallanRequest extends JsonRequest
 {
+    protected $id_validation_rules;
+    public function __construct()
+    {
+        $this->id_validation_rules = Config::get('constants.id_validation_rules');
+    }
     /**
      * Determine if the user is authorized to make this request.
      *
@@ -24,7 +30,7 @@ class ScanChallanRequest extends JsonRequest
     {
         return [
             'challan_no' => 'required|max:60',
-            'plot_id'=>'required|integer|gt:0'
+            'destination_id' => $this->id_validation_rules
         ];
     }
 
@@ -37,7 +43,7 @@ class ScanChallanRequest extends JsonRequest
             'user_id.required'=>'User id is required',
             'challan_no.required'=>'Challan no. is required',
             'challan_no.max'=>'Please enter a valid challan no.',
-            'plot_id.required'=>'Plot id is required'
+            'destination_id.required'=>'Destination id is required'
         ];
     }
 }

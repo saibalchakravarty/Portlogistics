@@ -2,8 +2,8 @@
 
 namespace App\Repositories\BtopPlannedTruck;
 
-use App\Models\BtopPlannedTruck;
-use App\Models\BtopPlanning;
+use App\Models\PlanTruck;
+use App\Models\Plan;
 use App\Models\Truck;
 use App\Models\Challan;
 use Exception;
@@ -21,10 +21,10 @@ class BtopPlannedTruckRepository
     {
         $response['status'] = true;
         try{
-            $planned_trucks = new BtopPlannedTruck();
+            $planned_trucks = new PlanTruck();
             $planned_trucks->setConnection($allInput['connection']);
             $planned_trucks = $planned_trucks::with('truck','truck.truckCompany');
-            $planned_trucks = $planned_trucks->where('btop_planning_id',$allInput['planning_id']);
+            $planned_trucks = $planned_trucks->where('plan_id',$allInput['plan_id']);
             $planned_trucks = $planned_trucks->where('status',1);
             $planned_trucks = $planned_trucks->get();
             $response['result'] = $planned_trucks;
@@ -70,7 +70,7 @@ class BtopPlannedTruckRepository
         try {
             $planned_trucks = new BtopPlannedTruck();
             $planned_trucks->setConnection($allInput['connection']);
-            $planned_trucks = $planned_trucks->where('btop_planning_id', $allInput['planning_id']);
+            $planned_trucks = $planned_trucks->where('plan_id', $allInput['plan_id']);
             $planned_trucks = $planned_trucks->where('truck_id', $allInput['truck_id']);
             $planned_trucks = $planned_trucks->update(['status' => 2, 'updated_by' => $allInput['user_id']]);
             if (!$planned_trucks) {
@@ -214,7 +214,7 @@ class BtopPlannedTruckRepository
         try {
             $planned_trucks = new BtopPlannedTruck();
             $planned_trucks->setConnection($inputs['connection']);
-            $planned_trucks = $planned_trucks->where('btop_planning_id', $inputs['planning_id']);
+            $planned_trucks = $planned_trucks->where('plan_id', $inputs['planning_id']);
             $planned_trucks = $planned_trucks->where('truck_id', $inputs['truck_id']);
             $planned_trucks = $planned_trucks->update(['status' => 1, 'updated_by' => $inputs['user_id']]);
             if (!$planned_trucks) {

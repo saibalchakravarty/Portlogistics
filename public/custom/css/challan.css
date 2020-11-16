@@ -4,10 +4,9 @@
 */
 #challanTbl thead th:first-child:before, #challanTbl thead th:first-child:after{display:none;}
 .allign-center{text-align: center;}
-.challan-info-box p{font-size:14px;}
+.challan-info-box p{font-size:14px;color:#fff;}
 .challan-filter-section .btn{width:100%}
 .challan-info-box h3{color:#fff;}
-.challan-info-box p{color:#fff;}
 #challanTbl_wrapper{
     margin-top: -50px;
 }

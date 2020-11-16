@@ -189,7 +189,13 @@ class LocationRepository
         try {
             $locationData = new Location();
             $locationData->setConnection($allInput['connection']);
-            $locationData = $locationData->where('id',$allInput['location_id']);
+            if(isset($allInput['location_id']) && !empty($allInput['location_id'])) {
+                $locationData = $locationData->where('id',$allInput['location_id']);
+            } else if(isset($allInput['destination_id']) && !empty($allInput['destination_id'])) {
+                $locationData = $locationData->where('id',$allInput['destination_id']);
+            } else if(isset($allInput['origin_id']) && !empty($allInput['origin_id'])) {
+                $locationData = $locationData->where('id',$allInput['origin_id']);
+            }
             $locationData = $locationData->where('type',$type);
             $locationData = $locationData->firstOrFail();
             if(!$locationData)

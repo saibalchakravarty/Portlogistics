@@ -2,11 +2,11 @@
 
 namespace App\Repositories\BtopPlanning;
 
-use App\Models\BtopPlanning;
+use App\Models\Plan;
 use Exception;
 use Log;
-use App\Models\BtopPlannedTruck;
-use App\Models\BtopPlanningDetail;
+use App\Models\PlanTruck;
+use App\Models\PlanDetail;
 use Carbon\Carbon;
 
 class BtopPlanningRepository {
@@ -75,13 +75,13 @@ class BtopPlanningRepository {
         try {
             $planning = new BtopPlanning();
             $planning->setConnection($inputs['connection']);
-            if (isset($inputs['planning_id']) && !empty($inputs['planning_id'])) {
-                $planning = $planning->where('id', $inputs['planning_id']);
+            if (isset($inputs['plan_id']) && !empty($inputs['plan_id'])) {
+                $planning = $planning->where('id', $inputs['plan_id']);
             }
             $planning = $planning->with('vessel')->firstOrFail();
             if ($planning == null) {
                 $response['status'] = false;
-                $response['message'] = $response['result'] = 'Please provide a valid planning id';
+                $response['message'] = $response['result'] = 'Please provide a valid plan id';
             } else {
                 $response['result'] = $planning;
                 $response['message'] = 'Record fetched successfully';
@@ -98,10 +98,10 @@ class BtopPlanningRepository {
     public function getPlannedTrucksByPlanningId($inputs) {
         $response['status'] = true;
         try {
-            $plannedTruck = new BtopPlannedTruck();
+            $plannedTruck = new PlanTruck();
             $plannedTruck->setConnection($inputs['connection']);
-            if (isset($inputs['planning_id']) && !empty($inputs['planning_id'])) {
-                $plannedTruck = $plannedTruck->where('btop_planning_id', $inputs['planning_id']);
+            if (isset($inputs['plan_id']) && !empty($inputs['plan_id'])) {
+                $plannedTruck = $plannedTruck->where('plan_id', $inputs['plan_id']);
             }
             if (isset($inputs['truck_id']) && !empty($inputs['truck_id'])) {
                 $plannedTruck = $plannedTruck->where('truck_id', $inputs['truck_id']);
@@ -121,16 +121,16 @@ class BtopPlanningRepository {
     public function getPlanningDetailsPlanningId($inputs) {
         $response['status'] = true;
         try {
-            $planningDetail = new BtopPlanningDetail();
+            $planningDetail = new Plan();
             $planningDetail->setConnection($inputs['connection']);
-            if (isset($inputs['planning_id']) && !empty($inputs['planning_id'])) {
-                $planningDetail = $planningDetail->where('btop_planning_id', $inputs['planning_id']);
+            if (isset($inputs['plan_id']) && !empty($inputs['plan_id'])) {
+                $planningDetail = $planningDetail->where('plan_id', $inputs['plan_id']);
             }
             if (isset($inputs['consignee_id']) && !empty($inputs['consignee_id'])) {
                 $planningDetail = $planningDetail->where('consignee_id', $inputs['consignee_id']);
             }
-            if (isset($inputs['destination_location_id']) && !empty($inputs['destination_location_id'])) {
-                $planningDetail = $planningDetail->where('plot_location_id', $inputs['destination_location_id']);
+            if (isset($inputs['destination_id']) && !empty($inputs['destination_id'])) {
+                $planningDetail = $planningDetail->where('destination_id', $inputs['destination_id']);
             }
             $planningDetails = $planningDetail->get();
             $response['result'] = $planningDetails;

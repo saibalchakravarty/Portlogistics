@@ -6,8 +6,9 @@ use Illuminate\Database\Eloquent\Model;
 
 /**
  * @OA\Schema(
- * @OA\Property(property="btop_planning_id", type="integer", format="int", description="BtopPlanning Id"),
- * @OA\Property(property="origin_location_id", type="integer", format="int", description="Origin Id"),
+ * @OA\Property(property="plan_id", type="integer", format="int", description="Plan Id"),
+ * @OA\Property(property="origin_id", type="integer", format="int", description="Origin Id"),
+ * @OA\Property(property="destination_id", type="integer", format="int", description="Destination Id"),
  * @OA\Property(property="truck_id", type="integer", format="int", description="Truck Id"),
  * @OA\Property(property="shift_id", type="integer", format="int", description="Shift Id"),
  * @OA\Property(property="cargo_id", type="integer", format="int", description="Cargo Id"),
@@ -38,7 +39,7 @@ class Challan extends Model
     /**
      * @var array
      */
-    public $fillable = ['btop_planning_id', 'origin_location_id', 'truck_id', 'shift_id', 'cargo_id', 'trip_started_at', 'trip_ended_at', 'status'];
+    public $fillable = ['plan_id', 'origin_id', 'destination_id', 'truck_id', 'shift_id', 'cargo_id', 'trip_started_at', 'trip_ended_at', 'status'];
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
@@ -66,15 +67,15 @@ class Challan extends Model
 
     public function origin()
     {
-        return $this->belongsTo('App\Models\Location', 'origin_location_id');
+        return $this->belongsTo('App\Models\Location', 'origin_id');
     }
     public function destination()
     {
-        return $this->belongsTo('App\Models\Location', 'destination_location_id');
+        return $this->belongsTo('App\Models\Location', 'destination_id');
     }
 
-    public function btop_planning()
+    public function plan()
     {
-        return $this->belongsTo('App\Models\BtopPlanning');
+        return $this->belongsTo('App\Models\Plan');
     }
 }
