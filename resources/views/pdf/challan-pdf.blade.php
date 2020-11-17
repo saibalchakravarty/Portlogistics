@@ -21,11 +21,11 @@
                         <tbody>
                             <tr>
                                 <td>
-                                    <table style="border-collapse: collapse; padding: 0px; border: none; width:100%;">
+                                    <table role="presentation" style="border-collapse: collapse; padding: 0px; border: none; width:100%;">
                                         <tr>
-                                            <th style="background:#203464; text-align: center;color: #fff;border-collapse: collapse;">
+                                            <td style="background:#203464; text-align: center;color: #fff;border-collapse: collapse;">
                                                 <h3>Challan</h3>
-                                            </th>
+                                            </td>
                                         </tr>
                                     </table>
                                     <table role="presentation"  class="column-1-2" style="border-collapse: collapse;border-bottom: 1px solid #213965; padding: 0px; width:100%; text-align: left;">
