@@ -17,7 +17,7 @@
         <tr>
             <td style=" padding: 20px 0;">
                 <div style="max-width: 600px; margin: 0 auto;border: 1px solid #41719c; padding:0px;">
-                    <table style="border-collapse: collapse; width: 100%; padding: 0px; border: none;">
+                    <table role="presentation" style="border-collapse: collapse; width: 100%; padding: 0px; border: none;">
                         <tbody>
                             <tr>
                                 <td>
@@ -28,7 +28,7 @@
                                             </th>
                                         </tr>
                                     </table>
-                                    <table class="column-1-2" style="border-collapse: collapse;border-bottom: 1px solid #213965; padding: 0px; width:100%; text-align: left;">
+                                    <table role="presentation"  class="column-1-2" style="border-collapse: collapse;border-bottom: 1px solid #213965; padding: 0px; width:100%; text-align: left;">
                                         <tbody>
                                             <tr>
                                                 <td style="width:25%" valign="top">
@@ -45,7 +45,7 @@
                                             </tr>
                                         </tbody>
                                     </table>
-                                    <table class="column-1-2" style="border-collapse: collapse;width:100%; text-align: left;border: none;padding:0px;">
+                                    <table role="presentation"  class="column-1-2" style="border-collapse: collapse;width:100%; text-align: left;border: none;padding:0px;">
                                         <tbody>
                                             <tr>
                                                 <td style="width:50%" valign="top">
@@ -57,7 +57,7 @@
                                             </tr>
                                         </tbody>
                                     </table>
-                                    <table class="column-1-2" style="border-collapse: collapse;width:100%; text-align: left;border: none;padding:0px;">
+                                    <table role="presentation"  class="column-1-2" style="border-collapse: collapse;width:100%; text-align: left;border: none;padding:0px;">
                                         <tbody>
                                             <tr>
                                                 <td style="width:50%" valign="top">
@@ -69,7 +69,7 @@
                                             </tr>
                                         </tbody>
                                     </table>
-                                    <table class="column-1-2" style="border-collapse: collapse;width:100%; text-align: left;border: none;padding:0px;">
+                                    <table role="presentation"  class="column-1-2" style="border-collapse: collapse;width:100%; text-align: left;border: none;padding:0px;">
                                         <tbody>
                                             <tr>
                                                 <td style="width:50%" valign="top">
@@ -79,7 +79,7 @@
                                             </tr>
                                         </tbody>
                                     </table>
-                                    <table class="column-1-2" style="border-collapse: collapse;width:100%; text-align: left;border: none;padding:0px;">
+                                    <table role="presentation"  class="column-1-2" style="border-collapse: collapse;width:100%; text-align: left;border: none;padding:0px;">
                                         <tbody>
                                             <tr>
                                                 <td style="width:50%" valign="top">
